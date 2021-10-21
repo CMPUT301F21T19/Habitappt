@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "745873284804",
+    "project_id": "habitappt",
+    "storage_bucket": "habitappt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:745873284804:android:2a408a6c0b0fd715797391",
+        "android_client_info": {
+          "package_name": "com.CMPUT301F21T19.habitappt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "745873284804-5s5gvpj4777sdkgd9b1ga7d1l9ste5v9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBb4hG7uQ-0lxQH_LMdSP5Cq2iJfUU5OQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "745873284804-5s5gvpj4777sdkgd9b1ga7d1l9ste5v9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
