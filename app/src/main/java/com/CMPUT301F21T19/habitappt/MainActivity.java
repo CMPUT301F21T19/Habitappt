@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
     public FirebaseFirestore db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +22,11 @@ public class MainActivity extends AppCompatActivity {
 
         //TEST: add to it
         FirestoreOps.testDBAddition(db);
+
+
     }
+
+
+
+
 }
