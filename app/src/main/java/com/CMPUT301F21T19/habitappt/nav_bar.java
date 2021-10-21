@@ -34,7 +34,6 @@ public class nav_bar extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        System.out.println("test!!!!!");
         View view = inflater.inflate(R.layout.nav_bar, container, false);
 
         profile_button = view.findViewById(R.id.profile_button);
