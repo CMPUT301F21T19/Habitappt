@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/drawable/ic_baseline_adb_24.xml" value="0.13177083333333334" />
+        <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/drawable/ic_baseline_baby_changing_station_24.xml" value="0.13177083333333334" />
+        <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/drawable/profile_icon.xml" value="0.128" />
         <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/layout/activity_main.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/layout/fragment_all_habits.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/layout/nav_bar.xml" value="0.1793478260869565" />
