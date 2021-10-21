@@ -37,8 +37,10 @@ public class MainActivity extends AppCompatActivity implements nav_bar.nav_bar_s
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         transaction.replace(R.id.bottom_nav_bar,new nav_bar());
-
+        transaction.replace(R.id.main_container,new profile());
         transaction.commit();
+
+
 
 
     }
@@ -48,8 +50,6 @@ public class MainActivity extends AppCompatActivity implements nav_bar.nav_bar_s
     public void switchFragment(nav_bar.nav_states nav_to) {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        System.out.println("SWITCHIN");
 
         if(nav_to == nav_bar.nav_states.PROFILE){
             transaction.replace(R.id.main_container,new profile());
