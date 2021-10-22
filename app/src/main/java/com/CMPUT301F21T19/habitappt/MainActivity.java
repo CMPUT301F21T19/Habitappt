@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements nav_bar.nav_bar_s
     public void switchFragment(Fragment frag) {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
+        
         transaction.replace(R.id.main_container,frag);
 
         transaction.commit();
