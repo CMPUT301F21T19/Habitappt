@@ -19,11 +19,8 @@ public class nav_bar extends Fragment {
     View daily_habits_button;
     private nav_bar_switch listener;
 
-    enum nav_states{
-        PROFILE,ALL_HABITS,DAILY_HABITS;
-    }
     public interface nav_bar_switch{
-        void switchFragment(nav_states nav_to);
+        void switchFragment(Fragment nav_to);
     }
 
     @Override
@@ -43,19 +40,19 @@ public class nav_bar extends Fragment {
         profile_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.switchFragment(nav_states.PROFILE);
+                listener.switchFragment(new profile());
             }
         });
         all_habits_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.switchFragment(nav_states.ALL_HABITS);
+                listener.switchFragment(new all_habits());
             }
         });
         daily_habits_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.switchFragment(nav_states.DAILY_HABITS);
+                listener.switchFragment(new daily_habits());
             }
         });
 

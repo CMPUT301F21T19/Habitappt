@@ -47,19 +47,11 @@ public class MainActivity extends AppCompatActivity implements nav_bar.nav_bar_s
 
 
     @Override
-    public void switchFragment(nav_bar.nav_states nav_to) {
+    public void switchFragment(Fragment frag) {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        if(nav_to == nav_bar.nav_states.PROFILE){
-            transaction.replace(R.id.main_container,new profile());
-        }
-        else if(nav_to == nav_bar.nav_states.ALL_HABITS){
-            transaction.replace(R.id.main_container,new all_habits());
-        }
-        else{
-            transaction.replace(R.id.main_container,new daily_habits());
-        }
+        transaction.replace(R.id.main_container,frag);
 
         transaction.commit();
     }
