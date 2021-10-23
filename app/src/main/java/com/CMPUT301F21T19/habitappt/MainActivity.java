@@ -41,11 +41,13 @@ public class MainActivity extends AppCompatActivity implements nav_bar.nav_bar_s
         transaction.commit();
 
 
-
-
     }
 
-
+    /**
+     * Switches the fragment in the main container. This is an implementation of an interface that gets used by
+     * the nav_bar fragment.
+     * @param frag
+     */
     @Override
     public void switchFragment(Fragment frag) {
 
