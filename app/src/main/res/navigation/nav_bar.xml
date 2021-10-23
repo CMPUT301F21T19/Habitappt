@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_bar"
+    app:startDestination="@id/all_habits">
+
+    <fragment
+        android:id="@+id/all_habits"
+        android:name="com.CMPUT301F21T19.habitappt.all_habits"
+        android:label="fragment_all_habits"
+        tools:layout="@layout/fragment_all_habits" />
+    <fragment
+        android:id="@+id/daily_habits"
+        android:name="com.CMPUT301F21T19.habitappt.daily_habits"
+        android:label="fragment_daily_habits"
+        tools:layout="@layout/fragment_daily_habits" />
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.CMPUT301F21T19.habitappt.profile"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>
