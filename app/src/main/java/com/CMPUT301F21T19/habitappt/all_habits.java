@@ -82,7 +82,7 @@ public class all_habits extends Fragment {
                 {
                     Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
                     String name = doc.getId();
-                    habitDataList.add(new Habit(name)); // Adding the cities and provinces from FireStore
+                    habitDataList.add(new Habit(name,"nothin",0)); // Adding the cities and provinces from FireStore
                 }
                 habitAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetch from the cloud
             }
