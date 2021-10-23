@@ -6,9 +6,55 @@
     tools:context=".profile">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="profile" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/username_field"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:gravity="center|center_horizontal"
+            android:text="username"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/following_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#60B4F6"
+                android:text="Following" />
+
+            <Button
+                android:id="@+id/followers_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#60B4F6"
+                android:text="Followers" />
+
+            <Button
+                android:id="@+id/requests_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#60B4F6"
+                android:text="Requests" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/display_profile_list"
+            android:layout_width="match_parent"
+            android:layout_height="637dp"
+            android:layout_weight="1" />
+    </LinearLayout>
 
 </FrameLayout>
