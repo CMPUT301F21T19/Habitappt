@@ -51,7 +51,7 @@ public class all_habits extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-        final CollectionReference collectionReference = db.collection("User Information").document("Default User").collection("Habits");
+        final CollectionReference collectionReference = db.collection("Default User");
 
         habitDataList = new ArrayList<>();
         habitAdapter = new HabitList(getContext(), habitDataList);
@@ -78,8 +78,17 @@ public class all_habits extends Fragment {
                 habitDataList.clear();
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
                 {
-                    String name = doc.getId();
-                    habitDataList.add(new Habit()); // Adding the cities and provinces from FireStore
+
+                    Log.d("wajt", String.valueOf(doc.getData().get("Province Name")));
+
+                    String id = doc.getId();
+
+                    String title = (String) doc.getData().get("title");
+                    String reason = (String) doc.getData().get("reason");
+                    long dateToStart = (long) doc.getData().get("dateToStart");
+                    ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
+
+                    habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id)); // Adding the cities and provinces from FireStore
                 }
                 habitAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetch from the cloud
             }

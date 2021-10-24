@@ -15,9 +15,9 @@ public class Habit {
     private String reason;
     private long dateToStart;
     private ArrayList<Boolean> datesToDo;
-    int id;
+    String id;
 
-    public Habit(String title,String reason,long dateToStart,ArrayList<Boolean> datesToDo,int id){
+    public Habit(String title,String reason,long dateToStart,ArrayList<Boolean> datesToDo,String id){
         this.title = title;
         this.reason = reason;
         this.dateToStart = dateToStart;
@@ -33,10 +33,10 @@ public class Habit {
         for(int i=0;i<7;i++){
             datesToDo.add(false);
         }
-        id = -1;
+        id = "-1";
     }
 
-    public int getId(){
+    public String getId(){
         return id;
     }
 
