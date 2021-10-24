@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,78 +124,144 @@ public class edit_habit extends DialogFragment {
             }
         });
 
-        return new AlertDialog.Builder(requireContext())
-                .setView(view)
-                .setTitle(dialogTitle)
-                .setNegativeButton(removeTextTitle, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        db.collection("Default User")
-                                .document(String.valueOf(THIS.habit.getId()))
-                                .delete()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.i("data","Data has been added succesfully!");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.i("data","Data could not be added!" + e.toString());
-                                    }
-                                });
-                    }
-                })
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        if(getTag() == "EDIT"){
-                            DocumentReference doc = db.collection("Default User").document(String.valueOf(THIS.habit.getId()));
-
-                            HashMap<String,Object> data = new HashMap<>();
-
-                            data.put("title",THIS.habitTitle.getText().toString());
-                            data.put("reason",THIS.habitReason.getText().toString());
-                            data.put("dateToStart",THIS.date_selected);
-                            data.put("daysToDo",THIS.habit.getWeekly());
-
-                            doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(view)
+            .setTitle(dialogTitle)
+            .setNegativeButton(removeTextTitle, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    db.collection("Default User")
+                            .document(String.valueOf(THIS.habit.getId()))
+                            .delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Log.i("data","Data has been added succesfully!");
                                 }
-                            }).addOnFailureListener(new OnFailureListener() {
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Log.i("data","Data could not be added!" + e.toString());
                                 }
                             });
-                        }
-                        else if(getTag() == "ADD"){
-                            DocumentReference doc = db.collection("Default User").document(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
+                }
+            })
+            .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
 
-                            HashMap<String,Object> data = new HashMap<>();
+                    if(getTag() == "EDIT"){
+                        DocumentReference doc = db.collection("Default User").document(String.valueOf(THIS.habit.getId()));
 
-                            data.put("title",THIS.habitTitle.getText().toString());
-                            data.put("reason",THIS.habitReason.getText().toString());
-                            data.put("dateToStart",THIS.date_selected);
-                            data.put("daysToDo",THIS.habit.getWeekly());
+                        HashMap<String,Object> data = new HashMap<>();
 
-                            doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Log.i("data","Data has been added succesfully!");
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.i("data","Data could not be added!" + e.toString());
-                                }
-                            });
-                        }
+                        data.put("title",THIS.habitTitle.getText().toString());
+                        data.put("reason",THIS.habitReason.getText().toString());
+                        data.put("dateToStart",THIS.date_selected);
+                        data.put("daysToDo",THIS.habit.getWeekly());
+
+                        doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.i("data","Data has been added succesfully!");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.i("data","Data could not be added!" + e.toString());
+                            }
+                        });
                     }
-                }).create();
+                    else if(getTag() == "ADD"){
+                        DocumentReference doc = db.collection("Default User").document(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
+
+                        HashMap<String,Object> data = new HashMap<>();
+
+                        data.put("title",THIS.habitTitle.getText().toString());
+                        data.put("reason",THIS.habitReason.getText().toString());
+                        data.put("dateToStart",THIS.date_selected);
+                        data.put("daysToDo",THIS.habit.getWeekly());
+
+                        doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.i("data","Data has been added succesfully!");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.i("data","Data could not be added!" + e.toString());
+                            }
+                        });
+                    }
+                }
+            });
+        final AlertDialog alertDialog = builder.create();
+
+        alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //if habit title changed
+                if(editable == THIS.habitTitle.getEditableText()){
+                    //if good length
+                    if(editable.length() >= 1 && editable.length() < 20 && THIS.habitReason.getText().length() >= 1 && THIS.habitReason.getText().length() < 30){
+                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                    }
+                    else{
+                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                        checkInput();
+
+                    }
+                }
+
+                if(editable == THIS.habitReason.getEditableText()){
+                    if(editable.length() >= 1 && editable.length() < 30 && THIS.habitTitle.getText().length() >=1 && THIS.habitTitle.getText().length() < 20){
+                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                    }
+                    else {
+                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                        checkInput();
+                    }
+
+                }
+            }
+        };
+        THIS.habitTitle.addTextChangedListener(watcher);
+        THIS.habitReason.addTextChangedListener(watcher);
+
+        return alertDialog;
+    }
+
+
+    public void checkInput(){
+        if(THIS.habitTitle.getText().length() == 0){
+            THIS.habitTitle.setError("Title cannot be empty");
+        }
+        //too long
+        if(THIS.habitTitle.getText().length() > 20){
+            THIS.habitTitle.setError("Maximum Length 0f 20: Please reduce");
+        }
+        //empty reason
+        if(THIS.habitReason.getText().length() == 0){
+            THIS.habitReason.setError("Reason cannot be empty");
+        }
+        if(THIS.habitReason.getText().length() > 30){
+            THIS.habitReason.setError("Maximum Length 0f 30: Please reduce");
+        }
     }
 }
