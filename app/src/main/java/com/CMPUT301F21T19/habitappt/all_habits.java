@@ -32,8 +32,6 @@ public class all_habits extends Fragment {
     ArrayAdapter<Habit> habitAdapter;
     ArrayList<Habit> habitDataList;
 
-    final String TAG = "Sample";
-
     View addHabitButton;
     FirebaseFirestore db;
 
@@ -62,14 +60,14 @@ public class all_habits extends Fragment {
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("what", "what1");
+                new edit_habit(habitDataList.get(position)).show(getActivity().getSupportFragmentManager(),"EDIT");
             }
         });
 
         addHabitButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("what", "what2");
+                new edit_habit().show(getActivity().getSupportFragmentManager(), "ADD");
             }
         });
 
@@ -80,9 +78,8 @@ public class all_habits extends Fragment {
                 habitDataList.clear();
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
                 {
-                    Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
                     String name = doc.getId();
-                    habitDataList.add(new Habit(name,"nothin",0)); // Adding the cities and provinces from FireStore
+                    habitDataList.add(new Habit()); // Adding the cities and provinces from FireStore
                 }
                 habitAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetch from the cloud
             }
