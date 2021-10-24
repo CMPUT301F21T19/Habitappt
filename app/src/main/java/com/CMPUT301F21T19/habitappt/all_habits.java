@@ -2,23 +2,17 @@ package com.CMPUT301F21T19.habitappt;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
@@ -44,7 +38,7 @@ public class all_habits extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_all_habits, container, false);
+        view = inflater.inflate(R.layout.fragment_habits_list, container, false);
 
         addHabitButton = view.findViewById(R.id.add_habit_button);
         habitListView = view.findViewById(R.id.habit_list);
@@ -74,19 +68,19 @@ public class all_habits extends Fragment {
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                // Clear the old list
                 habitDataList.clear();
-                for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
-                {
+
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String id = doc.getId();
                     String title = (String) doc.getData().get("title");
                     String reason = (String) doc.getData().get("reason");
                     long dateToStart = (long) doc.getData().get("dateToStart");
                     ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
 
-                    habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id)); // Adding the cities and provinces from FireStore
+                    habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id));
                 }
-                habitAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetch from the cloud
+
+                habitAdapter.notifyDataSetChanged();
             }
         });
 

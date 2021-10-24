@@ -9,12 +9,12 @@
         android:id="@+id/all_habits"
         android:name="com.CMPUT301F21T19.habitappt.all_habits"
         android:label="fragment_all_habits"
-        tools:layout="@layout/fragment_all_habits" />
+        tools:layout="@layout/fragment_habits_list" />
     <fragment
         android:id="@+id/daily_habits"
         android:name="com.CMPUT301F21T19.habitappt.daily_habits"
         android:label="fragment_daily_habits"
-        tools:layout="@layout/fragment_daily_habits" />
+        tools:layout="@layout/fragment_habits_list" />
     <fragment
         android:id="@+id/profile"
         android:name="com.CMPUT301F21T19.habitappt.profile"

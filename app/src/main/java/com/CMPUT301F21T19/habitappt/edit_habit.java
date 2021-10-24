@@ -39,7 +39,7 @@ public class edit_habit extends DialogFragment {
 
     private String removeTextTitle;
 
-    long date_selected;
+    long date_selected = GregorianCalendar.getInstance().getTimeInMillis();
 
     private FirebaseFirestore db;
 
