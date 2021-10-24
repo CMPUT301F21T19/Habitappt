@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,16 +58,20 @@ public class daily_habits extends Fragment {
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                new edit_habit(habitDataList.get(position)).show(getActivity().getSupportFragmentManager(),"EDIT");
+                FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+                trans.replace(R.id.main_container,new view_habit(habitDataList.get(position)));
+                trans.commit();
             }
         });
 
-        addHabitButton.setOnClickListener(new View.OnClickListener() {
+        addHabitButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new edit_habit().show(getActivity().getSupportFragmentManager(), "ADD");
             }
         });
+
+
 
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
