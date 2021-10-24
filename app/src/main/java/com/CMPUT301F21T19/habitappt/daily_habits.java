@@ -2,23 +2,20 @@ package com.CMPUT301F21T19.habitappt;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
@@ -32,8 +29,7 @@ public class daily_habits extends Fragment {
     ArrayAdapter<Habit> habitAdapter;
     ArrayList<Habit> habitDataList;
 
-    final String TAG = "Sample";
-
+    View addHabitButton;
     FirebaseFirestore db;
 
     private View view;
@@ -45,13 +41,14 @@ public class daily_habits extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_daily_habits, container, false);
+        view = inflater.inflate(R.layout.fragment_habits_list, container, false);
 
+        addHabitButton = view.findViewById(R.id.add_habit_button);
         habitListView = view.findViewById(R.id.habit_list);
 
         db = FirebaseFirestore.getInstance();
 
-        final CollectionReference collectionReference = db.collection("User Information").document("Default User").collection("Habits");
+        final CollectionReference collectionReference = db.collection("Default User");
 
         habitDataList = new ArrayList<>();
         habitAdapter = new HabitList(getContext(), habitDataList);
@@ -60,22 +57,46 @@ public class daily_habits extends Fragment {
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("what", "what1");
+                new edit_habit(habitDataList.get(position)).show(getActivity().getSupportFragmentManager(),"EDIT");
+            }
+        });
+
+        addHabitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new edit_habit().show(getActivity().getSupportFragmentManager(), "ADD");
             }
         });
 
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                // Clear the old list
                 habitDataList.clear();
-                for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
-                {
-                    Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
-                    String name = doc.getId();
-                    habitDataList.add(new Habit()); // Adding the cities and provinces from FireStore
+
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String id = doc.getId();
+                    String title = (String) doc.getData().get("title");
+                    String reason = (String) doc.getData().get("reason");
+                    long dateToStart = (long) doc.getData().get("dateToStart");
+                    ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
+
+                    Date todayDate = new Date(GregorianCalendar.getInstance().getTimeInMillis());
+                    Date startDate = new Date(dateToStart);
+                    Calendar todayCal = Calendar.getInstance();
+                    todayCal.setTime(todayDate);
+                    Calendar startCal = Calendar.getInstance();
+                    startCal.setTime(startDate);
+
+                    if (todayDate.getTime() > startDate.getTime()) {
+                        for (int i=0; i<datesToDo.size(); i++) {
+                            if (datesToDo.get(i) && todayCal.get(Calendar.DAY_OF_WEEK) == ((i+1)%7)+1) {
+                                habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id));
+                            }
+                        }
+                    }
                 }
-                habitAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetch from the cloud
+
+                habitAdapter.notifyDataSetChanged();
             }
         });
 
