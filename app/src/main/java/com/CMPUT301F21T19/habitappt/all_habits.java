@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 
 public class all_habits extends Fragment {
     ListView habitListView;
@@ -60,7 +62,9 @@ public class all_habits extends Fragment {
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                new edit_habit(habitDataList.get(position)).show(getActivity().getSupportFragmentManager(),"EDIT");
+                FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+                trans.replace(R.id.main_container,new view_habit(habitDataList.get(position)));
+                trans.commit();
             }
         });
 
