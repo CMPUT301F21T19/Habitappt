@@ -51,12 +51,14 @@ public class edit_habit extends DialogFragment {
         this.habit = habit;
         this.dialogTitle = "Edit Habit";
         this.removeTextTitle = "Remove Habit";
+        this.date_selected = habit.getDateToStart();
     }
 
     public edit_habit(){
         this.habit = new Habit();
         this.dialogTitle = "Add Habit";
         this.removeTextTitle = "Cancel";
+        this.date_selected = GregorianCalendar.getInstance().getTimeInMillis();
     }
 
 
