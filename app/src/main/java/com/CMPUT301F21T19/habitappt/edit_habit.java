@@ -24,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.TimeZone;
 
 public class edit_habit extends DialogFragment {
 
@@ -37,6 +38,8 @@ public class edit_habit extends DialogFragment {
     private String dialogTitle;
 
     private String removeTextTitle;
+
+    long date_selected;
 
     private FirebaseFirestore db;
 
@@ -73,7 +76,6 @@ public class edit_habit extends DialogFragment {
         habitReason.setText(habit.getReason());
         habitDateToStart.setDate(habit.getDateToStart());
 
-
         days_of_week.add(view.findViewById(R.id.monday_button));
         days_of_week.add(view.findViewById(R.id.tuesday_button));
         days_of_week.add(view.findViewById(R.id.wednesday_button));
@@ -84,9 +86,10 @@ public class edit_habit extends DialogFragment {
 
         for(int i=0;i<7;i++){
             if(habit.getDateSelected(i)){
-                days_of_week.get(i).setBackgroundColor(Color.GRAY);
+                days_of_week.get(i).setBackgroundColor(Color.GREEN);
+            } else {
+                days_of_week.get(i).setBackgroundColor(Color.WHITE);
             }
-            days_of_week.get(i).setBackgroundColor(Color.WHITE);
 
             final int index = new Integer(i);
             days_of_week.get(i).setOnClickListener(new View.OnClickListener() {
@@ -104,7 +107,18 @@ public class edit_habit extends DialogFragment {
             });
         }
 
+        habitDateToStart.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
+                /*
+                update calendar selection.
+                 */
+                GregorianCalendar cal = new GregorianCalendar(TimeZone.getDefault());
+                cal.set(year,month,day);
 
+                date_selected = cal.getTimeInMillis();
+            }
+        });
 
         return new AlertDialog.Builder(requireContext())
                 .setView(view)
@@ -112,7 +126,21 @@ public class edit_habit extends DialogFragment {
                 .setNegativeButton(removeTextTitle, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        db.collection("Default User")
+                                .document(String.valueOf(THIS.habit.getId()))
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.i("data","Data has been added succesfully!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.i("data","Data could not be added!" + e.toString());
+                                    }
+                                });
                     }
                 })
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -126,7 +154,7 @@ public class edit_habit extends DialogFragment {
 
                             data.put("title",THIS.habitTitle.getText().toString());
                             data.put("reason",THIS.habitReason.getText().toString());
-                            data.put("dateToStart",THIS.habitDateToStart.getDate());
+                            data.put("dateToStart",THIS.date_selected);
                             data.put("daysToDo",THIS.habit.getWeekly());
 
                             doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -142,15 +170,13 @@ public class edit_habit extends DialogFragment {
                             });
                         }
                         else if(getTag() == "ADD"){
-
-
                             DocumentReference doc = db.collection("Default User").document(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
 
                             HashMap<String,Object> data = new HashMap<>();
 
                             data.put("title",THIS.habitTitle.getText().toString());
                             data.put("reason",THIS.habitReason.getText().toString());
-                            data.put("dateToStart",THIS.habitDateToStart.getDate());
+                            data.put("dateToStart",THIS.date_selected);
                             data.put("daysToDo",THIS.habit.getWeekly());
 
                             doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -167,6 +193,5 @@ public class edit_habit extends DialogFragment {
                         }
                     }
                 }).create();
-
     }
 }

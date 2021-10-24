@@ -78,11 +78,7 @@ public class all_habits extends Fragment {
                 habitDataList.clear();
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
                 {
-
-                    Log.d("wajt", String.valueOf(doc.getData().get("Province Name")));
-
                     String id = doc.getId();
-
                     String title = (String) doc.getData().get("title");
                     String reason = (String) doc.getData().get("reason");
                     long dateToStart = (long) doc.getData().get("dateToStart");
