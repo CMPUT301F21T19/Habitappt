@@ -93,9 +93,20 @@ public class view_habit extends Fragment {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                habitTitle.setText(value.get("title").toString());
-                habitReason.setText(value.get("reason").toString());
-                habitDateToStart.setText(getStringDateFromLong(Long.valueOf(value.get("dateToStart").toString())));
+                if(value.get("title") == null){
+                    FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+                    trans.replace(R.id.main_container,new all_habits());
+                    trans.commit();
+                    return;
+                }
+
+                habit.setTitle(value.get("title").toString());
+                habit.setReason(value.get("reason").toString());
+                habit.setDateToStart((Long.valueOf(value.get("dateToStart").toString())));
+
+                habitTitle.setText(habit.getTitle());
+                habitReason.setText(habit.getReason());
+                habitDateToStart.setText(getStringDateFromLong(habit.getDateToStart()));
 
                 ArrayList<Boolean> days = (ArrayList<Boolean>) value.get("daysToDo");
                 for(int i=0;i<7;i++){
