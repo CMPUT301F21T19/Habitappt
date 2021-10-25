@@ -54,7 +54,15 @@ public class MainActivity extends AppCompatActivity implements nav_bar.nav_bar_s
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         
         transaction.replace(R.id.main_container,frag);
+        transaction.addToBackStack(null);
 
         transaction.commit();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        System.out.println("back pressed!");
+        getSupportFragmentManager().popBackStackImmediate();
     }
 }
