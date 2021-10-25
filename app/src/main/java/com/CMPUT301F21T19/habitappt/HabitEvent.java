@@ -22,6 +22,7 @@ public class HabitEvent {
 
     public HabitEvent(Habit parentHabit){
         this.parentHabit = parentHabit;
+        this.eventDate = GregorianCalendar.getInstance().getTimeInMillis();
     }
 
     public String getId(){
