@@ -2,11 +2,15 @@ package com.CMPUT301F21T19.habitappt;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -24,7 +28,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class view_habit extends Fragment {
 
@@ -35,9 +41,15 @@ public class view_habit extends Fragment {
     private TextView habitDateToStart;
     private ImageButton editButton;
 
+    View addEventButton;
+
     private ArrayList<TextView> daysToDo = new ArrayList<>();
 
     private Habit habit;
+
+    ListView eventListView;
+    ArrayAdapter<HabitEvent> eventAdapter;
+    ArrayList<HabitEvent> eventDataList;
 
     public view_habit(Habit habit){
         this.habit = habit;
@@ -80,12 +92,39 @@ public class view_habit extends Fragment {
         habitTitle.setText(habit.getTitle());
         habitReason.setText(habit.getReason());
 
+
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new edit_habit(habit).show(getActivity().getSupportFragmentManager(), "EDIT");
             }
         });
+
+        eventListView = view.findViewById(R.id.event_list);
+        eventDataList = new ArrayList<>();
+        eventAdapter = new EventList(getContext(), eventDataList);
+        eventListView.setAdapter(eventAdapter);
+
+        addEventButton = view.findViewById(R.id.add_event_button);
+        addEventButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("Info", "Clicked add event");
+                new edit_event().show(getActivity().getSupportFragmentManager(), "ADD");
+            }
+        });
+
+        eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("Info", "Clicked an event");
+                FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+                trans.replace(R.id.main_container,new edit_event(eventDataList.get(position)));
+                trans.commit();
+            }
+        });
+
+
 
         DocumentReference docReference = FirebaseFirestore.getInstance().collection("Default User").document(String.valueOf(habit.getId()));
 
@@ -117,10 +156,30 @@ public class view_habit extends Fragment {
                         daysToDo.get(i).setBackgroundColor(Color.WHITE);
                     }
                 }
-
             }
-
         });
+
+        CollectionReference eventCollectionReference = FirebaseFirestore.getInstance().collection("Default User").document(String.valueOf(habit.getId())).collection("Event Collection");
+        eventCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                eventDataList.clear();
+
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String id = doc.getId();
+                    String comments = (String) doc.getData().get("Comments");
+                    Long eventDate = (Long) doc.getData().get("Event Date");
+                    Log.d("info", comments);
+                    Log.d("info", String.valueOf(eventDate));
+                    eventDataList.add(new HabitEvent(comments, eventDate, habit, id));
+
+                }
+
+                eventAdapter.notifyDataSetChanged();
+            }
+        });
+
+
 
         habitDateToStart.setText(getStringDateFromLong(habit.getDateToStart()));
 

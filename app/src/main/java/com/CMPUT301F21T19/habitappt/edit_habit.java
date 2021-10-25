@@ -206,14 +206,10 @@ public class edit_habit extends DialogFragment {
         TextWatcher watcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
                 //if habit title changed
@@ -225,10 +221,8 @@ public class edit_habit extends DialogFragment {
                     else{
                         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                         checkInput();
-
                     }
                 }
-
                 if(editable == THIS.habitReason.getEditableText()){
                     if(editable.length() >= 1 && editable.length() < 30 && THIS.habitTitle.getText().length() >=1 && THIS.habitTitle.getText().length() < 20){
                         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
@@ -237,7 +231,6 @@ public class edit_habit extends DialogFragment {
                         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                         checkInput();
                     }
-
                 }
             }
         };

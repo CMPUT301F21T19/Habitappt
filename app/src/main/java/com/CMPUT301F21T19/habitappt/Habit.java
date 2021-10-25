@@ -17,6 +17,9 @@ public class Habit {
     private ArrayList<Boolean> datesToDo;
     String id;
 
+    private ArrayList<HabitEvent> habitEvents;
+    private long score;
+
     public Habit(String title,String reason,long dateToStart,ArrayList<Boolean> datesToDo,String id){
         this.title = title;
         this.reason = reason;
@@ -85,5 +88,31 @@ public class Habit {
     public void setDateToStart(long dateToStart) {
         this.dateToStart = dateToStart;
     }
+
+    public void calculateScore() {
+
+
+
+
+            for (int i = 0; i < 7; i++) {
+                datesToDo.add(false);
+
+            }
+
+
+
+
+        habitEvents.size();
+        datesToDo.size();
+        //look through each a habits habit events,
+        // find how many days a habit event should have been done,
+        // how many has been done
+        // score returns percent 0-100
+    }
+
+    public long getScore() { return score; }
+
+    public void setScore(int newScore) { this.score = newScore; }
+
 }
 
