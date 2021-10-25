@@ -20,10 +20,8 @@ public class HabitEvent {
         this.id = id;
     }
 
-    public HabitEvent(){
-        this.comment = "New Event";
-        this.eventDate = GregorianCalendar.getInstance().getTimeInMillis();
-        id = "-1";
+    public HabitEvent(Habit parentHabit){
+        this.parentHabit = parentHabit;
     }
 
     public String getId(){
