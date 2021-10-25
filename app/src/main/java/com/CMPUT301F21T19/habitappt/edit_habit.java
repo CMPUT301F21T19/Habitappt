@@ -197,12 +197,14 @@ public class edit_habit extends DialogFragment {
                     }
                 }
             });
+        //create the alertdialog object
         final AlertDialog alertDialog = builder.create();
-
         alertDialog.show();
 
+        //disable confirm button until fields are correctly filled
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
+        //custom text watcher that will check the given inputs before enabling
         TextWatcher watcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -220,6 +222,7 @@ public class edit_habit extends DialogFragment {
                     }
                     else{
                         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                        //if false, update error reason
                         checkInput();
                     }
                 }
@@ -229,11 +232,13 @@ public class edit_habit extends DialogFragment {
                     }
                     else {
                         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                        //if false, update error reason
                         checkInput();
                     }
                 }
             }
         };
+        //set both edit text watchers
         THIS.habitTitle.addTextChangedListener(watcher);
         THIS.habitReason.addTextChangedListener(watcher);
 
@@ -241,6 +246,9 @@ public class edit_habit extends DialogFragment {
     }
 
 
+    /**
+     * used to seterror when text input too much or too litte
+     */
     public void checkInput(){
         if(THIS.habitTitle.getText().length() == 0){
             THIS.habitTitle.setError("Title cannot be empty");
