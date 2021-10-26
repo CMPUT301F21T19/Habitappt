@@ -202,8 +202,10 @@ public class edit_habit extends DialogFragment {
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-        //disable confirm button until fields are correctly filled
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        //disable confirm button until fields are correctly filled (if empty)
+        if(habitTitle.length() == 0 && habitReason.length() == 0) {
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        }
 
         //custom text watcher that will check the given inputs before enabling
         TextWatcher watcher = new TextWatcher() {
