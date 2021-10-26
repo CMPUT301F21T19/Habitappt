@@ -29,8 +29,8 @@ public class Habit {
     }
 
     public Habit(){
-        this.title = "New Habit";
-        this.reason = "Habit Reason";
+        this.title = "";
+        this.reason = "";
         this.dateToStart = GregorianCalendar.getInstance().getTimeInMillis();
         this.datesToDo = new ArrayList<>();
         for(int i=0;i<7;i++){
