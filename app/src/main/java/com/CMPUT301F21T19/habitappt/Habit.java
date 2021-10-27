@@ -1,12 +1,8 @@
 package com.CMPUT301F21T19.habitappt;
 
-import android.os.Bundle;
+import android.media.Image;
+import android.widget.ImageView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
@@ -26,6 +22,7 @@ public class Habit {
         this.dateToStart = dateToStart;
         this.datesToDo = datesToDo;
         this.id = id;
+
     }
 
     public Habit(){
@@ -90,6 +87,12 @@ public class Habit {
     }
 
     public void calculateScore() {
+        long dateBeginning = dateToStart;
+
+
+
+
+
 
 
 
@@ -110,9 +113,31 @@ public class Habit {
         // score returns percent 0-100
     }
 
-    public long getScore() { return score; }
+    public long getScore() { return 59; }
 
     public void setScore(int newScore) { this.score = newScore; }
 
-}
+    public ImageView getEmoji(){
+
+        ImageView emoji = null;
+
+        if (getScore() >=0 && getScore() <=20){
+            emoji.setImageResource(R.drawable.ic_dissapointed_emoji);}
+        else if (getScore() >20 && getScore() <=40){
+            emoji.setImageResource(R.drawable.ic_yellow_emoji);}
+        else if (getScore() >40 && getScore() <=60){
+            emoji.setImageResource(R.drawable.ic_orange_emoji);}
+        else if (getScore() >60 && getScore() <=80){
+            emoji.setImageResource(R.drawable.ic_light_green_emoji);}
+        else if (getScore() >80 && getScore() <=100){
+            emoji.setImageResource(R.drawable.ic_green_emoji);}
+
+        return emoji;
+
+
+        }
+    }
+
+
+
 
