@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,10 +36,12 @@ import java.util.GregorianCalendar;
 public class view_habit extends Fragment {
 
     private View view;
+
     private TextView habitTitle;
     private TextView habitReason;
     private TextView habitDateToStart;
     private ImageButton editButton;
+    private ImageView emoji;
 
     View addEventButton;
 
@@ -79,6 +82,7 @@ public class view_habit extends Fragment {
         habitReason = view.findViewById(R.id.habit_reason_display);
         habitDateToStart = view.findViewById(R.id.start_date_display);
         editButton = view.findViewById(R.id.edit_button);
+        emoji = view.findViewById(R.id.emoji);
 
         daysToDo.add(view.findViewById(R.id.monday_display));
         daysToDo.add(view.findViewById(R.id.tuesday_display));
@@ -91,6 +95,17 @@ public class view_habit extends Fragment {
         habitTitle.setText(habit.getTitle());
         habitReason.setText(habit.getReason());
 
+
+        if (habit.getScore() >=0 && habit.getScore() <=20){
+            emoji.setImageResource(R.drawable.ic_dissapointed_emoji);}
+        else if (habit.getScore() >20 && habit.getScore() <=40){
+            emoji.setImageResource(R.drawable.ic_yellow_emoji);}
+        else if (habit.getScore() >40 && habit.getScore() <=60){
+            emoji.setImageResource(R.drawable.ic_orange_emoji);}
+        else if (habit.getScore() >60 && habit.getScore() <=80){
+            emoji.setImageResource(R.drawable.ic_light_green_emoji);}
+        else if (habit.getScore() >80 && habit.getScore() <=100){
+            emoji.setImageResource(R.drawable.ic_green_emoji);}
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
