@@ -46,16 +46,17 @@ public class edit_event extends DialogFragment {
 
     public edit_event(HabitEvent event){
         this.event = event;
-        this.removeTextTitle = "Cancel";
+        this.dialogTitle = "Edit Habit";
+        this.removeTextTitle = "Remove Habit";
         this.date_selected = event.getEventDate();
     }
 
-//    public edit_event(){
-//        this.event = new HabitEvent();
-//        this.dialogTitle = "Add Habit";
-//        this.removeTextTitle = "Cancel";
-//        this.date_selected = GregorianCalendar.getInstance().getTimeInMillis();
-//    }
+    public edit_event(){
+        this.event = new HabitEvent();
+        this.dialogTitle = "Add Habit";
+        this.removeTextTitle = "Cancel";
+        this.date_selected = GregorianCalendar.getInstance().getTimeInMillis();
+    }
 
     public void checkInput(){
         if(THIS.eventComments.getText().length() == 0){
@@ -78,7 +79,7 @@ public class edit_event extends DialogFragment {
         db = FirebaseFirestore.getInstance();
 
         eventComments = view.findViewById(R.id.event_comments);
-        eventDate = view.findViewById(R.id.event_date_calendar);
+        eventDate = view.findViewById(R.id.event_date);
 
         eventComments.setText(event.getComment());
         eventDate.setDate(event.getEventDate());
@@ -97,16 +98,6 @@ public class edit_event extends DialogFragment {
         });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-        if(getTag() == "EDIT"){
-            dialogTitle = "Edit Habit Event";
-        }
-        else if(getTag() == "REMOVE"){
-            dialogTitle = "Remove Habit Event";
-        }
-        else{
-            dialogTitle = "Add Habit Event";
-        }
         builder.setView(view)
                 .setTitle(dialogTitle)
                 .setNegativeButton(removeTextTitle, new DialogInterface.OnClickListener() {
@@ -134,10 +125,7 @@ public class edit_event extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         if(getTag() == "EDIT"){
-                            DocumentReference doc = db.collection("Default User")
-                                    .document(String.valueOf(THIS.event.getParentHabit().getId()))
-                                    .collection("Event Collection")
-                                    .document(String.valueOf(THIS.event.getId()));
+                            DocumentReference doc = db.collection("Default User").document(String.valueOf(THIS.event.getParentHabit())).collection("Event Collection").document(String.valueOf(THIS.event.getId()));
 
                             HashMap<String,Object> data = new HashMap<>();
 
@@ -157,10 +145,7 @@ public class edit_event extends DialogFragment {
                             });
                         }
                         else if(getTag() == "ADD"){
-                            DocumentReference doc = db.collection("Default User")
-                                    .document(String.valueOf(THIS.event.getParentHabit().getId()))
-                                    .collection("Event Collection")
-                                    .document(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
+                            DocumentReference doc = db.collection("Default User").document(String.valueOf(THIS.event.getParentHabit())).collection("Event Collection").document(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
 
                             HashMap<String,Object> data = new HashMap<>();
 
@@ -183,12 +168,10 @@ public class edit_event extends DialogFragment {
                 });
         final AlertDialog alertDialog = builder.create();
 
-
         alertDialog.show();
 
-        if(eventComments.getText().length() == 0) {
-            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-        }
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
         TextWatcher watcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
