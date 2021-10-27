@@ -46,8 +46,7 @@ public class edit_event extends DialogFragment {
 
     public edit_event(HabitEvent event){
         this.event = event;
-        this.dialogTitle = "Edit Habit";
-        this.removeTextTitle = "Remove Habit";
+        this.removeTextTitle = "Cancel";
         this.date_selected = event.getEventDate();
     }
 
@@ -98,6 +97,16 @@ public class edit_event extends DialogFragment {
         });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        if(getTag() == "EDIT"){
+            dialogTitle = "Edit Habit Event";
+        }
+        else if(getTag() == "REMOVE"){
+            dialogTitle = "Remove Habit Event";
+        }
+        else{
+            dialogTitle = "Add Habit Event";
+        }
         builder.setView(view)
                 .setTitle(dialogTitle)
                 .setNegativeButton(removeTextTitle, new DialogInterface.OnClickListener() {
@@ -174,10 +183,12 @@ public class edit_event extends DialogFragment {
                 });
         final AlertDialog alertDialog = builder.create();
 
+
         alertDialog.show();
 
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-
+        if(eventComments.getText().length() == 0) {
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        }
         TextWatcher watcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

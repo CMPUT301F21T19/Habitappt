@@ -6,4 +6,6 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="habit_title">Habit Title</string>
     <string name="habit_reason">Habit Reason</string>
+    <string name="event_date">event date</string>
+    <string name="event_name">event name</string>
 </resources>

@@ -9,6 +9,7 @@ public class HabitEvent {
     //image
     //location
     private long eventDate;
+
     String id;
     private Habit parentHabit;
 

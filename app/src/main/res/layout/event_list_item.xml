@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_blue_A200"
     android:orientation="horizontal">
 
@@ -19,7 +17,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:padding="5dp"
-            android:text="event name"
+            android:text="@string/event_name"
             android:textSize="24sp"></TextView>
 
         <TextView
@@ -28,16 +26,16 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:padding="5dp"
-            android:text="event date"
+            android:text="@string/event_date"
             android:textSize="24sp"></TextView>
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/edit_event_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        app:srcCompat="@drawable/edit_icon"
-        tools:ignore="VectorDrawableCompat" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/edit_event_button"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        app:srcCompat="@drawable/edit_icon"-->
+<!--        tools:ignore="VectorDrawableCompat" />-->
 
 </LinearLayout>
