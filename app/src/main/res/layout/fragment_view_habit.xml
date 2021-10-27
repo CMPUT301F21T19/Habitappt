@@ -128,12 +128,16 @@
 
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/event_list"
+        <com.baoyz.swipemenulistview.SwipeMenuListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:id="@id/event_list"></com.baoyz.swipemenulistview.SwipeMenuListView>
+<!--        <ListView-->
+<!--            android:id="@+id/event_list"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" >-->
 
-        </ListView>
+<!--        </ListView>-->
 
 
     </LinearLayout>
