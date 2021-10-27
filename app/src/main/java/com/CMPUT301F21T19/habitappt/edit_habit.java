@@ -17,6 +17,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -131,6 +133,9 @@ public class edit_habit extends DialogFragment {
             .setNegativeButton(removeTextTitle, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+
+                    getChildFragmentManager().popBackStack("viewhabit", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
                     db.collection("Default User")
                             .document(String.valueOf(THIS.habit.getId()))
                             .delete()

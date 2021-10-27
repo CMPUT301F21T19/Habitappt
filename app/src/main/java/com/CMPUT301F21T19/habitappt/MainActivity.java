@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements nav_bar.nav_bar_s
     @Override
     public void onBackPressed()
     {
-        System.out.println("back pressed!");
         getSupportFragmentManager().popBackStackImmediate();
     }
 }
