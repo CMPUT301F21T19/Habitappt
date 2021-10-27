@@ -96,7 +96,7 @@ public class view_habit extends Fragment {
 
 
         if (habit.getScore() >=0 && habit.getScore() <=20){
-            emoji.setImageResource(R.drawable.ic_dissapointed_emoji);}
+            emoji.setImageResource(R.drawable.ic_disappointed_emoji);}
         else if (habit.getScore() >20 && habit.getScore() <=40){
             emoji.setImageResource(R.drawable.ic_yellow_emoji);}
         else if (habit.getScore() >40 && habit.getScore() <=60){
