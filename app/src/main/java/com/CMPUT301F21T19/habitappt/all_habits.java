@@ -58,6 +58,7 @@ public class all_habits extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
                 trans.replace(R.id.main_container,new view_habit(habitDataList.get(position)));
+                trans.addToBackStack("viewhabit");
                 trans.commit();
             }
         });

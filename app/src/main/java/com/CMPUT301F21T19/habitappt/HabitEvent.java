@@ -9,6 +9,7 @@ public class HabitEvent {
     //image
     //location
     private long eventDate;
+
     String id;
     private Habit parentHabit;
 
@@ -20,10 +21,9 @@ public class HabitEvent {
         this.id = id;
     }
 
-    public HabitEvent(){
-        this.comment = "New Event";
+    public HabitEvent(Habit parentHabit){
+        this.parentHabit = parentHabit;
         this.eventDate = GregorianCalendar.getInstance().getTimeInMillis();
-        id = "-1";
     }
 
     public String getId(){

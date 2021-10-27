@@ -17,6 +17,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -111,6 +113,7 @@ public class edit_habit extends DialogFragment {
             });
         }
 
+
         habitDateToStart.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
@@ -130,6 +133,9 @@ public class edit_habit extends DialogFragment {
             .setNegativeButton(removeTextTitle, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+
+                    getChildFragmentManager().popBackStack("viewhabit", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
                     db.collection("Default User")
                             .document(String.valueOf(THIS.habit.getId()))
                             .delete()
@@ -201,8 +207,10 @@ public class edit_habit extends DialogFragment {
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-        //disable confirm button until fields are correctly filled
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        //disable confirm button until fields are correctly filled (if empty)
+        if(habitTitle.length() == 0 && habitReason.length() == 0) {
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        }
 
         //custom text watcher that will check the given inputs before enabling
         TextWatcher watcher = new TextWatcher() {
