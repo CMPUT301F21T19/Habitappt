@@ -36,6 +36,7 @@ import java.util.GregorianCalendar;
 public class view_habit extends Fragment {
 
     private View view;
+
     private TextView habitTitle;
     private TextView habitReason;
     private TextView habitDateToStart;
