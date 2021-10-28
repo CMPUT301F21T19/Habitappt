@@ -92,25 +92,29 @@ public class Habit {
     }
 
     public long calculateScore() {
-        Date start = new Date(1000L * this.dateToStart);
+        
+        Date start_date = new Date(1000L * this.dateToStart);
         Calendar c = Calendar.getInstance();
-        c.setTime(start);
+        c.setTime(start_date);
 
-        Date current = new Date();
+        Date current_date = new Date();
 
-        long counter = 0;
-        while (start.before(current)) {
+        long counter = 0; // Tracks total days habit is to be performed
+
+        // iterates through all the dates from start to current
+        // Checks to see if habit needs to be performed at each date
+        while (start_date.before(current_date)) {
             if (this.datesToDo.get(c.get(Calendar.DAY_OF_WEEK) - 1)) {
                 counter += 1;
             }
             c.add(Calendar.DATE, 1);
-            start = c.getTime();
+            start_date = c.getTime();
 
         }
 
-        habitEvents.size();
+        habitEvents.size(); // represents number of events performed that particular habit
 
-        return (long) (counter / habitEvents.size()) * 100;
+        return (long) (habitEvents.size() / counter) * 100;
 
         //look through each a habits habit events,
         // find how many days a habit event should have been done,
