@@ -2,9 +2,12 @@ package com.CMPUT301F21T19.habitappt;
 
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 
+import static org.junit.Assert.assertEquals;
+
 import android.app.Activity;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -46,11 +49,31 @@ public class edit_habit_Test {
         solo.clickOnButton("W");
         solo.clickOnButton("F");
         solo.clickOnView(solo.getView(R.id.date_to_start));
-        solo.setDatePicker(1, 2021, 10, 10);
-        solo.clickOnButton(R.id.dialog_button);
+        solo.setDatePicker(0, 2000, 10, 10);
+        solo.clickOnView(solo.getView(android.R.id.button1));
         //solo.clickOnView(solo.getView(R.id.dialog_button));
     }
 
-
+    @Test
+    public void editHabit() {
+        solo.clickOnView(solo.getView(R.id.habit_list));
+        solo.clickInList(0);
+        solo.clickOnView(solo.getView(R.id.edit_button));
+        solo.clearEditText((EditText) solo.getView(R.id.habit_title));
+        solo.enterText((EditText) solo.getView(R.id.habit_title),"New Habit_1");
+        solo.clearEditText((EditText) solo.getView(R.id.habit_reason));
+        solo.enterText((EditText) solo.getView(R.id.habit_reason),"New Reason_1");
+        solo.clickOnButton("M");
+        solo.clickOnButton("S");
+        solo.clickOnView(solo.getView(R.id.date_to_start));
+        solo.setDatePicker(0, 2021, 10, 30);
+    }
+    @Test
+    public void deleteHabit() {
+        solo.clickOnView(solo.getView(R.id.habit_list));
+        solo.clickInList(0,1);
+        solo.clickOnView(solo.getView(R.id.edit_button));
+        solo.clickOnButton("REMOVE HABIT");
+    }
 }
 
