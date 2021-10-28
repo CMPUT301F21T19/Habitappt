@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,21 @@ public class HabitList extends ArrayAdapter<Habit> {
 
         habitName.setText(habit.getTitle());
 
+        ImageView habit_score = view.findViewById(R.id.habit_score);
+        
+        long score = habit.calculateScore();
+        if (score < 20) {
+            habit_score.setImageResource(R.drawable.disappointed_emoji);
+        } else if (score < 40) {
+            habit_score.setImageResource(R.drawable.orange_emoji);
+        } else if (score < 60) {
+            habit_score.setImageResource(R.drawable.yellow_emoji);
+        } else if (score < 80) {
+            habit_score.setImageResource(R.drawable.light_green_emoji);
+        } else {
+            habit_score.setImageResource(R.drawable.green_emoji);
+        }
+        
         return view;
     }
 }

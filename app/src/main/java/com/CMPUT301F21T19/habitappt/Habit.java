@@ -112,7 +112,9 @@ public class Habit {
 
         }
 
-        habitEvents.size(); // represents number of events performed that particular habit
+        if (habitEvents == null) {
+            return (long) 0;
+        }
 
         return (long) (habitEvents.size() / counter) * 100;
 
