@@ -121,8 +121,10 @@
 
             <TextView
                 android:layout_width="285dp"
-                android:layout_height="56dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@color/light_blue_600"
+                android:gravity="center"
                 android:text="Events"
                 android:textSize="24sp" />
 

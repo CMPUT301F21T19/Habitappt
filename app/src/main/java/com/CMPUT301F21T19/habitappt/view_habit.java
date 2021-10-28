@@ -231,7 +231,7 @@ public class view_habit extends Fragment {
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 
                 if(value.get("title") == null){
-                    FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+                    FragmentTransaction trans = getParentFragmentManager().beginTransaction();
                     trans.replace(R.id.main_container,new all_habits());
                     trans.commit();
                     return;
