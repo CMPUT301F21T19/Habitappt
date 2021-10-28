@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
                 android:gravity="center|center_horizontal"
-                android:text="@string/habit_title"
+                android:text="Habit Title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -27,16 +27,16 @@
                 android:id="@+id/habit_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/habit_title"
                 android:ems="10"
-                android:inputType="text" />
+                android:hint="Habit Title"
+                android:inputType="textPersonName" />
 
             <TextView
                 android:id="@+id/habit_reason_label"
                 android:layout_width="match_parent"
                 android:layout_height="41dp"
                 android:gravity="center|center_horizontal"
-                android:text="@string/habit_reason"
+                android:text="Habit Reason"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -44,9 +44,9 @@
                 android:id="@+id/habit_reason"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/habit_reason"
                 android:ems="10"
-                android:inputType="text" />
+                android:hint="Habit Reason"
+                android:inputType="textPersonName" />
 
             <TextView
                 android:id="@+id/days_label"
