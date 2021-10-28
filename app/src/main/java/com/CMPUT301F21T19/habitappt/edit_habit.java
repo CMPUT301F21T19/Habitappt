@@ -78,6 +78,7 @@ public class edit_habit extends DialogFragment {
         habitReason = view.findViewById(R.id.habit_reason);
         habitDateToStart = view.findViewById(R.id.date_to_start);
 
+
         habitTitle.setText(habit.getTitle());
         habitReason.setText(habit.getReason());
         habitDateToStart.setDate(habit.getDateToStart());

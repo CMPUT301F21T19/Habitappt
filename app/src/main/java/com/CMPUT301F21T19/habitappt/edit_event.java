@@ -3,7 +3,11 @@ package com.CMPUT301F21T19.habitappt;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -11,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +25,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.TimeZone;
@@ -32,6 +41,8 @@ public class edit_event extends DialogFragment {
     //location
     private CalendarView eventDate;
 
+    private ImageButton imgButton;
+
     private HabitEvent event;
 
     private String dialogTitle;
@@ -41,6 +52,8 @@ public class edit_event extends DialogFragment {
     long date_selected;
 
     private FirebaseFirestore db;
+
+    private FirebaseStorage storage;
 
     protected edit_event THIS;
 
@@ -77,11 +90,26 @@ public class edit_event extends DialogFragment {
 
         db = FirebaseFirestore.getInstance();
 
+        storage = FirebaseStorage.getInstance();
+
         eventComments = view.findViewById(R.id.event_comments);
         eventDate = view.findViewById(R.id.event_date_calendar);
+        imgButton = view.findViewById(R.id.event_img);
+
+        if(event.getImg() != null){
+            imgButton.setImageBitmap(event.getImg());
+        }
 
         eventComments.setText(event.getComment());
         eventDate.setDate(event.getEventDate());
+
+        imgButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(takePictureIntent, 1);
+            }
+        });
 
         eventDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -107,6 +135,7 @@ public class edit_event extends DialogFragment {
         else{
             dialogTitle = "Add Habit Event";
         }
+
         builder.setView(view)
                 .setTitle(dialogTitle)
                 .setNegativeButton(removeTextTitle, new DialogInterface.OnClickListener() {
@@ -144,40 +173,154 @@ public class edit_event extends DialogFragment {
                             data.put("comments",THIS.eventComments.getText().toString());
                             data.put("eventDate",THIS.date_selected);
 
-                            doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Log.i("data","Data has been added succesfully!");
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.i("data","Data could not be added!" + e.toString());
-                                }
-                            });
+                            //get image and upload to firestorage!
+                            if(THIS.event.getImg() != null){
+
+                                Bitmap imageBitmap = THIS.event.getImg();
+                                StorageReference ref = THIS.storage.getReferenceFromUrl("gs://habitappt.appspot.com/default_user");
+
+                                StorageReference imgRef = ref.child(event.getId() + ".jpg");
+
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                imageBitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
+                                byte[] imgData = baos.toByteArray();
+
+                                UploadTask uploadTask = imgRef.putBytes(imgData);
+
+                                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        Log.d("img upload success","img upload success");
+                                        imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                Log.d("img download url success","img download url success");
+                                                data.put("eventImg",uri.getPath());
+
+                                                doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        Log.i("data","Data for event has been added succesfully!");
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.i("data","Data for event could not be added!" + e.toString());
+                                                    }
+                                                });
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("failed to get download uri","failed to get download uri");
+                                            }
+                                        });
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("img upload failure","img upload failure");
+                                    }
+                                });
+
+
+
+                            }
+                            else{
+                                doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.i("data","Data for event has been added succesfully!");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.i("data","Data for event could not be added!" + e.toString());
+                                    }
+                                });
+                            }
                         }
                         else if(getTag() == "ADD"){
+
+                            event.setId(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
+
                             DocumentReference doc = db.collection("Default User")
                                     .document(String.valueOf(THIS.event.getParentHabit().getId()))
                                     .collection("Event Collection")
-                                    .document(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
+                                    .document(event.getId());
 
                             HashMap<String,Object> data = new HashMap<>();
 
                             data.put("comments",THIS.eventComments.getText().toString());
                             data.put("eventDate",THIS.date_selected);
 
-                            doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Log.i("data","Data for event has been added succesfully!");
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.i("data","Data for event could not be added!" + e.toString());
-                                }
-                            });
+                            if(THIS.event.getImg() != null){
+
+                                Bitmap imageBitmap = THIS.event.getImg();
+                                StorageReference ref = THIS.storage.getReferenceFromUrl("gs://habitappt.appspot.com/default_user");
+
+                                StorageReference imgRef = ref.child(event.getId() + ".jpg");
+
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                imageBitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
+                                byte[] imgData = baos.toByteArray();
+
+                                UploadTask uploadTask = imgRef.putBytes(imgData);
+
+                                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        Log.d("img upload success","img upload success");
+                                        imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                Log.d("img download url success","img download url success");
+                                                data.put("eventImg",uri.getPath());
+
+                                                doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        Log.i("data","Data for event has been added succesfully!");
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.i("data","Data for event could not be added!" + e.toString());
+                                                    }
+                                                });
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("failed to get download uri","failed to get download uri");
+                                            }
+                                        });
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("img upload failure","img upload failure");
+                                    }
+                                });
+
+
+
+                            }
+                            else{
+                                doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.i("data","Data for event has been added succesfully!");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.i("data","Data for event could not be added!" + e.toString());
+                                    }
+                                });
+                            }
+
+
                         }
                     }
                 });
@@ -228,5 +371,17 @@ public class edit_event extends DialogFragment {
 
         return alertDialog;
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == 1 && data != null){
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imgButton.setImageBitmap(imageBitmap);
+            event.setImg(imageBitmap);
+
+
+        }
     }
 }

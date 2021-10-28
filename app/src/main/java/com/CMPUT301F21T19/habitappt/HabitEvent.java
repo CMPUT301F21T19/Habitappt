@@ -1,5 +1,7 @@
 package com.CMPUT301F21T19.habitappt;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
@@ -11,7 +13,21 @@ public class HabitEvent {
     private long eventDate;
 
     String id;
+
     private Habit parentHabit;
+
+    private Bitmap img;
+
+
+    public Bitmap getImg() {
+        return img;
+    }
+
+    public void setImg(Bitmap img) {
+        this.img = img;
+    }
+
+
 
 
     public HabitEvent(String comment, long eventDate,Habit parentHabit, String id){
@@ -28,6 +44,10 @@ public class HabitEvent {
 
     public String getId(){
         return id;
+    }
+
+    public void setId(String id){
+        this.id = id;
     }
 
     public String getComment() {

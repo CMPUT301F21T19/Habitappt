@@ -40,15 +40,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <EditText
-                android:id="@+id/event_image"
+
+            <ImageButton
+                android:id="@+id/event_img"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="img"
-                android:inputType="textPersonName" />
-
-
+                android:src="@drawable/no_image_provided_event"
+                tools:src="@drawable/no_image_provided_event"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
                 android:id="@+id/event_date_label"
