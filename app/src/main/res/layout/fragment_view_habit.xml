@@ -36,12 +36,6 @@
                 tools:ignore="VectorDrawableCompat" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/emoji"
-            android:layout_width="95dp"
-            android:layout_height="79dp"
-            tools:srcCompat="@tools:sample/avatars" />
-
         <TextView
             android:id="@+id/habit_reason_display"
             android:layout_width="match_parent"
