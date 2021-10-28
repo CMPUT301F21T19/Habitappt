@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,19 +49,28 @@ public class edit_event extends DialogFragment {
     private String dialogTitle;
 
     private String removeTextTitle;
+    private String tag;
 
     long date_selected;
 
     private FirebaseFirestore db;
 
     private FirebaseStorage storage;
+    private Habit habit;
 
     protected edit_event THIS;
 
-    public edit_event(HabitEvent event){
+    public edit_event(HabitEvent event, Habit habit, String tag){
         this.event = event;
-        this.removeTextTitle = "Cancel";
+        this.removeTextTitle = this.tag == "EDIT" ? "Edit Event":"Remove Event";
+        if(tag == "ADD" || tag == "EDIT"){
+            this.removeTextTitle = "Cancel";
+        }
+        else if (tag == "REMOVE"){
+            this.removeTextTitle = "Remove Event";
+        }
         this.date_selected = event.getEventDate();
+        this.habit = habit;
     }
 
 //    public edit_event(){
@@ -141,19 +151,22 @@ public class edit_event extends DialogFragment {
                 .setNegativeButton(removeTextTitle, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        getChildFragmentManager().popBackStack("vieeevent", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                         db.collection("Default User")
+                                .document(String.valueOf(THIS.habit.getId()))
+                                .collection("Event Collection")
                                 .document(String.valueOf(THIS.event.getId()))
                                 .delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
-                                        Log.i("data","Data has been added succesfully!");
+                                        Log.i("data","event has been removed succesfully!");
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Log.i("data","Data could not be added!" + e.toString());
+                                        Log.i("data","event has not been removed succesfully" + e.toString());
                                     }
                                 });
                     }
@@ -194,7 +207,7 @@ public class edit_event extends DialogFragment {
                                         imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                             @Override
                                             public void onSuccess(Uri uri) {
-                                                Log.d("img download url success","img download url success");
+                                                Log.d("img dwnload url success","img download url success");
                                                 data.put("eventImg",true);
 
                                                 doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -212,7 +225,7 @@ public class edit_event extends DialogFragment {
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Log.d("failed to get download uri","failed to get download uri");
+                                                Log.d("failed to get dwnld uri","failed to get download uri");
                                             }
                                         });
                                     }
@@ -275,7 +288,7 @@ public class edit_event extends DialogFragment {
                                         imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                             @Override
                                             public void onSuccess(Uri uri) {
-                                                Log.d("img download url success","img download url success");
+                                                Log.d("img dwnld url success","img download url success");
                                                 data.put("eventImg",true);
 
                                                 doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -293,7 +306,7 @@ public class edit_event extends DialogFragment {
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Log.d("failed to get download uri","failed to get download uri");
+                                                Log.d("failed to get dnld uri","failed to get download uri");
                                             }
                                         });
                                     }

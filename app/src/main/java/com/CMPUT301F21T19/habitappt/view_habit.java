@@ -185,7 +185,7 @@ public class view_habit extends Fragment {
                         //get event
                         HabitEvent editEvent = (HabitEvent) eventSwipeListView.getItemAtPosition(position);
                         //create fragement
-                        new edit_event(editEvent).show(getActivity().getSupportFragmentManager(), "EDIT");
+                        new edit_event(editEvent, habit,"EDIT").show(getActivity().getSupportFragmentManager(), "EDIT");
                         break;
                     //delete selected
                     case 1:
@@ -194,7 +194,7 @@ public class view_habit extends Fragment {
                         //get event
                         HabitEvent delEvent = (HabitEvent) eventSwipeListView.getItemAtPosition(position);
                         //NEED TO DO
-                        new edit_event(delEvent).show(getActivity().getSupportFragmentManager(), "REMOVE");
+                        new edit_event(delEvent, habit, "REMOVE").show(getActivity().getSupportFragmentManager(), "REMOVE");
                         break;
                 }
                 return false;
@@ -208,7 +208,7 @@ public class view_habit extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d("Info", "Clicked add event");
-                new edit_event(new HabitEvent(habit)).show(getActivity().getSupportFragmentManager(), "ADD");
+                new edit_event(new HabitEvent(habit), habit,"ADD").show(getActivity().getSupportFragmentManager(), "ADD");
             }
         });
 
