@@ -68,6 +68,7 @@ public class edit_habit_Test {
         solo.clickOnView(solo.getView(R.id.date_to_start));
         solo.setDatePicker(0, 2021, 10, 30);
     }
+
     @Test
     public void deleteHabit() {
         solo.clickOnView(solo.getView(R.id.habit_list));
