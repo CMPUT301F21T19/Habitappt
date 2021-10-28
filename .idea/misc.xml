@@ -37,17 +37,9 @@
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/profile_fragment_layout.xml" value="0.1" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/menu/bottom_nav_bar.xml" value="0.5" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/menu/nav_bar_menu.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.16979166666666667" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.16979166666666667" />
-        <entry key="app/src/main/res/layout/edit_event.xml" value="0.16979166666666667" />
-        <entry key="app/src/main/res/layout/edit_habit.xml" value="0.26902914250841614" />
-        <entry key="app/src/main/res/layout/event_list_item.xml" value="0.16979166666666667" />
-        <entry key="app/src/main/res/layout/fragment_events_list.xml" value="0.16979166666666667" />
+        <entry key="app/src/main/res/layout/edit_habit.xml" value="0.21979166666666666" />
         <entry key="app/src/main/res/layout/fragment_habits_list.xml" value="0.21979166666666666" />
-        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_view_habit.xml" value="0.21979166666666666" />
-        <entry key="app/src/main/res/layout/habit_list_item.xml" value="0.16979166666666667" />
-        <entry key="app/src/main/res/layout/nav_bar.xml" value="0.22800745200245356" />
       </map>
     </option>
   </component>

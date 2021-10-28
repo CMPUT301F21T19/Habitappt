@@ -110,7 +110,7 @@ public class view_habit extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d("Info", "Clicked add event");
-                new edit_event(new HabitEvent(habit)).show(getActivity().getSupportFragmentManager(), "ADD");
+                new edit_event().show(getActivity().getSupportFragmentManager(), "ADD");
             }
         });
 
@@ -167,8 +167,8 @@ public class view_habit extends Fragment {
 
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String id = doc.getId();
-                    String comments = (String) doc.getData().get("comments");
-                    Long eventDate = (Long) doc.getData().get("eventDate");
+                    String comments = (String) doc.getData().get("Comments");
+                    Long eventDate = (Long) doc.getData().get("Event Date");
                     Log.d("info", comments);
                     Log.d("info", String.valueOf(eventDate));
                     eventDataList.add(new HabitEvent(comments, eventDate, habit, id));
