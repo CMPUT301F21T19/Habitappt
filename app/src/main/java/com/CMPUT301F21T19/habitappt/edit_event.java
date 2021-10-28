@@ -208,7 +208,7 @@ public class edit_event extends DialogFragment {
                                             @Override
                                             public void onSuccess(Uri uri) {
                                                 Log.d("img dwnload url success","img download url success");
-                                                data.put("eventImg",true);
+                                                data.put("eventImg",GregorianCalendar.getInstance().getTimeInMillis());
 
                                                 doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
@@ -240,7 +240,7 @@ public class edit_event extends DialogFragment {
 
                             }
                             else{
-                                data.put("eventImg",false);
+                                data.put("eventImg",0);
                                 doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
@@ -289,7 +289,7 @@ public class edit_event extends DialogFragment {
                                             @Override
                                             public void onSuccess(Uri uri) {
                                                 Log.d("img dwnld url success","img download url success");
-                                                data.put("eventImg",true);
+                                                data.put("eventImg",GregorianCalendar.getInstance().getTimeInMillis());
 
                                                 doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
@@ -321,7 +321,7 @@ public class edit_event extends DialogFragment {
 
                             }
                             else{
-                                data.put("eventImg",false);
+                                data.put("eventImg",0);
                                 doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {

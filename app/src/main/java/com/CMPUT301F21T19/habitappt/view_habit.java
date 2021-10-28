@@ -280,7 +280,7 @@ public class view_habit extends Fragment {
 
 
 
-                    if((Boolean) doc.getData().get("eventImg") == true){
+                    if((Long) doc.getData().get("eventImg") != 0){
 
 
                         StorageReference ref = storage.getReferenceFromUrl("gs://habitappt.appspot.com/default_user/" + id + ".jpg");
