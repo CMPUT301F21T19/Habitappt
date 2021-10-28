@@ -1,35 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_blue_A200"
     android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/event_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:text="event name"
-        android:textSize="30sp"></TextView>
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/event_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:text="event date"
-        android:textSize="30sp"></TextView>
+        <TextView
+            android:id="@+id/event_name"
+            android:layout_width="160dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/event_name"
+            android:textSize="24sp"></TextView>
 
-    <ImageButton
-        android:id="@+id/edit_event_button"
-        app:srcCompat="@drawable/edit_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:ignore="VectorDrawableCompat" />
+        <TextView
+            android:id="@+id/event_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/event_date"
+            android:textSize="24sp"></TextView>
+    </LinearLayout>
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/edit_event_button"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        app:srcCompat="@drawable/edit_icon"-->
+<!--        tools:ignore="VectorDrawableCompat" />-->
 
 </LinearLayout>
