@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,13 @@ public class EventList extends ArrayAdapter<HabitEvent> {
 
         TextView eventComment = view.findViewById(R.id.event_name);
         TextView eventDate = view.findViewById(R.id.event_date);
+
+        ImageView img = view.findViewById(R.id.img);
+
+        if(event.getImg() != null){
+            img.setImageBitmap(event.getImg());
+        }
+
 
         eventComment.setText(event.getComment());
         eventDate.setText(getStringDateFromLong(event.getEventDate()));

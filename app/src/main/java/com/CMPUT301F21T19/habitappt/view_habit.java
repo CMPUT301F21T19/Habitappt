@@ -1,6 +1,8 @@
 package com.CMPUT301F21T19.habitappt;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -24,6 +27,8 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -32,7 +37,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,6 +56,8 @@ public class view_habit extends Fragment {
     private TextView habitDateToStart;
     private ImageButton editButton;
 
+    private view_habit THIS = this;
+
     View addEventButton;
 
     private ArrayList<TextView> daysToDo = new ArrayList<>();
@@ -61,6 +71,8 @@ public class view_habit extends Fragment {
 
     SwipeMenuItem deleteItem;
     SwipeMenuItem editItem;
+
+    private FirebaseStorage storage;
 
     public view_habit(Habit habit){
         this.habit = habit;
@@ -103,6 +115,7 @@ public class view_habit extends Fragment {
         habitTitle.setText(habit.getTitle());
         habitReason.setText(habit.getReason());
 
+        storage = FirebaseStorage.getInstance();
 
         //editing habit
         editButton.setOnClickListener(new View.OnClickListener() {
@@ -244,20 +257,55 @@ public class view_habit extends Fragment {
             }
         });
 
-        CollectionReference eventCollectionReference = FirebaseFirestore.getInstance().collection("Default User").document(String.valueOf(habit.getId())).collection("Event Collection");
+        CollectionReference eventCollectionReference = FirebaseFirestore.getInstance()
+                .collection("Default User")
+                .document(String.valueOf(habit.getId()))
+                .collection("Event Collection");
+
         eventCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+
                 eventDataList.clear();
 
+                int i = 0;
+
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    Log.d("info","adding event entry!");
                     String id = doc.getId();
                     String comments = (String) doc.getData().get("comments");
                     Long eventDate = (Long) doc.getData().get("eventDate");
-                    Log.d("info", comments);
-                    Log.d("info", String.valueOf(eventDate));
+
                     eventDataList.add(new HabitEvent(comments, eventDate, habit, id));
 
+
+
+                    if((Boolean) doc.getData().get("eventImg") == true){
+
+
+                        StorageReference ref = storage.getReferenceFromUrl("gs://habitappt.appspot.com/default_user/" + id + ".jpg");
+
+                        int finalI = i;
+
+                        ref.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            @Override
+                            public void onSuccess(byte[] bytes) {
+                                final int index = finalI;
+                                Bitmap bitMapImg = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+
+                                eventDataList.get(index).setImg(bitMapImg);
+                                eventAdapter.notifyDataSetChanged();
+
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("image retrieval failure","image retrieval failure");
+                            }
+                        });
+                    }
+                    i += 1;
                 }
 
                 eventAdapter.notifyDataSetChanged();

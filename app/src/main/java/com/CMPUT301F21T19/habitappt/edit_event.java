@@ -195,7 +195,7 @@ public class edit_event extends DialogFragment {
                                             @Override
                                             public void onSuccess(Uri uri) {
                                                 Log.d("img download url success","img download url success");
-                                                data.put("eventImg",uri.getPath());
+                                                data.put("eventImg",true);
 
                                                 doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
@@ -227,6 +227,7 @@ public class edit_event extends DialogFragment {
 
                             }
                             else{
+                                data.put("eventImg",false);
                                 doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
@@ -275,7 +276,7 @@ public class edit_event extends DialogFragment {
                                             @Override
                                             public void onSuccess(Uri uri) {
                                                 Log.d("img download url success","img download url success");
-                                                data.put("eventImg",uri.getPath());
+                                                data.put("eventImg",true);
 
                                                 doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
@@ -307,6 +308,7 @@ public class edit_event extends DialogFragment {
 
                             }
                             else{
+                                data.put("eventImg",false);
                                 doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {

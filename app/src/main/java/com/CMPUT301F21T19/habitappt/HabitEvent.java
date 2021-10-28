@@ -37,6 +37,14 @@ public class HabitEvent {
         this.id = id;
     }
 
+    public HabitEvent(String comment, long eventDate,Habit parentHabit, String id, Bitmap img){
+        this.comment = comment;
+        this.eventDate = eventDate;
+        this.parentHabit = parentHabit;
+        this.id = id;
+        this.img = img;
+    }
+
     public HabitEvent(Habit parentHabit){
         this.parentHabit = parentHabit;
         this.eventDate = GregorianCalendar.getInstance().getTimeInMillis();
