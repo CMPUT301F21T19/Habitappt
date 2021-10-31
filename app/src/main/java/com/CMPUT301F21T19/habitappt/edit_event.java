@@ -156,26 +156,10 @@ public class edit_event extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //remove event from firestore database
                         getChildFragmentManager().popBackStack("vieeevent", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        db.collection("Default User")
-                                .document(String.valueOf(THIS.habit.getId()))
-                                .collection("Event Collection")
-                                .document(String.valueOf(THIS.event.getId()))
-                                .delete()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.i("data","event has been removed succesfully!");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.i("data","event has not been removed succesfully" + e.toString());
-                                    }
-                                });
+
 
                         //remove image from firestore storage after deleting event
-                        deleteImage(event.getId());
+                        SharedHelper.deleteImage(event.getId(), storage);
                     }
                 })
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -406,20 +390,6 @@ public class edit_event extends DialogFragment {
 
         }
     }
-
-    public void deleteImage(String id){
-        //remove image from firestore storage after deleting event
-        StorageReference ref = storage.getReferenceFromUrl("gs://habitappt.appspot.com/default_user/" + id + ".jpg");
-        ref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Log.d("STORAGE", "onSuccess: deleted image");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("STORAGE", "onFailure: could not delete image");
-            }
-        });
-    }
 }
+
+
