@@ -175,18 +175,7 @@ public class edit_event extends DialogFragment {
                                 });
 
                         //remove image from firestore storage after deleting event
-                        StorageReference ref = storage.getReferenceFromUrl("gs://habitappt.appspot.com/default_user/" + event.getId() + ".jpg");
-                        ref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Log.d("STORAGE", "onSuccess: deleted image");
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("STORAGE", "onFailure: could not delete image");
-                            }
-                        });
+                        deleteImage(event.getId());
                     }
                 })
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -416,5 +405,21 @@ public class edit_event extends DialogFragment {
 
 
         }
+    }
+
+    public void deleteImage(String id){
+        //remove image from firestore storage after deleting event
+        StorageReference ref = storage.getReferenceFromUrl("gs://habitappt.appspot.com/default_user/" + id + ".jpg");
+        ref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("STORAGE", "onSuccess: deleted image");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("STORAGE", "onFailure: could not delete image");
+            }
+        });
     }
 }

@@ -67,7 +67,7 @@ public class view_habit extends Fragment {
     ListView eventListView;
     SwipeMenuListView eventSwipeListView;
     ArrayAdapter<HabitEvent> eventAdapter;
-    ArrayList<HabitEvent> eventDataList;
+//    protected ArrayList<HabitEvent> eventDataList;
 
     SwipeMenuItem deleteItem;
     SwipeMenuItem editItem;
@@ -133,8 +133,8 @@ public class view_habit extends Fragment {
 
         //new
         eventSwipeListView = view.findViewById(R.id.event_list);
-        eventDataList = new ArrayList<>();
-        eventAdapter = new EventList(getContext(), eventDataList);
+        habit.setHabitEvents(new ArrayList<>());
+        eventAdapter = new EventList(getContext(), habit.getHabitEvents());
         eventSwipeListView.setAdapter(eventAdapter);
 
         SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -266,7 +266,7 @@ public class view_habit extends Fragment {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
 
-                eventDataList.clear();
+                habit.getHabitEvents().clear();
 
                 int i = 0;
 
@@ -276,9 +276,10 @@ public class view_habit extends Fragment {
                     String comments = (String) doc.getData().get("comments");
                     Long eventDate = (Long) doc.getData().get("eventDate");
 
-                    eventDataList.add(new HabitEvent(comments, eventDate, habit, id));
+                    HabitEvent newEvent = new HabitEvent(comments, eventDate, habit, id);
 
-
+                    //adding to habitEventsList
+                    habit.getHabitEvents().add(newEvent);
 
                     if((Long) doc.getData().get("eventImg") != 0){
 
@@ -293,7 +294,7 @@ public class view_habit extends Fragment {
                                 final int index = finalI;
                                 Bitmap bitMapImg = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
 
-                                eventDataList.get(index).setImg(bitMapImg);
+                                habit.getHabitEvents().get(index).setImg(bitMapImg);
                                 eventAdapter.notifyDataSetChanged();
 
 
