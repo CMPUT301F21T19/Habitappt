@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -46,6 +47,8 @@ public class edit_habit extends DialogFragment {
     long date_selected;
 
     private FirebaseFirestore db;
+    private FirebaseStorage storage;
+
 
     protected edit_habit THIS;
 
@@ -73,6 +76,8 @@ public class edit_habit extends DialogFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.edit_habit,null);
 
         db = FirebaseFirestore.getInstance();
+
+        storage = FirebaseStorage.getInstance();
 
         habitTitle = view.findViewById(R.id.habit_title);
         habitReason = view.findViewById(R.id.habit_reason);
@@ -134,24 +139,22 @@ public class edit_habit extends DialogFragment {
             .setNegativeButton(removeTextTitle, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-
                     getChildFragmentManager().popBackStack("viewhabit", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-                    db.collection("Default User")
-                            .document(String.valueOf(THIS.habit.getId()))
-                            .delete()
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Log.i("data","Data has been added succesfully!");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.i("data","Data could not be added!" + e.toString());
-                                }
-                            });
+                    //if remove and not cancel
+                    if(removeTextTitle.equals("Remove Habit")) {
+
+                        //remove all images associated to each habit event and events first
+                        for (HabitEvent eachEvent : habit.getHabitEvents()) {
+                            //remove image from firestore storage after deleting event
+                            SharedHelper.deleteImage(eachEvent.getId(), storage);
+                            //remove event
+                            SharedHelper.removeEvent(eachEvent, THIS.habit, db);
+                        }
+                        //remove habit
+                        SharedHelper.removeHabit(THIS.habit, db);
+
+                    }
                 }
             })
             .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {

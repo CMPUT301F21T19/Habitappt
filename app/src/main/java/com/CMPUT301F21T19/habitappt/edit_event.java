@@ -22,9 +22,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -151,24 +154,12 @@ public class edit_event extends DialogFragment {
                 .setNegativeButton(removeTextTitle, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        //remove event from firestore database
                         getChildFragmentManager().popBackStack("vieeevent", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        db.collection("Default User")
-                                .document(String.valueOf(THIS.habit.getId()))
-                                .collection("Event Collection")
-                                .document(String.valueOf(THIS.event.getId()))
-                                .delete()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.i("data","event has been removed succesfully!");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.i("data","event has not been removed succesfully" + e.toString());
-                                    }
-                                });
+
+
+                        //remove image from firestore storage after deleting event
+                        SharedHelper.deleteImage(event.getId(), storage);
                     }
                 })
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -400,3 +391,5 @@ public class edit_event extends DialogFragment {
         }
     }
 }
+
+

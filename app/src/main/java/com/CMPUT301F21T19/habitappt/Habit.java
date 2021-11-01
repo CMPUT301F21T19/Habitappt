@@ -114,5 +114,11 @@ public class Habit {
 
     public void setScore(int newScore) { this.score = newScore; }
 
+    public void setHabitEvents(ArrayList<HabitEvent> habitEvents) {
+        this.habitEvents = habitEvents;
+    }
+    public ArrayList<HabitEvent> getHabitEvents(){
+        return habitEvents;
+    }
 }
 
