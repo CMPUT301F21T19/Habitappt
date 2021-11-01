@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,11 +36,11 @@ import java.util.GregorianCalendar;
 public class view_habit extends Fragment {
 
     private View view;
-
     private TextView habitTitle;
     private TextView habitReason;
     private TextView habitDateToStart;
     private ImageButton editButton;
+    private ImageView visual_indicator;
 
     View addEventButton;
 
@@ -80,49 +81,64 @@ public class view_habit extends Fragment {
         habitReason = view.findViewById(R.id.habit_reason_display);
         habitDateToStart = view.findViewById(R.id.start_date_display);
         editButton = view.findViewById(R.id.edit_button);
-
-        daysToDo.add(view.findViewById(R.id.monday_display));
-        daysToDo.add(view.findViewById(R.id.tuesday_display));
-        daysToDo.add(view.findViewById(R.id.wednesday_display));
-        daysToDo.add(view.findViewById(R.id.thursday_display));
-        daysToDo.add(view.findViewById(R.id.friday_display));
-        daysToDo.add(view.findViewById(R.id.saturday_display));
-        daysToDo.add(view.findViewById(R.id.sunday_display));
-
-        habitTitle.setText(habit.getTitle());
-        habitReason.setText(habit.getReason());
+        visual_indicator = view.findViewById(R.id.visual_indicator);
 
 
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new edit_habit(habit).show(getActivity().getSupportFragmentManager(), "EDIT");
-            }
-        });
+        long score = habit.calculateScore();
+        if (score < 20) {
+            visual_indicator.setImageResource(R.drawable.disappointed_emoji);
+        } else if (score < 40) {
+            visual_indicator.setImageResource(R.drawable.orange_emoji);
+        } else if (score < 60) {
+            visual_indicator.setImageResource(R.drawable.yellow_emoji);
+        } else if (score < 80) {
+            visual_indicator.setImageResource(R.drawable.light_green_emoji);
+        } else {
+            visual_indicator.setImageResource(R.drawable.green_emoji);
 
-        eventListView = view.findViewById(R.id.event_list);
-        eventDataList = new ArrayList<>();
-        eventAdapter = new EventList(getContext(), eventDataList);
-        eventListView.setAdapter(eventAdapter);
+            daysToDo.add(view.findViewById(R.id.monday_display));
+            daysToDo.add(view.findViewById(R.id.tuesday_display));
+            daysToDo.add(view.findViewById(R.id.wednesday_display));
+            daysToDo.add(view.findViewById(R.id.thursday_display));
+            daysToDo.add(view.findViewById(R.id.friday_display));
+            daysToDo.add(view.findViewById(R.id.saturday_display));
+            daysToDo.add(view.findViewById(R.id.sunday_display));
 
-        addEventButton = view.findViewById(R.id.add_event_button);
-        addEventButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("Info", "Clicked add event");
-                new edit_event().show(getActivity().getSupportFragmentManager(), "ADD");
-            }
-        });
+            habitTitle.setText(habit.getTitle());
+            habitReason.setText(habit.getReason());
 
-        eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("Info", "Clicked an event");
-                FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
-                trans.replace(R.id.main_container,new edit_event(eventDataList.get(position)));
-                trans.commit();
-            }
-        });
+
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new edit_habit(habit).show(getActivity().getSupportFragmentManager(), "EDIT");
+                }
+            });
+
+            eventListView = view.findViewById(R.id.event_list);
+            eventDataList = new ArrayList<>();
+            eventAdapter = new EventList(getContext(), eventDataList);
+            eventListView.setAdapter(eventAdapter);
+
+            addEventButton = view.findViewById(R.id.add_event_button);
+            addEventButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("Info", "Clicked add event");
+                    new edit_event().show(getActivity().getSupportFragmentManager(), "ADD");
+                }
+            });
+
+            eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Log.d("Info", "Clicked an event");
+                    FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+                    trans.replace(R.id.main_container, new edit_event(eventDataList.get(position)));
+                    trans.commit();
+                }
+            });
+        }
 
 
 
