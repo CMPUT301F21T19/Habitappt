@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -50,11 +51,11 @@ import java.util.GregorianCalendar;
 public class view_habit extends Fragment {
 
     private View view;
-
     private TextView habitTitle;
     private TextView habitReason;
     private TextView habitDateToStart;
     private ImageButton editButton;
+    private ImageView visual_indicator;
 
     private view_habit THIS = this;
 
@@ -103,27 +104,40 @@ public class view_habit extends Fragment {
         habitReason = view.findViewById(R.id.habit_reason_display);
         habitDateToStart = view.findViewById(R.id.start_date_display);
         editButton = view.findViewById(R.id.edit_button);
+        visual_indicator = view.findViewById(R.id.visual_indicator);
 
-        daysToDo.add(view.findViewById(R.id.monday_display));
-        daysToDo.add(view.findViewById(R.id.tuesday_display));
-        daysToDo.add(view.findViewById(R.id.wednesday_display));
-        daysToDo.add(view.findViewById(R.id.thursday_display));
-        daysToDo.add(view.findViewById(R.id.friday_display));
-        daysToDo.add(view.findViewById(R.id.saturday_display));
-        daysToDo.add(view.findViewById(R.id.sunday_display));
+        long score = habit.calculateScore();
+        if (score < 20) {
+            visual_indicator.setImageResource(R.drawable.ic_disappointed_emoji);
+        } else if (score < 40) {
+            visual_indicator.setImageResource(R.drawable.ic_orange_emoji);
+        } else if (score < 60) {
+            visual_indicator.setImageResource(R.drawable.ic_yellow_emoji);
+        } else if (score < 80) {
+            visual_indicator.setImageResource(R.drawable.ic_light_green_emoji);
+        } else {
+            visual_indicator.setImageResource(R.drawable.ic_bright_green_emoji);
 
-        habitTitle.setText(habit.getTitle());
-        habitReason.setText(habit.getReason());
+            daysToDo.add(view.findViewById(R.id.monday_display));
+            daysToDo.add(view.findViewById(R.id.tuesday_display));
+            daysToDo.add(view.findViewById(R.id.wednesday_display));
+            daysToDo.add(view.findViewById(R.id.thursday_display));
+            daysToDo.add(view.findViewById(R.id.friday_display));
+            daysToDo.add(view.findViewById(R.id.saturday_display));
+            daysToDo.add(view.findViewById(R.id.sunday_display));
 
-        storage = FirebaseStorage.getInstance();
+            habitTitle.setText(habit.getTitle());
+            habitReason.setText(habit.getReason());
 
-        //editing habit
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new edit_habit(habit).show(getActivity().getSupportFragmentManager(), "EDIT");
-            }
-        });
+            storage = FirebaseStorage.getInstance();
+
+            //editing habit
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new edit_habit(habit).show(getActivity().getSupportFragmentManager(), "EDIT");
+                }
+            });
 
 //        eventListView = view.findViewById(R.id.event_list);
 //        eventDataList = new ArrayList<>();
@@ -131,75 +145,76 @@ public class view_habit extends Fragment {
 //        eventListView.setAdapter(eventAdapter);
 
 
-        //new
-        eventSwipeListView = view.findViewById(R.id.event_list);
-        habit.setHabitEvents(new ArrayList<>());
-        eventAdapter = new EventList(getContext(), habit.getHabitEvents());
-        eventSwipeListView.setAdapter(eventAdapter);
+            //new
+            eventSwipeListView = view.findViewById(R.id.event_list);
+            habit.setHabitEvents(new ArrayList<>());
+            eventAdapter = new EventList(getContext(), habit.getHabitEvents());
+            eventSwipeListView.setAdapter(eventAdapter);
 
-        SwipeMenuCreator creator = new SwipeMenuCreator() {
+            SwipeMenuCreator creator = new SwipeMenuCreator() {
 
-            @Override
-            public void create(SwipeMenu menu) {
-                // create "open" item
-                editItem = new SwipeMenuItem(
-                        getContext());
-                // set item background
-                editItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-                        0xCE)));
-                // set item width
-                editItem.setWidth(170);
-                // set item title
-                editItem.setTitle("Edit");
-                // set item title fontsize
-                editItem.setTitleSize(18);
-                // set item title font color
-                editItem.setTitleColor(Color.WHITE);
-                // add to menu
-                menu.addMenuItem(editItem);
+                @Override
+                public void create(SwipeMenu menu) {
+                    // create "open" item
+                    editItem = new SwipeMenuItem(
+                            getContext());
+                    // set item background
+                    editItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
+                            0xCE)));
+                    // set item width
+                    editItem.setWidth(170);
+                    // set item title
+                    editItem.setTitle("Edit");
+                    // set item title fontsize
+                    editItem.setTitleSize(18);
+                    // set item title font color
+                    editItem.setTitleColor(Color.WHITE);
+                    // add to menu
+                    menu.addMenuItem(editItem);
 
-                // create "delete" item
-                deleteItem = new SwipeMenuItem(
-                        getContext());
-                // set item background
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                        0x3F, 0x25)));
-                // set item width
-                deleteItem.setWidth(170);
-                // set a icon
-                deleteItem.setIcon(R.drawable.ic_delete);
-                // add to menu
-                menu.addMenuItem(deleteItem);
-            }
-        };
-
-        eventSwipeListView.setMenuCreator(creator);
-
-        eventSwipeListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                switch (index) {
-                    //edit selected
-                    case 0:
-                        Log.d("MENUSELECT", "OnMenuItemClick: selected item" + index);
-                        //get event
-                        HabitEvent editEvent = (HabitEvent) eventSwipeListView.getItemAtPosition(position);
-                        //create fragement
-                        new edit_event(editEvent, habit,"EDIT").show(getActivity().getSupportFragmentManager(), "EDIT");
-                        break;
-                    //delete selected
-                    case 1:
-                        Log.d("MENUSELECT", "OnMenuItemClick: selected item" + index);
-
-                        //get event
-                        HabitEvent delEvent = (HabitEvent) eventSwipeListView.getItemAtPosition(position);
-                        //NEED TO DO
-                        new edit_event(delEvent, habit, "REMOVE").show(getActivity().getSupportFragmentManager(), "REMOVE");
-                        break;
+                    // create "delete" item
+                    deleteItem = new SwipeMenuItem(
+                            getContext());
+                    // set item background
+                    deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                            0x3F, 0x25)));
+                    // set item width
+                    deleteItem.setWidth(170);
+                    // set a icon
+                    deleteItem.setIcon(R.drawable.ic_delete);
+                    // add to menu
+                    menu.addMenuItem(deleteItem);
                 }
-                return false;
-            }
-        });
+            };
+
+            eventSwipeListView.setMenuCreator(creator);
+
+            eventSwipeListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                    switch (index) {
+                        //edit selected
+                        case 0:
+                            Log.d("MENUSELECT", "OnMenuItemClick: selected item" + index);
+                            //get event
+                            HabitEvent editEvent = (HabitEvent) eventSwipeListView.getItemAtPosition(position);
+                            //create fragement
+                            new edit_event(editEvent, habit, "EDIT").show(getActivity().getSupportFragmentManager(), "EDIT");
+                            break;
+                        //delete selected
+                        case 1:
+                            Log.d("MENUSELECT", "OnMenuItemClick: selected item" + index);
+
+                            //get event
+                            HabitEvent delEvent = (HabitEvent) eventSwipeListView.getItemAtPosition(position);
+                            //NEED TO DO
+                            new edit_event(delEvent, habit, "REMOVE").show(getActivity().getSupportFragmentManager(), "REMOVE");
+                            break;
+                    }
+                    return false;
+                }
+            });
+        }
         //new
 
 

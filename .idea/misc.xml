@@ -44,6 +44,7 @@
         <entry key="app/src/main/res/layout/edit_habit.xml" value="0.21979166666666666" />
         <entry key="app/src/main/res/layout/fragment_habits_list.xml" value="0.21979166666666666" />
         <entry key="app/src/main/res/layout/fragment_view_habit.xml" value="0.21979166666666666" />
+        <entry key="app/src/main/res/layout/habit_list_item.xml" value="0.39344262295081966" />
       </map>
     </option>
   </component>
