@@ -155,11 +155,12 @@ public class edit_event extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //remove event from firestore database
-                        getChildFragmentManager().popBackStack("vieeevent", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        getChildFragmentManager().popBackStack("viewevent", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
 
                         //remove image from firestore storage after deleting event
                         SharedHelper.deleteImage(event.getId(), storage);
+                        SharedHelper.removeEvent(event,habit,db);
                     }
                 })
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
