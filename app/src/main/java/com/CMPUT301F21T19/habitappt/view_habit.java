@@ -51,6 +51,7 @@ public class view_habit extends Fragment {
 
     private View view;
 
+    private TextView habitIsPrivate;
     private TextView habitTitle;
     private TextView habitReason;
     private TextView habitDateToStart;
@@ -99,6 +100,7 @@ public class view_habit extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_view_habit, container, false);
 
+        habitIsPrivate = view.findViewById(R.id.isPrivate_text_view);
         habitTitle = view.findViewById(R.id.habit_title_display);
         habitReason = view.findViewById(R.id.habit_reason_display);
         habitDateToStart = view.findViewById(R.id.start_date_display);
@@ -112,6 +114,13 @@ public class view_habit extends Fragment {
         daysToDo.add(view.findViewById(R.id.saturday_display));
         daysToDo.add(view.findViewById(R.id.sunday_display));
 
+        if (habit.getIsPrivate()) {
+            habitIsPrivate.setText("Private Habit");
+            habitIsPrivate.setBackgroundColor(Color.RED);
+        } else {
+            habitIsPrivate.setText("Public Habit");
+            habitIsPrivate.setBackgroundColor(Color.GREEN);
+        }
         habitTitle.setText(habit.getTitle());
         habitReason.setText(habit.getReason());
 
@@ -237,13 +246,22 @@ public class view_habit extends Fragment {
                     return;
                 }
 
+                habit.setIsPrivate((boolean) value.get("isPrivate"));
                 habit.setTitle(value.get("title").toString());
                 habit.setReason(value.get("reason").toString());
                 habit.setDateToStart((Long.valueOf(value.get("dateToStart").toString())));
 
+                if (habit.getIsPrivate()) {
+                    habitIsPrivate.setText("Private Habit");
+                    habitIsPrivate.setBackgroundColor(Color.RED);
+                } else {
+                    habitIsPrivate.setText("Public Habit");
+                    habitIsPrivate.setBackgroundColor(Color.GREEN);
+                }
                 habitTitle.setText(habit.getTitle());
                 habitReason.setText(habit.getReason());
                 habitDateToStart.setText(getStringDateFromLong(habit.getDateToStart()));
+
 
                 ArrayList<Boolean> days = (ArrayList<Boolean>) value.get("daysToDo");
                 for(int i=0;i<7;i++){

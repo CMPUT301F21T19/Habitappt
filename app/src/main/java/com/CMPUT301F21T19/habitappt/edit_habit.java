@@ -99,8 +99,10 @@ public class edit_habit extends DialogFragment {
         // click listeners for public/private button
         if (habit.getIsPrivate()) {
             isPrivateButton.setBackgroundColor(Color.RED);
+            isPrivateButton.setText("private habit");
         } else {
             isPrivateButton.setBackgroundColor(Color.GREEN);
+            isPrivateButton.setText("public habit");
         }
         isPrivateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,9 +110,11 @@ public class edit_habit extends DialogFragment {
                 if (habit.getIsPrivate()) {
                     habit.setIsPrivate(false);
                     isPrivateButton.setBackgroundColor(Color.GREEN);
+                    isPrivateButton.setText("public habit");
                 } else {
                     habit.setIsPrivate(true);
                     isPrivateButton.setBackgroundColor(Color.RED);
+                    isPrivateButton.setText("private habit");
                 }
             }
         });
@@ -228,6 +232,7 @@ public class edit_habit extends DialogFragment {
                 }
             });
 
+
         //create the alertdialog object
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
@@ -277,7 +282,6 @@ public class edit_habit extends DialogFragment {
 
         return alertDialog;
     }
-
 
     /**
      * used to seterror when text input too much or too litte
