@@ -61,6 +61,11 @@ class SharedHelper {
                 });
     }
 
+    /**
+     * removes habit given firestore db instance and habit
+     * @param habit
+     * @param db
+     */
     public static void removeHabit(Habit habit, FirebaseFirestore db){
         db.collection("Default User")
                 .document(String.valueOf(habit.getId()))
