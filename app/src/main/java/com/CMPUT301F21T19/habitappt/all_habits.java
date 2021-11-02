@@ -82,7 +82,7 @@ public class all_habits extends Fragment {
                     long dateToStart = (long) doc.getData().get("dateToStart");
                     ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
 
-                    habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id));
+                    habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, false));
                 }
 
                 habitAdapter.notifyDataSetChanged();

@@ -96,7 +96,7 @@ public class daily_habits extends Fragment {
                     if (todayDate.getTime() > startDate.getTime()) {
                         for (int i=0; i<datesToDo.size(); i++) {
                             if (datesToDo.get(i) && todayCal.get(Calendar.DAY_OF_WEEK) == ((i+1)%7)+1) {
-                                habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id));
+                                habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, false));
                             }
                         }
                     }
