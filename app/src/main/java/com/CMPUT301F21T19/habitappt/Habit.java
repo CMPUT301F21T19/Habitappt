@@ -92,8 +92,17 @@ public class Habit {
     public void setHabitEvents(ArrayList<HabitEvent> habitEvents) {
         this.habitEvents = habitEvents;
     }
+
     public ArrayList<HabitEvent> getHabitEvents(){
         return habitEvents;
+    }
+
+    public boolean getIsPrivate() {
+        return isPrivate;
+    }
+
+    public void setIsPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
     }
 
 

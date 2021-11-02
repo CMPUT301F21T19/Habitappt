@@ -49,6 +49,18 @@
                 android:inputType="text" />
 
             <TextView
+                android:id="@+id/public_private_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="public/private label" />
+
+            <Button
+                android:id="@+id/public_private_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="public/private button" />
+
+            <TextView
                 android:id="@+id/days_label"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
