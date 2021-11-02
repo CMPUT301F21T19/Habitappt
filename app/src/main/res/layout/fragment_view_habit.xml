@@ -52,6 +52,13 @@
             android:text="00/00/00"
             android:textSize="16sp" />
 
+        <TextView
+            android:id="@+id/isPrivate_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="public/private"
+            android:gravity="center" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
