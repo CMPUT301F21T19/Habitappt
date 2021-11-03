@@ -222,6 +222,7 @@
         android:clickable="true"
         android:focusable="true"
         app:backgroundTint="@color/colorPrimary"
+        android:tint="@color/colorWhite"
         app:srcCompat="@android:drawable/ic_input_add"
         app:borderWidth="0dp" >
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
