@@ -33,17 +33,17 @@ public class HabitEventTest {
 //        Activity activity = rule.getActivity();
 //    }
 
-        @Test
-        public void addHabitEvent() {
-            //solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
-            solo.clickOnView(solo.getView(R.id.habit_list));
-            solo.clickOnView(solo.getView(R.id.add_event_button));
-            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
-            //add image (not yet done)
-            solo.clickOnView(solo.getView(R.id.event_date_calendar));
-            solo.setDatePicker(0, 2021, 10, 10);
-            solo.clickOnView(solo.getView(android.R.id.button1));
-            //solo.clickOnView(solo.getView(R.id.dialog_button));
-        }
+//        @Test
+//        public void addHabitEvent() {
+//            //solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
+//            solo.clickOnView(solo.getView(R.id.habit_list));
+//            solo.clickOnView(solo.getView(R.id.add_event_button));
+//            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
+//            //add image (not yet done)
+//            solo.clickOnView(solo.getView(R.id.event_date_calendar));
+//            solo.setDatePicker(0, 2021, 10, 10);
+//            solo.clickOnView(solo.getView(android.R.id.button1));
+//            //solo.clickOnView(solo.getView(R.id.dialog_button));
+//        }
 }
 
