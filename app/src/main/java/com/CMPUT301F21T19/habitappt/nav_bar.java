@@ -44,28 +44,28 @@ public class nav_bar extends Fragment {
         profile_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.switchFragment(new profile());
                 profile_button.setBackgroundColor(Color.LTGRAY);
                 all_habits_button.setBackgroundColor(Color.WHITE);
                 daily_habits_button.setBackgroundColor(Color.WHITE);
+                listener.switchFragment(new profile());
             }
         });
         all_habits_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.switchFragment(new all_habits());
                 profile_button.setBackgroundColor(Color.WHITE);
                 all_habits_button.setBackgroundColor(Color.LTGRAY);
                 daily_habits_button.setBackgroundColor(Color.WHITE);
+                listener.switchFragment(new all_habits());
             }
         });
         daily_habits_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.switchFragment(new daily_habits());
                 profile_button.setBackgroundColor(Color.WHITE);
                 all_habits_button.setBackgroundColor(Color.WHITE);
                 daily_habits_button.setBackgroundColor(Color.LTGRAY);
+                listener.switchFragment(new daily_habits());
             }
         });
 
