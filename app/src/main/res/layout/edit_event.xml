@@ -17,29 +17,26 @@
             <TextView
                 android:id="@+id/event_comments_label"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="wrap_content"
                 android:gravity="center|center_horizontal"
                 android:text="Event Comments"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:layout_marginTop="20dp" />
 
             <EditText
                 android:id="@+id/event_comments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Event Comments"
+                android:hint="event comments..."
                 android:inputType="textPersonName" />
 
             <TextView
                 android:id="@+id/event_image_label"
                 android:layout_width="match_parent"
-                android:layout_height="41dp"
+                android:layout_height="wrap_content"
                 android:gravity="center|center_horizontal"
                 android:text="Attach Image:"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
+                android:layout_marginTop="20dp" />
 
             <ImageButton
                 android:id="@+id/event_img"
@@ -52,9 +49,10 @@
             <TextView
                 android:id="@+id/event_date_label"
                 android:layout_width="match_parent"
-                android:layout_height="61dp"
+                android:layout_height="wrap_content"
                 android:gravity="center|center_horizontal"
-                android:text="Event Date:" />
+                android:text="Event Date"
+                android:layout_marginTop="20dp"/>
 
             <CalendarView
                 android:id="@+id/event_date_calendar"

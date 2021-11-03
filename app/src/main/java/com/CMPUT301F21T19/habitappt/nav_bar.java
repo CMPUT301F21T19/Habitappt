@@ -1,6 +1,7 @@
 package com.CMPUT301F21T19.habitappt;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import java.io.Console;
 
 public class nav_bar extends Fragment {
-
     View profile_button;
     View all_habits_button;
     View daily_habits_button;
@@ -24,7 +24,7 @@ public class nav_bar extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context){
+    public void onAttach(Context context) {
         super.onAttach(context);
         listener = (nav_bar_switch) context;
     }
@@ -37,22 +37,35 @@ public class nav_bar extends Fragment {
         all_habits_button = view.findViewById(R.id.all_habit_button);
         daily_habits_button = view.findViewById(R.id.daily_habit_button);
 
+        profile_button.setBackgroundColor(Color.LTGRAY);
+        all_habits_button.setBackgroundColor(Color.WHITE);
+        daily_habits_button.setBackgroundColor(Color.WHITE);
+
         profile_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.switchFragment(new profile());
+                profile_button.setBackgroundColor(Color.LTGRAY);
+                all_habits_button.setBackgroundColor(Color.WHITE);
+                daily_habits_button.setBackgroundColor(Color.WHITE);
             }
         });
         all_habits_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.switchFragment(new all_habits());
+                profile_button.setBackgroundColor(Color.WHITE);
+                all_habits_button.setBackgroundColor(Color.LTGRAY);
+                daily_habits_button.setBackgroundColor(Color.WHITE);
             }
         });
         daily_habits_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.switchFragment(new daily_habits());
+                profile_button.setBackgroundColor(Color.WHITE);
+                all_habits_button.setBackgroundColor(Color.WHITE);
+                daily_habits_button.setBackgroundColor(Color.LTGRAY);
             }
         });
 
