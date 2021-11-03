@@ -8,21 +8,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class Habit {
+    private boolean isPrivate;
     private String title;
     private String reason;
     private long dateToStart;
     private ArrayList<Boolean> datesToDo;
+    private ArrayList<HabitEvent> habitEvents;
     String id;
 
-    private ArrayList<HabitEvent> habitEvents;
     private long score;
 
-    public Habit(String title,String reason,long dateToStart,ArrayList<Boolean> datesToDo,String id){
+    public Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate) {
+        this.isPrivate = isPrivate;
         this.title = title;
         this.reason = reason;
         this.dateToStart = dateToStart;
@@ -30,7 +30,8 @@ public class Habit {
         this.id = id;
     }
 
-    public Habit(){
+    public Habit() {
+        this.isPrivate = false;
         this.title = "";
         this.reason = "";
         this.dateToStart = GregorianCalendar.getInstance().getTimeInMillis();
@@ -53,7 +54,6 @@ public class Habit {
         if(i > datesToDo.size()){
             return false;
         }
-
         return datesToDo.get(i);
     }
 
@@ -61,9 +61,7 @@ public class Habit {
         if(i >= datesToDo.size() && i < 0){
             return false;
         }
-
         datesToDo.set(i,b);
-
         return true;
     }
 
@@ -91,45 +89,41 @@ public class Habit {
         this.dateToStart = dateToStart;
     }
 
+    public void setHabitEvents(ArrayList<HabitEvent> habitEvents) {
+        this.habitEvents = habitEvents;
+    }
 
-    public long calculateScore() {
+    public ArrayList<HabitEvent> getHabitEvents(){
+        return habitEvents;
+    }
 
-            Date start_date = new Date(1000L * this.dateToStart);
-            Calendar c = Calendar.getInstance();
-            c.setTime(start_date);
+    public boolean getIsPrivate() {
+        return isPrivate;
+    }
 
-            Date current_date = new Date();
+    public void setIsPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
+    }
 
-            long counter = 0; // Tracks total days habit is to be performed
 
-            // iterates through all the dates from start to current
-            // Checks to see if habit needs to be performed at each date
-            while (start_date.before(current_date)) {
-                if (this.datesToDo.get(c.get(Calendar.DAY_OF_WEEK) - 1)) {
-                    counter += 1;
-                }
-                c.add(Calendar.DATE, 1);
-                start_date = c.getTime();
+
+
+
+    public void calculateScore() {
+            for (int i = 0; i < 7; i++) {
+                datesToDo.add(false);
 
             }
-
-            if (habitEvents == null) {
-                return (long) 0;
-            }
-
-            return (long) (habitEvents.size() / counter) * 100;
-
-        }
+        habitEvents.size();
+        datesToDo.size();
+        //look through each a habits habit events,
+        // find how many days a habit event should have been done,
+        // how many has been done
+        // score returns percent 0-100
+    }
 
     public long getScore() { return score; }
 
     public void setScore(int newScore) { this.score = newScore; }
-
-    public void setHabitEvents(ArrayList<HabitEvent> habitEvents) {
-        this.habitEvents = habitEvents;
-    }
-    public ArrayList<HabitEvent> getHabitEvents(){
-        return habitEvents;
-    }
 }
 

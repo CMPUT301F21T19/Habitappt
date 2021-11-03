@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
 
@@ -52,15 +52,12 @@
             android:text="00/00/00"
             android:textSize="16sp" />
 
-        <ImageView
-            android:id="@+id/habit_score"
-            android:layout_width="80dp"
+        <TextView
+            android:id="@+id/isPrivate_text_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:scaleType="fitStart"
-            tools:srcCompat="@tools:sample/avatars" />
-        />
+            android:text="public/private"
+            android:gravity="center" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -141,15 +138,15 @@
         </LinearLayout>
 
         <com.baoyz.swipemenulistview.SwipeMenuListView
-            android:id="@id/event_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></com.baoyz.swipemenulistview.SwipeMenuListView>
-        <!--        <ListView-->
-        <!--            android:id="@+id/event_list"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content" >-->
+            android:layout_height="wrap_content"
+            android:id="@id/event_list"></com.baoyz.swipemenulistview.SwipeMenuListView>
+<!--        <ListView-->
+<!--            android:id="@+id/event_list"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" >-->
 
-        <!--        </ListView>-->
+<!--        </ListView>-->
 
 
     </LinearLayout>

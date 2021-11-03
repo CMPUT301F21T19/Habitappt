@@ -17,11 +17,10 @@
             <TextView
                 android:id="@+id/habit_title_label"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="wrap_content"
                 android:gravity="center|center_horizontal"
                 android:text="@string/habit_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:layout_marginTop="20dp" />
 
             <EditText
                 android:id="@+id/habit_title"
@@ -34,11 +33,10 @@
             <TextView
                 android:id="@+id/habit_reason_label"
                 android:layout_width="match_parent"
-                android:layout_height="41dp"
+                android:layout_height="wrap_content"
                 android:gravity="center|center_horizontal"
                 android:text="@string/habit_reason"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:layout_marginTop="20dp" />
 
             <EditText
                 android:id="@+id/habit_reason"
@@ -49,13 +47,26 @@
                 android:inputType="text" />
 
             <TextView
+                android:id="@+id/public_private_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|center_horizontal"
+                android:text="Habit Accessibility"
+                android:layout_marginTop="20dp" />
+
+            <Button
+                android:id="@+id/public_private_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="public/private button" />
+
+            <TextView
                 android:id="@+id/days_label"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:gravity="center|center_horizontal"
                 android:text="Days Of The Week"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:layout_marginTop="20dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -116,9 +127,10 @@
             <TextView
                 android:id="@+id/date_start_label"
                 android:layout_width="match_parent"
-                android:layout_height="61dp"
+                android:layout_height="wrap_content"
                 android:gravity="center|center_horizontal"
-                android:text="Date To Start" />
+                android:text="Date To Start"
+                android:layout_marginTop="20dp" />
 
             <CalendarView
                 android:id="@+id/date_to_start"

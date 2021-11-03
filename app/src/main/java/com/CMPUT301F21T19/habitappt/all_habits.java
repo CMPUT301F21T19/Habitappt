@@ -77,12 +77,13 @@ public class all_habits extends Fragment {
 
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String id = doc.getId();
+                    boolean isPrivate = (boolean) doc.getData().get("isPrivate");
                     String title = (String) doc.getData().get("title");
                     String reason = (String) doc.getData().get("reason");
                     long dateToStart = (long) doc.getData().get("dateToStart");
                     ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
 
-                    habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id));
+                    habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate));
                 }
 
                 habitAdapter.notifyDataSetChanged();
