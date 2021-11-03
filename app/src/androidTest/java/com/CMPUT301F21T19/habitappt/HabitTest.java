@@ -1,5 +1,7 @@
 package com.CMPUT301F21T19.habitappt;
 
+import static org.junit.Assert.assertTrue;
+
 import android.app.Activity;
 import android.widget.EditText;
 
@@ -38,13 +40,10 @@ public class HabitTest {
         @Test
         public void addHabit() {
 
-
-//            solo.clickOnView(solo.getView(R.id.bottom_nav_bar));
             solo.clickOnView(solo.getView(R.id.all_habit_button));
-
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
             solo.clickOnView(solo.getView(R.id.add_habit_button));
-            System.out.println("TEST!");
+
             solo.enterText((EditText) solo.getView(R.id.habit_title),"Habit1");
             solo.enterText((EditText) solo.getView(R.id.habit_reason),"Reason1");
             solo.clickOnButton("M");
@@ -52,6 +51,8 @@ public class HabitTest {
             solo.clickOnButton("F");
             solo.clickOnView(solo.getView(R.id.date_to_start));
             solo.clickOnButton("Confirm");
+
+            assertTrue(solo.waitForText("Habit1",1,2000));
 
         }
 
@@ -61,8 +62,8 @@ public class HabitTest {
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
 
+            // add Habit before deleting in case there are none.
             solo.clickOnView(solo.getView(R.id.add_habit_button));
-
             solo.enterText((EditText) solo.getView(R.id.habit_title),"Habit1");
             solo.enterText((EditText) solo.getView(R.id.habit_reason),"Reason1");
             solo.clickOnButton("M");
@@ -71,6 +72,7 @@ public class HabitTest {
             solo.clickOnView(solo.getView(R.id.date_to_start));
             solo.clickOnButton("Confirm");
 
+            // edit
             solo.clickInList(0);
             solo.clickOnView(solo.getView(R.id.edit_button));
             solo.clearEditText((EditText) solo.getView(R.id.habit_title));
@@ -82,13 +84,75 @@ public class HabitTest {
             solo.clickOnView(solo.getView(R.id.date_to_start));
             solo.clickOnButton("Confirm");
         }
-//
-//        @Test
-//        public void deleteHabit() {
-//            solo.clickOnView(solo.getView(R.id.habit_list));
-//            solo.clickInList(0);
-//            solo.clickOnView(solo.getView(R.id.edit_button));
-//            solo.clickOnButton("Remove Habit");
-//        }
+
+        @Test
+        public void deleteHabit() {
+
+            solo.clickOnView(solo.getView(R.id.all_habit_button));
+
+            // add Habit before deleting in case there are none.
+            solo.clickOnView(solo.getView(R.id.add_habit_button));
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"Habit1");
+            solo.enterText((EditText) solo.getView(R.id.habit_reason),"Reason1");
+            solo.clickOnButton("M");
+            solo.clickOnButton("W");
+            solo.clickOnButton("F");
+            solo.clickOnView(solo.getView(R.id.date_to_start));
+            solo.clickOnButton("Confirm");
+
+            //delete habit
+            solo.clickOnView(solo.getView(R.id.habit_list));
+            solo.clickOnView(solo.getView(R.id.edit_button));
+            solo.clickOnButton("Remove Habit");
+        }
+
+        @Test
+        public void addDailyHabit(){
+
+            solo.clickOnView(solo.getView(R.id.daily_habit_button));
+            solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
+            solo.clickOnView(solo.getView(R.id.add_habit_button));
+
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"Habit1");
+            solo.enterText((EditText) solo.getView(R.id.habit_reason),"Reason1");
+            solo.clickOnButton("M");
+            solo.clickOnButton("T");
+            solo.clickOnButton("W");
+            solo.clickOnButton("R");
+            solo.clickOnButton("F");
+            solo.clickOnButton("S");
+            solo.clickOnButton("U");
+            solo.clickOnView(solo.getView(R.id.date_to_start));
+            solo.clickOnButton("Confirm");
+
+            assertTrue(solo.waitForText("Habit1",1,2000));
+
+        }
+
+    @Test
+    public void deleteDailyHabit() {
+
+        solo.clickOnView(solo.getView(R.id.daily_habit_button));
+
+        // add Habit before deleting in case there are none.
+        solo.clickOnView(solo.getView(R.id.add_habit_button));
+        solo.enterText((EditText) solo.getView(R.id.habit_title),"Habit1");
+        solo.enterText((EditText) solo.getView(R.id.habit_reason),"Reason1");
+        solo.clickOnButton("M");
+        solo.clickOnButton("T");
+        solo.clickOnButton("W");
+        solo.clickOnButton("R");
+        solo.clickOnButton("F");
+        solo.clickOnButton("S");
+        solo.clickOnButton("U");
+        solo.clickOnView(solo.getView(R.id.date_to_start));
+        solo.clickOnButton("Confirm");
+
+        //delete habit
+        solo.clickOnView(solo.getView(R.id.habit_list));
+        solo.clickOnView(solo.getView(R.id.edit_button));
+        solo.clickOnButton("Remove Habit");
+    }
+
 }
 

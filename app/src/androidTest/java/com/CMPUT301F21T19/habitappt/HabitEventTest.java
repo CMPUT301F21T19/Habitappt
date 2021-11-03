@@ -1,5 +1,7 @@
 package com.CMPUT301F21T19.habitappt;
 
+import static org.junit.Assert.assertTrue;
+
 import android.widget.EditText;
 
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -21,11 +23,13 @@ public class HabitEventTest {
 
         @Before
         public void setUp() throws Exception{
+            if(solo != null){
+                solo.finishOpenedActivities();
+            }
             solo = new Solo(InstrumentationRegistry.getInstrumentation(),rule.getActivity());
             solo.clickOnView(solo.getView(R.id.login_button));
-            solo.clickOnView(solo.getView(R.id.bottom_nav_bar));
-            solo.clickOnView(solo.getView(R.id.all_habit_button));
-            //solo.clickOnButton(R.id.all_habit_button);
+
+
         }
 
 //    @Test
@@ -33,17 +37,20 @@ public class HabitEventTest {
 //        Activity activity = rule.getActivity();
 //    }
 
-//        @Test
-//        public void addHabitEvent() {
-//            //solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
-//            solo.clickOnView(solo.getView(R.id.habit_list));
-//            solo.clickOnView(solo.getView(R.id.add_event_button));
-//            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
-//            //add image (not yet done)
-//            solo.clickOnView(solo.getView(R.id.event_date_calendar));
-//            solo.setDatePicker(0, 2021, 10, 10);
-//            solo.clickOnView(solo.getView(android.R.id.button1));
-//            //solo.clickOnView(solo.getView(R.id.dialog_button));
-//        }
+        @Test
+        public void addHabitEvent() {
+            solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
+            solo.clickOnView(solo.getView(R.id.all_habit_button));
+
+            solo.clickOnView(solo.getView(R.id.habit_list));
+            //solo.clickInList(0);
+            solo.clickOnView(solo.getView(R.id.add_event_button));
+            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
+            solo.clickOnView(solo.getView(R.id.event_img));
+            solo.clickOnView(solo.getView(R.id.event_date_calendar));
+            solo.clickOnButton("Confirm");
+            assertTrue(solo.waitForText("Event Comment 1", 1,2000 ));
+
+        }
 }
 
