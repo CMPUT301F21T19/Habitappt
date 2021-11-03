@@ -7,13 +7,16 @@
     android:layout_height="match_parent"
     android:layout_gravity="top"
     android:foregroundGravity="top"
+    android:background="@drawable/main_background"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
     <ListView
         android:id="@+id/habit_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:divider="@color/colorPrimaryDark"
+        android:dividerHeight="5px">
     </ListView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -25,8 +28,9 @@
         android:clickable="true"
         android:focusable="true"
         android:backgroundTint="@color/colorPrimary"
+        android:tint="@color/colorWhite"
         app:srcCompat="@android:drawable/ic_input_add"
-        app:borderWidth="0dp" >
+        app:borderWidth="0dp">
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 </FrameLayout>
