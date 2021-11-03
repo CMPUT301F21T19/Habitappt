@@ -39,19 +39,19 @@ public class HabitList extends ArrayAdapter<Habit> {
 
         habitName.setText(habit.getTitle());
 
-        ImageView habit_score = view.findViewById(R.id.habit_score);
-
-        long score = habit.calculateScore();
-        if (score < 20) {
-            habit_score.setImageResource(R.drawable.ic_disappointed_emoji);
-        } else if (score < 40) {
-            habit_score.setImageResource(R.drawable.ic_orange_emoji);
-        } else if (score < 60) {
-            habit_score.setImageResource(R.drawable.ic_yellow_emoji);
-        } else if (score < 80) {
-            habit_score.setImageResource(R.drawable.ic_light_green_emoji);
-        } else {
-            habit_score.setImageResource(R.drawable.ic_bright_green_emoji);}
+//        ImageView habit_score = view.findViewById(R.id.habit_score);
+//
+//        long score = habit.calculateScore();
+//        if (score < 20) {
+//            habit_score.setImageResource(R.drawable.ic_disappointed_emoji);
+//        } else if (score < 40) {
+//            habit_score.setImageResource(R.drawable.ic_orange_emoji);
+//        } else if (score < 60) {
+//            habit_score.setImageResource(R.drawable.ic_yellow_emoji);
+//        } else if (score < 80) {
+//            habit_score.setImageResource(R.drawable.ic_light_green_emoji);
+//        } else {
+//            habit_score.setImageResource(R.drawable.ic_bright_green_emoji);}
 
         return view;
     }
