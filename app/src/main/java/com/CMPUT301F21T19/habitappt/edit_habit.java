@@ -122,7 +122,7 @@ public class edit_habit extends DialogFragment {
         // click listeners for weekday buttons
         for(int i=0;i<7;i++){
             if(habit.getDateSelected(i)){
-                days_of_week.get(i).setBackgroundColor(Color.GREEN);
+                days_of_week.get(i).setBackgroundColor(Color.LTGRAY);
             } else {
                 days_of_week.get(i).setBackgroundColor(Color.WHITE);
             }
@@ -135,7 +135,7 @@ public class edit_habit extends DialogFragment {
                         days_of_week.get(index).setBackgroundColor(Color.WHITE);
                     } else {
                         habit.setDateSelected(index,true);
-                        days_of_week.get(index).setBackgroundColor(Color.GREEN);
+                        days_of_week.get(index).setBackgroundColor(Color.LTGRAY);
                     }
                 }
             });

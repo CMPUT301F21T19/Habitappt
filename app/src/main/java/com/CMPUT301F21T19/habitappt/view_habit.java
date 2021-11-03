@@ -266,7 +266,7 @@ public class view_habit extends Fragment {
                 ArrayList<Boolean> days = (ArrayList<Boolean>) value.get("daysToDo");
                 for(int i=0;i<7;i++){
                     if(days.get(i)){
-                        daysToDo.get(i).setBackgroundColor(Color.GREEN);
+                        daysToDo.get(i).setBackgroundColor(Color.LTGRAY);
                     }
                     else{
                         daysToDo.get(i).setBackgroundColor(Color.WHITE);
@@ -339,7 +339,7 @@ public class view_habit extends Fragment {
 
         for(int i=0;i<7;i++){
             if(habit.getDateSelected(i)){
-                daysToDo.get(i).setBackgroundColor(Color.GREEN);
+                daysToDo.get(i).setBackgroundColor(Color.LTGRAY);
             }
             else{
                 daysToDo.get(i).setBackgroundColor(Color.WHITE);
