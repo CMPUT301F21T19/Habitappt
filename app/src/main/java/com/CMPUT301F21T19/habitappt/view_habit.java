@@ -1,5 +1,7 @@
 package com.CMPUT301F21T19.habitappt;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -51,6 +53,8 @@ public class view_habit extends Fragment {
 
     private View view;
 
+    public MainActivity main;
+
     private TextView habitIsPrivate;
     private TextView habitTitle;
     private TextView habitReason;
@@ -93,7 +97,13 @@ public class view_habit extends Fragment {
         return dateText;
     }
 
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof Activity) {
+            main = (MainActivity) context;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -240,7 +250,7 @@ public class view_habit extends Fragment {
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 
                 if(value.get("title") == null){
-                    FragmentTransaction trans = getParentFragmentManager().beginTransaction();
+                    FragmentTransaction trans = main.getSupportFragmentManager().beginTransaction();
                     trans.replace(R.id.main_container,new all_habits());
                     trans.commit();
                     return;
