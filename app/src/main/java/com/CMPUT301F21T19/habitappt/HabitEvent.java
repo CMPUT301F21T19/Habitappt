@@ -28,8 +28,6 @@ public class HabitEvent {
     }
 
 
-
-
     public HabitEvent(String comment, long eventDate,Habit parentHabit, String id){
         this.comment = comment;
         this.eventDate = eventDate;
