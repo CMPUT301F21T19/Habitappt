@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -26,7 +25,7 @@
                 android:id="@+id/habit_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/habit_title"
+                android:hint="habit title..."
                 android:ems="10"
                 android:inputType="text" />
 
@@ -42,7 +41,7 @@
                 android:id="@+id/habit_reason"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/habit_reason"
+                android:hint="habit reason..."
                 android:ems="10"
                 android:inputType="text" />
 
@@ -75,51 +74,51 @@
 
                 <Button
                     android:id="@+id/monday_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.15"
                     android:text="M" />
 
                 <Button
                     android:id="@+id/tuesday_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.14"
                     android:text="T" />
 
                 <Button
                     android:id="@+id/wednesday_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.14"
                     android:text="W" />
 
                 <Button
                     android:id="@+id/thursday_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.14"
                     android:text="R" />
 
                 <Button
                     android:id="@+id/friday_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.14"
                     android:text="F" />
 
                 <Button
                     android:id="@+id/saturday_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.14"
                     android:text="S" />
 
                 <Button
                     android:id="@+id/sunday_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.15"
                     android:text="U" />
 
             </LinearLayout>
