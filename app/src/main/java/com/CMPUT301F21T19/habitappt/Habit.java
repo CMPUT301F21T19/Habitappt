@@ -64,6 +64,7 @@ public class Habit {
         this.datesToDo = datesToDo;
         this.id = id;
     }
+    
     /**
      * Instantiates the Habit object
      */
