@@ -1,57 +1,53 @@
+/**
+ * Copyright 2021 - 2021 CMPUT301F21T19 (Habitappt). All rights reserved. This document nor any
+ * part of it may be reproduced, stored in a retrieval system or transmitted in any for or by any
+ * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
+ * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
+ *
+ * Class: Habit
+ *
+ * Description: An object which contains all of the attributes of a habit as entered by the user
+ *
+ * Changelog:
+ * =|Version|=|User(s)|==|Date|========|Description|================================================
+ *   1.0       Sohaib    Oct-20-2021   Halfway through initial UI framework
+ *   1.1       Andrew    Oct-21-2021   Implemented nav bar and fragment switching in main container!
+ *   1.3       Andrew    Oct-23-2021   Update Habit.java
+ *   1.4       Andrew    Oct-23-2021   Adding habits!
+ *   1.7       Hamzah    Oct-25-2021   Modified edit Habit
+ *   1.9       Hamzah    Oct-31-2021   Added getters and setters in habit class for habiteventslist
+ *   1.10      Logan     Nov-01-2021   added isPrivate to habit constructor and removed unused java classes
+ *   1.11      Hamzah    Nov-01-2021   isPrivate UI and database implementation
+ *   1.13      Andrew    Nov-03-2021   Tests for Habit and HabitEvent
+ * =|=======|=|======|===|====|========|===========|================================================
+ */
+
 package com.CMPUT301F21T19.habitappt;
 
-import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
-/**
- * Represents a habit that a user wants to implement in their life
- * A Habit is to be completed weekly for a set number of days, and completing them
- * Will increase the given users 'score'
- */
 public class Habit {
-    /**
-     * denotes whether habit is public or private
-     */
     private boolean isPrivate;
-    /**
-     * covers basic info on habit, such as title, reason, and date beginning
-     */
     private String title;
     private String reason;
     private long dateToStart;
-    /**
-     * datesToDo represents the dates selected in the week to complete the given habit
-     */
     private ArrayList<Boolean> datesToDo;
-    /**
-     * list of associated events to given habit
-     */
     private ArrayList<HabitEvent> habitEvents;
-    /**
-     * id associated to db instance of habit
-     */
     String id;
 
-    /**
-     * score associated to habit completion
-     */
     private long score;
 
     /**
-     * creates a habit with its associated info
-     * @param title
-     * @param reason
-     * @param dateToStart
-     * @param datesToDo
-     * @param id
-     * @param isPrivate
+     * Create a habit object and assign parameters
+     * @param title The title of the habit
+     * @param reason A reason for why the user want to create the habit
+     * @param dateToStart The date the users is scheduled to start the habit
+     * @param datesToDo the weekly frequency which specifies when the user is to complete the habit
+     * @param id A unique identifier for the habit object
+     * @param isPrivate Denotes whether this habit is private or not
      */
     public Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate) {
         this.isPrivate = isPrivate;
@@ -61,9 +57,9 @@ public class Habit {
         this.datesToDo = datesToDo;
         this.id = id;
     }
-
+    
     /**
-     * empty constructor habit with base parameters
+     * Instantiates the Habit object
      */
     public Habit() {
         this.isPrivate = false;
@@ -77,28 +73,14 @@ public class Habit {
         id = "-1";
     }
 
-    /**
-     * returns habit id
-     * @return id
-     */
     public String getId(){
         return id;
     }
 
-    /**
-     * gets the dates habits are expected to be completed
-     * @return list of dates
-     */
     public ArrayList<Boolean> getWeekly(){
         return datesToDo;
     }
 
-    /**
-     * returns whether or not day passed must be completed or not,
-     * or returns null if not expected to
-     * @param i
-     * @return null, true or false (depending on if date valid)
-     */
     public Boolean getDateSelected(int i){
         if(i > datesToDo.size() || i < 0){
             return null;
@@ -106,12 +88,6 @@ public class Habit {
         return datesToDo.get(i);
     }
 
-    /**
-     * sets a date to be completed
-     * @param i
-     * @param b
-     * @return true if date can be set, false if not
-     */
     public Boolean setDateSelected(int i,Boolean b){
         if(i >= datesToDo.size() || i < 0){
             return false;
@@ -120,113 +96,83 @@ public class Habit {
         return true;
     }
 
-    /**
-     * gets Title
-     * @return title
-     */
     public String getTitle() {
         return title;
     }
 
-    /**
-     * sets title
-     * @param title
-     */
     public void setTitle(String title) {
         this.title = title;
     }
 
-    /**
-     * gets reason
-     * @return reason
-     */
     public String getReason() {
         return reason;
     }
 
-    /**
-     * sets reason
-     * @param reason
-     */
     public void setReason(String reason) {
         this.reason = reason;
     }
 
-    /**
-     * gets date to start
-     * @return date to start
-     */
     public long getDateToStart() {
         return dateToStart;
     }
 
-    /**
-     * sets date to start
-     * @param dateToStart
-     */
     public void setDateToStart(long dateToStart) {
         this.dateToStart = dateToStart;
     }
 
-    /**
-     * sets habit events data structure with passed arraylist
-     * @param habitEvents
-     */
     public void setHabitEvents(ArrayList<HabitEvent> habitEvents) {
         this.habitEvents = habitEvents;
     }
 
-    /**
-     * gets habit events list
-     * @return habitEvents
-     */
     public ArrayList<HabitEvent> getHabitEvents(){
         return habitEvents;
     }
 
-    /**
-     * checks whether private/public habit
-     * @return isPrivate
-     */
     public boolean getIsPrivate() {
         return isPrivate;
     }
 
-    /**
-     * sets privacy for habit
-     * @param isPrivate
-     */
     public void setIsPrivate(boolean isPrivate) {
         this.isPrivate = isPrivate;
     }
 
-
-
-
-
-//    public void calculateScore() {
-//            for (int i = 0; i < 7; i++) {
-//                datesToDo.add(false);
-//
-//            }
-//        habitEvents.size();
-//        datesToDo.size();
-//        //look through each a habits habit events,
-//        // find how many days a habit event should have been done,
-//        // how many has been done
-//        // score returns percent 0-100
-//    }
-
     /**
-     * gets associated user score on meeting habit completions
-     * @return score
+     * Calculates the score of a given habit to track progress of how often the habit is being completed
+     * @return Percentage of of habit events completed per total number of habit occurrences
      */
+    public long calculateScore() {
+
+        Date start_date = new Date(1000L * this.dateToStart);
+        Calendar c = Calendar.getInstance();
+        c.setTime(start_date);
+
+        Date current_date = new Date();
+
+        long counter = 0; // Tracks total days habit is to be performed
+
+        // iterates through all the dates from start to current
+        // Checks to see if habit needs to be performed at each date
+        // When loop if done, counter should have the total number of habit that should have been completed
+        while (start_date.before(current_date)) {
+            if (this.datesToDo.get(c.get(Calendar.DAY_OF_WEEK) - 1)) {
+                counter += 1;
+            }
+            c.add(Calendar.DATE, 1);
+            start_date = c.getTime();
+
+        }
+
+        // Checks if habit event is empty
+        if (habitEvents == null) {
+            return (long) -1;
+        }
+
+        return (long) (habitEvents.size() / counter) * 100;
+    }
+
     public long getScore() { return score; }
 
-    /**
-     * sets associated user score on meeting habit completions
-     * @param newScore
-     */
-    public void setScore(int newScore) { this.score = newScore; }
+    public void setScore(int newScore) { this.score = newScore;}
+
 }
 

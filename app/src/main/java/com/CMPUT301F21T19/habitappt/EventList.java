@@ -11,9 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * represents list of events for associated users habits, inherits array adapter
@@ -28,8 +26,8 @@ public class EventList extends ArrayAdapter<HabitEvent> {
 
     /**
      * constructs eventlist given passedcontext and list of events
-     * @param context
-     * @param events
+     * @param context context of main activity
+     * @param events list of events
      */
     public EventList(@NonNull Context context, ArrayList<HabitEvent> events) {
         super(context, 0, events);
@@ -39,9 +37,9 @@ public class EventList extends ArrayAdapter<HabitEvent> {
 
     /**
      * creates custom array adapter view for events
-     * @param position
-     * @param convertView
-     * @param parent
+     * @param position position on array adapter
+     * @param convertView view
+     * @param parent parent
      * @return view
      */
     @NonNull

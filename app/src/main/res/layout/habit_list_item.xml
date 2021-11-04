@@ -22,7 +22,7 @@
             android:textSize="30sp"></TextView>
 
         <TextView
-            android:id="@+id/habit_reason"
+            android:id="@+id/habit_reason_list_text"
             android:layout_width="950px"
             android:layout_height="wrap_content"
             android:paddingLeft="20px"

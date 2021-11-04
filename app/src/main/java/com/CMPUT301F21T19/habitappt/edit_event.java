@@ -1,3 +1,37 @@
+/**
+ * Copyright 2021 - 2021 CMPUT301F21T19 (Habitappt). All rights reserved. This document nor any
+ * part of it may be reproduced, stored in a retrieval system or transmitted in any for or by any
+ * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
+ * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
+ *
+ * Class: edit_event
+ *
+ * Description: Lets users add, edit, delete on the habit event page
+ *
+ * Changelog:
+ * =|Version|=|User(s)|==|Date|========|Description|================================================
+ *   1.0       Sohaib    Oct-24-2021   added Habit Events
+ *   1.1       Andrew    Oct-25-2021   habit event editing and list
+ *   1.2       Hamzah    Oct-31-2021   Added event swipe to edit/delete functionality, yet to actually complete
+ *   1.3       Andrew    Oct-27-2021   added image activity and uploading images with events to firestorage
+ *   1.4       Andrew    Oct-27-2021   Images for events
+ *   1.5       Hamzah    Oct-28-2021   Added event deletion functionality
+ *   1.6       Andrew    Oct-28-2021   fixed images not updating after editing habit event
+ *   1.7       Hamzah    Oct-31-2021   Remove event image (if existing) from storage complete
+ *
+ *   1.8       Hamzah    Oct-31-2021   Added Getters/setters in habit class for habiteventlist also
+ *                                     modified view habit to use habiteventslist list instead of
+ *                                     list created locally, refactored delete image in edit_event
+ *
+ *   1.9       Hamzah    Oct-31-2021   Refactored removing habit, moved functionality to
+ *                                     SharedHelper.java class
+ *
+ *   1.10      Andrew    Nov-01-2021   fixed event not deleting. both image and event are deleted
+ *                                     upon clicking the delete button on a habit event now
+ *   1.11      Hamzah    Nov-02-2021   fixed incorrect deletion of habit event when cancel is selected
+ * =|=======|=|======|===|====|========|===========|================================================
+ */
+
 package com.CMPUT301F21T19.habitappt;
 
 import android.app.AlertDialog;
@@ -63,6 +97,13 @@ public class edit_event extends DialogFragment {
 
     protected edit_event THIS;
 
+    /**
+     * create a edit_event object with the specified values
+     * @param event habit event object
+     * @param habit the habit object in which the event will be under
+     * @param tag string which contain either the sting "ADD", "EDIT", or "REMOVE" to denote
+     *            whether the event already exists or not
+     */
     public edit_event(HabitEvent event, Habit habit, String tag){
         this.event = event;
         if(tag == "ADD" || tag == "EDIT"){
@@ -81,7 +122,9 @@ public class edit_event extends DialogFragment {
 //        this.removeTextTitle = "Cancel";
 //        this.date_selected = GregorianCalendar.getInstance().getTimeInMillis();
 //    }
-
+    /**
+     * Checks to see if event comment input length is less than twenty
+     */
     public void checkInput(){
         if(THIS.eventComments.getText().length() == 0){
             THIS.eventComments.setError("Comments cannot be empty");

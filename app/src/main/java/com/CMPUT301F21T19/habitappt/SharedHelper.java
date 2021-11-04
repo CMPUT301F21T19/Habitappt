@@ -1,3 +1,21 @@
+/**
+ * Copyright 2021 - 2021 CMPUT301F21T19 (Habitappt). All rights reserved. This document nor any
+ * part of it may be reproduced, stored in a retrieval system or transmitted in any for or by any
+ * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
+ * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
+ *
+ * Class: SharedHelper
+ *
+ * Description: Used to share methods and instance variables necessary between classes
+ *
+ * Changelog:
+ * =|Version|=|User(s)|==|Date|========|Description|================================================
+ *   1.0       Hamzah     Oct-31-2021   Refactored removing habit, moved functionality to SharedHelper.java class
+ *   1.1       Hamzah     Oct-31-2021   Fixed incorrect deletion of habit event when cancel is selected
+ *   1.2       Andrew     Nov-03-2021   Added shared method to sharedHelper class
+ * =|=======|=|======|===|====|========|===========|================================================
+ */
+
 package com.CMPUT301F21T19.habitappt;
 
 import android.util.Log;
@@ -13,9 +31,6 @@ import com.google.firebase.storage.StorageReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Class that can be used to share methods and instance variables necessary between classes
- */
 class SharedHelper {
     /**
      * deletes image given storage instance
