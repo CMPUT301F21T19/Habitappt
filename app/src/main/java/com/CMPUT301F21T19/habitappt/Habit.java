@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 /**
- * Represent a habit that a user wants to implement in their life
+ * Represents a habit that a user wants to implement in their life
  * A Habit is to be completed weekly for a set number of days, and completing them
  * Will increase the given users 'score'
  */
@@ -193,7 +193,7 @@ public class Habit {
     }
 
     /**
-     * sets privacy fo habit
+     * sets privacy for habit
      * @param isPrivate
      */
     public void setIsPrivate(boolean isPrivate) {
