@@ -34,7 +34,7 @@ public class HabitEventTest {
         @Test
         public void start() throws Exception {
         Activity activity = rule.getActivity();
-    }
+        }
 
         @Test
         public void addHabitEvent() {
@@ -65,6 +65,19 @@ public class HabitEventTest {
             solo.clickOnView(solo.getView(R.id.event_date_calendar));
             solo.clickOnButton("Confirm");
             assertTrue(solo.waitForText("20characterlimitttt", 1,5000 ));
+        }
+
+        @Test
+        public void viewHabitEvent(){
+            solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
+
+            solo.clickOnView(solo.getView(R.id.all_habit_button));
+            solo.clickOnView(solo.getView(R.id.habit_list));
+            solo.clickInList(0);
+
+            solo.sleep(5000);
+
+
         }
 }
 
