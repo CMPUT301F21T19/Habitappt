@@ -177,5 +177,9 @@ public class Habit {
         return (long) (habitEvents.size() / counter) * 100;
     }
 
+    public long getScore() { return score; }
+
+    public void setScore(int newScore) { this.score = newScore;}
+
 }
 
