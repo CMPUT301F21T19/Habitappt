@@ -10,6 +10,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Class that can be used to share methods and instance variables necessary between classes
  */
@@ -82,5 +85,17 @@ class SharedHelper {
                         Log.i("data","Data could not be removed" + e.toString());
                     }
                 });
+    }
+
+    /**
+     * Gets the string date of a date in long integer format.
+     * @param l
+     * @return
+     */
+    public static String getStringDateFromLong(long l){
+        Date date= new Date(l);
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        String dateText = df.format(date);
+        return dateText;
     }
 }
