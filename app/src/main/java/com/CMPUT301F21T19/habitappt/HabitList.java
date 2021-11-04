@@ -35,8 +35,10 @@ public class HabitList extends ArrayAdapter<Habit> {
         Habit habit = habits.get(position);
 
         TextView habitName = view.findViewById(R.id.habit_name);
+        TextView habitReason = view.findViewById(R.id.habit_reason);
 
         habitName.setText(habit.getTitle());
+        habitReason.setText(habit.getReason());
 
         return view;
     }
