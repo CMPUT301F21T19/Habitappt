@@ -23,73 +23,24 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 
-public class all_habits extends Fragment {
-    ListView habitListView;
-    ArrayAdapter<Habit> habitAdapter;
-    ArrayList<Habit> habitDataList;
-
-    View addHabitButton;
-    FirebaseFirestore db;
-
-    private View view;
+public class all_habits extends abstract_habit_list_fragment {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+        habitDataList.clear();
+
+        for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+            String id = doc.getId();
+            boolean isPrivate = (boolean) doc.getData().get("isPrivate");
+            String title = (String) doc.getData().get("title");
+            String reason = (String) doc.getData().get("reason");
+            long dateToStart = (long) doc.getData().get("dateToStart");
+            ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
+
+            habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate));
+        }
+
+        habitAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_habits_list, container, false);
-
-        addHabitButton = view.findViewById(R.id.add_habit_button);
-        habitListView = view.findViewById(R.id.habit_list);
-
-        db = FirebaseFirestore.getInstance();
-
-        final CollectionReference collectionReference = db.collection("Default User");
-
-        habitDataList = new ArrayList<>();
-        habitAdapter = new HabitList(getContext(), habitDataList);
-        habitListView.setAdapter(habitAdapter);
-
-        habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
-                trans.replace(R.id.main_container,new view_habit(habitDataList.get(position)));
-                trans.addToBackStack("viewhabit");
-                trans.commit();
-            }
-        });
-
-        addHabitButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new edit_habit().show(getActivity().getSupportFragmentManager(), "ADD");
-            }
-        });
-
-        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                habitDataList.clear();
-
-                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
-                    String id = doc.getId();
-                    boolean isPrivate = (boolean) doc.getData().get("isPrivate");
-                    String title = (String) doc.getData().get("title");
-                    String reason = (String) doc.getData().get("reason");
-                    long dateToStart = (long) doc.getData().get("dateToStart");
-                    ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
-
-                    habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate));
-                }
-
-                habitAdapter.notifyDataSetChanged();
-            }
-        });
-
-        return view;
-    }
 }
