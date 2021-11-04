@@ -6,7 +6,7 @@
  *
  * Class: edit_habit
  *
- * Description: Lets users add, edit, delete on the habit event page
+ * Description: Lets users to add & edit a habit
  *
  * Changelog:
  * =|Version|=|User(s)|==|Date|========|Description|================================================
