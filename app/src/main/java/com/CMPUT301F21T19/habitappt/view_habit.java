@@ -86,13 +86,6 @@ public class view_habit extends Fragment {
 
     }
 
-    private String getStringDateFromLong(long l){
-        Date date= new Date(l);
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        String dateText = df.format(date);
-        return dateText;
-    }
-
 
 
     @Override
@@ -260,7 +253,7 @@ public class view_habit extends Fragment {
                 }
                 habitTitle.setText(habit.getTitle());
                 habitReason.setText(habit.getReason());
-                habitDateToStart.setText(getStringDateFromLong(habit.getDateToStart()));
+                habitDateToStart.setText(SharedHelper.getStringDateFromLong(habit.getDateToStart()));
 
 
                 ArrayList<Boolean> days = (ArrayList<Boolean>) value.get("daysToDo");
@@ -335,7 +328,7 @@ public class view_habit extends Fragment {
         //testing push
 
 
-        habitDateToStart.setText(getStringDateFromLong(habit.getDateToStart()));
+        habitDateToStart.setText(SharedHelper.getStringDateFromLong(habit.getDateToStart()));
 
         for(int i=0;i<7;i++){
             if(habit.getDateSelected(i)){

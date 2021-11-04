@@ -26,12 +26,7 @@ public class EventList extends ArrayAdapter<HabitEvent> {
         this.context = context;
     }
 
-    private String getStringDateFromLong(long l){
-        Date date= new Date(l);
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        String dateText = df.format(date);
-        return dateText;
-    }
+
 
     @NonNull
     @Override
@@ -55,7 +50,7 @@ public class EventList extends ArrayAdapter<HabitEvent> {
 
 
         eventComment.setText(event.getComment());
-        eventDate.setText(getStringDateFromLong(event.getEventDate()));
+        eventDate.setText(SharedHelper.getStringDateFromLong(event.getEventDate()));
 
         return view;
     }
