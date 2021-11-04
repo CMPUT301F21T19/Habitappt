@@ -29,8 +29,6 @@ public class HabitEventTest {
             }
             solo = new Solo(InstrumentationRegistry.getInstrumentation(),rule.getActivity());
             solo.clickOnView(solo.getView(R.id.login_button));
-
-
         }
 
         @Test
@@ -55,16 +53,18 @@ public class HabitEventTest {
 
         @Test
         public void characterlimit(){
+            solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
+
             solo.clickOnView(solo.getView(R.id.all_habit_button));
             solo.clickOnView(solo.getView(R.id.habit_list));
             solo.clickInList(0);
+
             solo.clickOnView(solo.getView(R.id.add_event_button));
-            solo.enterText((EditText) solo.getView(R.id.event_comments),"20characterlimittttt");
+            solo.clearEditText((EditText) solo.getView(R.id.event_comments));
+            solo.enterText((EditText) solo.getView(R.id.event_comments),"20characterlimitttt");
             solo.clickOnView(solo.getView(R.id.event_date_calendar));
             solo.clickOnButton("Confirm");
-            assertTrue(solo.waitForText("20characterlimittttt", 1,2000 ));
-
-
+            assertTrue(solo.waitForText("20characterlimitttt", 1,5000 ));
         }
 }
 
