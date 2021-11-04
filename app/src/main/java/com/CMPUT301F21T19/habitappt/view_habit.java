@@ -1,3 +1,35 @@
+/**
+ * Copyright 2021 - 2021 CMPUT301F21T19 (Habitappt). All rights reserved. This document nor any
+ * part of it may be reproduced, stored in a retrieval system or transmitted in any for or by any
+ * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
+ * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
+ *
+ * Class: view_habit
+ *
+ * Description: Displays habit info as well as event associated with the habit. Handles user
+ *              interaction to edit habit and add habit events
+ *
+ * Changelog:
+ * =|Version|=|User(s)|==|Date|========|Description|================================================
+ *   1.0       Andrew    Oct-23-2021   View and edit habits done
+ *   1.1       Sohaib    Oct-24-2021   Added habit events
+ *   1.2       Andrew    Oct-25-2021   Habit events editing and list
+ *   1.3       Hamzah    Oct-27-2021   Added event swipe to edit/delete functionality
+ *   1.4       Andrew    Oct-27-2021   Images for events
+ *   1.5       Andrew    Oct-27-2021   Fixed bug with deleting a habit crashing the app
+ *   1.6       Hamzah    Oct-28-2021   Added event deletion functionality
+ *   1.7       Andrew    Oct-28-2021   fixed images not updating after editing habit event
+ *   1.8       Hamzah    Oct-31-2021   Added getters and setters in habit class for habiteventslist,
+ *                                     also modified view habit to use habiteventslist list instead
+ *                                     of list created locally, refactored delete image in edit_event
+ *
+ *   1.9       Logan     Nov-01-2021   Added isPrivate indicator in view_habit
+ *   1.10      Logan     Nov-01-2021   Reorganized the view habit fragment
+ *   1.11      Andrew    Oct-03-2021   Added shared method to sharedHelper class
+ *   1.12      Logan     Nov-04-2021   Fixed catastrophic fragment blunder
+ * =|=======|=|======|===|====|========|===========|================================================
+ */
+
 package com.CMPUT301F21T19.habitappt;
 
 import android.app.Activity;
@@ -79,6 +111,10 @@ public class view_habit extends Fragment {
 
     private FirebaseStorage storage;
 
+    /**
+     * @param habit Habit object in which to display in view
+     * Instantiates new view_habit object
+     */
     public view_habit(Habit habit){
         this.habit = habit;
 
