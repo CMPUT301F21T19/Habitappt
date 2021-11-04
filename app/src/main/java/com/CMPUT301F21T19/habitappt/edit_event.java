@@ -4,7 +4,7 @@
  * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
  * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
  *
- * Class: edit_habit
+ * Class: edit_event
  *
  * Description: Lets users add, edit, delete on the habit event page
  *
