@@ -11,16 +11,18 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public class Habit {
+    private boolean isPrivate;
     private String title;
     private String reason;
     private long dateToStart;
     private ArrayList<Boolean> datesToDo;
+    private ArrayList<HabitEvent> habitEvents;
     String id;
 
-    private ArrayList<HabitEvent> habitEvents;
     private long score;
 
-    public Habit(String title,String reason,long dateToStart,ArrayList<Boolean> datesToDo,String id){
+    public Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate) {
+        this.isPrivate = isPrivate;
         this.title = title;
         this.reason = reason;
         this.dateToStart = dateToStart;
@@ -28,7 +30,8 @@ public class Habit {
         this.id = id;
     }
 
-    public Habit(){
+    public Habit() {
+        this.isPrivate = false;
         this.title = "";
         this.reason = "";
         this.dateToStart = GregorianCalendar.getInstance().getTimeInMillis();
@@ -48,20 +51,17 @@ public class Habit {
     }
 
     public Boolean getDateSelected(int i){
-        if(i > datesToDo.size()){
-            return false;
+        if(i > datesToDo.size() || i < 0){
+            return null;
         }
-
         return datesToDo.get(i);
     }
 
     public Boolean setDateSelected(int i,Boolean b){
-        if(i >= datesToDo.size() && i < 0){
+        if(i >= datesToDo.size() || i < 0){
             return false;
         }
-
         datesToDo.set(i,b);
-
         return true;
     }
 
@@ -89,36 +89,41 @@ public class Habit {
         this.dateToStart = dateToStart;
     }
 
-    public void calculateScore() {
-
-
-
-
-            for (int i = 0; i < 7; i++) {
-                datesToDo.add(false);
-
-            }
-
-
-
-
-        habitEvents.size();
-        datesToDo.size();
-        //look through each a habits habit events,
-        // find how many days a habit event should have been done,
-        // how many has been done
-        // score returns percent 0-100
+    public void setHabitEvents(ArrayList<HabitEvent> habitEvents) {
+        this.habitEvents = habitEvents;
     }
+
+    public ArrayList<HabitEvent> getHabitEvents(){
+        return habitEvents;
+    }
+
+    public boolean getIsPrivate() {
+        return isPrivate;
+    }
+
+    public void setIsPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
+    }
+
+
+
+
+
+//    public void calculateScore() {
+//            for (int i = 0; i < 7; i++) {
+//                datesToDo.add(false);
+//
+//            }
+//        habitEvents.size();
+//        datesToDo.size();
+//        //look through each a habits habit events,
+//        // find how many days a habit event should have been done,
+//        // how many has been done
+//        // score returns percent 0-100
+//    }
 
     public long getScore() { return score; }
 
     public void setScore(int newScore) { this.score = newScore; }
-
-    public void setHabitEvents(ArrayList<HabitEvent> habitEvents) {
-        this.habitEvents = habitEvents;
-    }
-    public ArrayList<HabitEvent> getHabitEvents(){
-        return habitEvents;
-    }
 }
 

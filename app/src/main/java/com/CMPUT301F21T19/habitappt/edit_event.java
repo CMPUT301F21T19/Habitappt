@@ -106,7 +106,6 @@ public class edit_event extends DialogFragment {
      */
     public edit_event(HabitEvent event, Habit habit, String tag){
         this.event = event;
-        this.removeTextTitle = this.tag == "EDIT" ? "Edit Event":"Remove Event";
         if(tag == "ADD" || tag == "EDIT"){
             this.removeTextTitle = "Cancel";
         }
@@ -201,9 +200,11 @@ public class edit_event extends DialogFragment {
                         getChildFragmentManager().popBackStack("viewevent", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
 
-                        //remove image from firestore storage after deleting event
-                        SharedHelper.deleteImage(event.getId(), storage);
-                        SharedHelper.removeEvent(event,habit,db);
+                        if(removeTextTitle.equals("Remove Event")) {
+                            //remove image from firestore storage after deleting event
+                            SharedHelper.deleteImage(event.getId(), storage);
+                            SharedHelper.removeEvent(event, habit, db);
+                        }
                     }
                 })
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {

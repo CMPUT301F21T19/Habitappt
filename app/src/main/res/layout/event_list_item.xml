@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#A9DDF4"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -21,28 +20,31 @@
             tools:srcCompat="@drawable/no_image_provided_event" />
 
         <LinearLayout
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/event_date"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/event_date"
+                android:textSize="24sp"></TextView>
+
+            <TextView
                 android:id="@+id/event_name"
-                android:layout_width="160dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="@string/event_name"
                 android:textSize="24sp"></TextView>
 
-            <TextView
-                android:id="@+id/event_date"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/event_date"
-                android:textSize="24sp"></TextView>
+
         </LinearLayout>
+
     </LinearLayout>
 
     <!--    <ImageButton-->

@@ -33,6 +33,7 @@ import java.util.TimeZone;
 
 public class edit_habit extends DialogFragment {
 
+    private Button isPrivateButton;
     private EditText habitTitle;
     private EditText habitReason;
     private CalendarView habitDateToStart;
@@ -70,7 +71,6 @@ public class edit_habit extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-
         THIS = this;
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.edit_habit,null);
@@ -79,10 +79,10 @@ public class edit_habit extends DialogFragment {
 
         storage = FirebaseStorage.getInstance();
 
+        isPrivateButton = view.findViewById(R.id.public_private_button);
         habitTitle = view.findViewById(R.id.habit_title);
         habitReason = view.findViewById(R.id.habit_reason);
         habitDateToStart = view.findViewById(R.id.date_to_start);
-
 
         habitTitle.setText(habit.getTitle());
         habitReason.setText(habit.getReason());
@@ -96,13 +96,36 @@ public class edit_habit extends DialogFragment {
         days_of_week.add(view.findViewById(R.id.saturday_button));
         days_of_week.add(view.findViewById(R.id.sunday_button));
 
+        // click listeners for public/private button
+        if (habit.getIsPrivate()) {
+            isPrivateButton.setBackgroundColor(Color.RED);
+            isPrivateButton.setText("private habit");
+        } else {
+            isPrivateButton.setBackgroundColor(Color.GREEN);
+            isPrivateButton.setText("public habit");
+        }
+        isPrivateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (habit.getIsPrivate()) {
+                    habit.setIsPrivate(false);
+                    isPrivateButton.setBackgroundColor(Color.GREEN);
+                    isPrivateButton.setText("public habit");
+                } else {
+                    habit.setIsPrivate(true);
+                    isPrivateButton.setBackgroundColor(Color.RED);
+                    isPrivateButton.setText("private habit");
+                }
+            }
+        });
+
+        // click listeners for weekday buttons
         for(int i=0;i<7;i++){
             if(habit.getDateSelected(i)){
-                days_of_week.get(i).setBackgroundColor(Color.GREEN);
+                days_of_week.get(i).setBackgroundColor(Color.LTGRAY);
             } else {
                 days_of_week.get(i).setBackgroundColor(Color.WHITE);
             }
-
             final int index = new Integer(i);
             days_of_week.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -110,16 +133,15 @@ public class edit_habit extends DialogFragment {
                     if(habit.getDateSelected(index)){
                         habit.setDateSelected(index,false);
                         days_of_week.get(index).setBackgroundColor(Color.WHITE);
-                    }
-                    else{
+                    } else {
                         habit.setDateSelected(index,true);
-                        days_of_week.get(index).setBackgroundColor(Color.GREEN);
+                        days_of_week.get(index).setBackgroundColor(Color.LTGRAY);
                     }
                 }
             });
         }
 
-
+        // click listener for the calendar
         habitDateToStart.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
@@ -166,6 +188,7 @@ public class edit_habit extends DialogFragment {
 
                         HashMap<String,Object> data = new HashMap<>();
 
+                        data.put("isPrivate", THIS.habit.getIsPrivate());
                         data.put("title",THIS.habitTitle.getText().toString());
                         data.put("reason",THIS.habitReason.getText().toString());
                         data.put("dateToStart",THIS.date_selected);
@@ -188,6 +211,7 @@ public class edit_habit extends DialogFragment {
 
                         HashMap<String,Object> data = new HashMap<>();
 
+                        data.put("isPrivate", THIS.habit.getIsPrivate());
                         data.put("title",THIS.habitTitle.getText().toString());
                         data.put("reason",THIS.habitReason.getText().toString());
                         data.put("dateToStart",THIS.date_selected);
@@ -207,6 +231,8 @@ public class edit_habit extends DialogFragment {
                     }
                 }
             });
+
+
         //create the alertdialog object
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
@@ -256,7 +282,6 @@ public class edit_habit extends DialogFragment {
 
         return alertDialog;
     }
-
 
     /**
      * used to seterror when text input too much or too litte

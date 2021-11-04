@@ -36,11 +36,14 @@ public class MainActivity extends AppCompatActivity implements nav_bar.nav_bar_s
         //start bottom navigation bar!
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
+        //always starts in profile screen
         transaction.replace(R.id.bottom_nav_bar,new nav_bar());
-        transaction.replace(R.id.main_container,new profile());
         transaction.commit();
 
-
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_container,new profile());
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     /**
@@ -50,18 +53,24 @@ public class MainActivity extends AppCompatActivity implements nav_bar.nav_bar_s
      */
     @Override
     public void switchFragment(Fragment frag) {
-
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        for(int i=0;i < count;i++){
+            getSupportFragmentManager().popBackStackImmediate();
+        }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        
         transaction.replace(R.id.main_container,frag);
-        transaction.addToBackStack(null);
-
+        transaction.addToBackStack("base");
         transaction.commit();
     }
 
     @Override
-    public void onBackPressed()
-    {
-        getSupportFragmentManager().popBackStackImmediate();
+    public void onBackPressed() {
+        if(getSupportFragmentManager().getBackStackEntryCount() > 1){
+            getSupportFragmentManager().popBackStackImmediate();
+        }
+        else{
+            finish();
+        }
+
     }
 }
