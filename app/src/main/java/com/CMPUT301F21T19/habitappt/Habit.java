@@ -1,3 +1,27 @@
+/**
+ * Copyright 2021 - 2021 CMPUT301F21T19 (Habitappt). All rights reserved. This document nor any
+ * part of it may be reproduced, stored in a retrieval system or transmitted in any for or by any
+ * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
+ * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
+ *
+ * Class: Habit
+ *
+ * Description: An object which contains all of the attributes of a habit as entered by the user
+ *
+ * Changelog:
+ * =|Version|=|User(s)|==|Date|========|Description|================================================
+ *   1.0       Sohaib    Oct-20-2021   Halfway through initial UI framework
+ *   1.1       Andrew    Oct-21-2021   Implemented nav bar and fragment switching in main container!
+ *   1.3       Andrew    Oct-23-2021   Update Habit.java
+ *   1.4       Andrew    Oct-23-2021   Adding habits!
+ *   1.7       Hamzah    Oct-25-2021   Modified edit Habit
+ *   1.9       Hamzah    Oct-31-2021   Added getters and setters in habit class for habiteventslist
+ *   1.10      Logan     Nov-01-2021   added isPrivate to habit constructor and removed unused java classes
+ *   1.11      Hamzah    Nov-01-2021   isPrivate UI and database implementation
+ *   1.13      Andrew    Nov-03-2021   Tests for Habit and HabitEvent
+ * =|=======|=|======|===|====|========|===========|================================================
+ */
+
 package com.CMPUT301F21T19.habitappt;
 
 import android.os.Bundle;
@@ -23,6 +47,15 @@ public class Habit {
 
     private long score;
 
+    /**
+     * Create a habit object and assign parameters
+     * @param title The title of the habit
+     * @param reason A reason for why the user want to create the habit
+     * @param dateToStart The date the users is scheduled to start the habit
+     * @param datesToDo the weekly frequency which specifies when the user is to complete the habit
+     * @param id A unique identifier for the habit object
+     * @param isPrivate Denotes whether this habit is private or not
+     */
     public Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate) {
         this.isPrivate = isPrivate;
         this.title = title;
@@ -31,7 +64,9 @@ public class Habit {
         this.datesToDo = datesToDo;
         this.id = id;
     }
-
+    /**
+     * Instantiates the Habit object
+     */
     public Habit() {
         this.isPrivate = false;
         this.title = "";
@@ -108,10 +143,9 @@ public class Habit {
     }
 
     /**
-     * Calculates the score of a given habit to track progress of how often events are being completed
-     * @return Percentage of of habit events completed over total number of events supposed to be done
+     * Calculates the score of a given habit to track progress of how often the habit is being completed
+     * @return Percentage of of habit events completed per total number of habit occurrences
      */
-
     public long calculateScore() {
 
         Date start_date = new Date(1000L * this.dateToStart);
