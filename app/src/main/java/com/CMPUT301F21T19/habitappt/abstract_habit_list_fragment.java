@@ -61,7 +61,7 @@ public abstract class abstract_habit_list_fragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
                 trans.replace(R.id.main_container,new view_habit(habitDataList.get(position)));
-                trans.addToBackStack(null);
+                trans.addToBackStack("view_habit");
                 trans.commit();
             }
         });
