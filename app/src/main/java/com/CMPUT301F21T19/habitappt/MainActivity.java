@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements nav_bar.nav_bar_s
     public void switchFragment(Fragment frag) {
         int count = getSupportFragmentManager().getBackStackEntryCount();
         for(int i=0;i < count;i++){
-            getSupportFragmentManager().popBackStack();
+            getSupportFragmentManager().popBackStackImmediate();
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_container,frag);
