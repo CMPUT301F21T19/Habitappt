@@ -8,6 +8,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class Habit {
@@ -105,25 +107,40 @@ public class Habit {
         this.isPrivate = isPrivate;
     }
 
+    /**
+     * Calculates the score of a given habit to track progress of how often events are being completed
+     * @return Percentage of of habit events completed over total number of events supposed to be done
+     */
 
+    public long calculateScore() {
 
+        Date start_date = new Date(1000L * this.dateToStart);
+        Calendar c = Calendar.getInstance();
+        c.setTime(start_date);
 
+        Date current_date = new Date();
 
-//    public void calculateScore() {
-//            for (int i = 0; i < 7; i++) {
-//                datesToDo.add(false);
-//
-//            }
-//        habitEvents.size();
-//        datesToDo.size();
-//        //look through each a habits habit events,
-//        // find how many days a habit event should have been done,
-//        // how many has been done
-//        // score returns percent 0-100
-//    }
+        long counter = 0; // Tracks total days habit is to be performed
 
-    public long getScore() { return score; }
+        // iterates through all the dates from start to current
+        // Checks to see if habit needs to be performed at each date
+        // When loop if done, counter should have the total number of habit that should have been completed
+        while (start_date.before(current_date)) {
+            if (this.datesToDo.get(c.get(Calendar.DAY_OF_WEEK) - 1)) {
+                counter += 1;
+            }
+            c.add(Calendar.DATE, 1);
+            start_date = c.getTime();
 
-    public void setScore(int newScore) { this.score = newScore; }
+        }
+
+        // Checks if habit event is empty
+        if (habitEvents == null) {
+            return (long) -1;
+        }
+
+        return (long) (habitEvents.size() / counter) * 100;
+    }
+
 }
 
