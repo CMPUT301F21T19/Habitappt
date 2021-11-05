@@ -73,14 +73,22 @@ public class Habit {
         id = "-1";
     }
 
+    /**
+     * @return Uniquiely identifiable id of type string for the habit object
+     */
     public String getId(){
         return id;
     }
-
+    /**
+     * @return An arraylist which contains the days of the week which the habit should occur
+     */
     public ArrayList<Boolean> getWeekly(){
         return datesToDo;
     }
 
+    /**
+     * @return Uniquiely identifiable id of type string for the habit object
+     */
     public Boolean getDateSelected(int i){
         if(i > datesToDo.size() || i < 0){
             return null;
@@ -88,6 +96,9 @@ public class Habit {
         return datesToDo.get(i);
     }
 
+    /**
+     * @return A bool confirming if the date has been added into datesToDo
+     */
     public Boolean setDateSelected(int i,Boolean b){
         if(i >= datesToDo.size() || i < 0){
             return false;
@@ -96,42 +107,72 @@ public class Habit {
         return true;
     }
 
+    /**
+     * @return A string for the habit title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * sets the habit title to the the given parameter
+     * @param title
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * @return A string for the habit reason
+     */
     public String getReason() {
         return reason;
     }
 
+    /**
+     * sets the habit reason to the the given parameter
+     * @param reason
+     */
     public void setReason(String reason) {
         this.reason = reason;
     }
-
+    /**
+     * @return the date to start a habit of type long
+     */
     public long getDateToStart() {
         return dateToStart;
     }
-
+    /**
+     * sets the dateToStart to the the given parameter
+     * @param dateToStart
+     */
     public void setDateToStart(long dateToStart) {
         this.dateToStart = dateToStart;
     }
-
+    /**
+     * sets the habit events according to the parameter
+     * @param habitEvents
+     */
     public void setHabitEvents(ArrayList<HabitEvent> habitEvents) {
         this.habitEvents = habitEvents;
     }
 
+    /**
+     * @return the habit event object associated with the habit object
+     */
     public ArrayList<HabitEvent> getHabitEvents(){
         return habitEvents;
     }
-
+    /**
+     * @return Uniquiely A bool to denote whether the habit is private
+     */
     public boolean getIsPrivate() {
         return isPrivate;
     }
-
+    /**
+     * sets the habit privacy according the it's parameter
+     * @param isPrivate
+     */
     public void setIsPrivate(boolean isPrivate) {
         this.isPrivate = isPrivate;
     }
@@ -142,6 +183,7 @@ public class Habit {
      */
     public long calculateScore() {
 
+        // Not sure how to properly instantiate the correct date
         Date start_date = new Date(1000L * this.dateToStart);
         Calendar c = Calendar.getInstance();
         c.setTime(start_date);
@@ -149,25 +191,32 @@ public class Habit {
         Date current_date = new Date();
 
         long counter = 0; // Tracks total days habit is to be performed
-
+        System.out.println("\n\n\n " + "Habit Title: " + this.title);
+        System.out.println("Start Date: " + start_date);
+        System.out.println("Current Date: " + current_date);
         // iterates through all the dates from start to current
         // Checks to see if habit needs to be performed at each date
         // When loop if done, counter should have the total number of habit that should have been completed
         while (start_date.before(current_date)) {
-            if (this.datesToDo.get(c.get(Calendar.DAY_OF_WEEK) - 1)) {
+            if (c.get(Calendar.DAY_OF_WEEK) == 1) {
+                if (datesToDo.get(6)) {
+                    counter += 1;
+                }
+            }
+            else if (this.datesToDo.get(c.get(Calendar.DAY_OF_WEEK) - 2)) {
                 counter += 1;
             }
             c.add(Calendar.DATE, 1);
             start_date = c.getTime();
-
         }
 
-        // Checks if habit event is empty
-        if (habitEvents == null) {
-            return (long) -1;
+
+        // Checks if there is no habits that need to be done yet
+        if (counter == 0) {
+            return 100;
         }
 
-        return (long) (habitEvents.size() / counter) * 100;
+        return (habitEvents.size() / counter) * 100;
     }
 
     public long getScore() { return score; }

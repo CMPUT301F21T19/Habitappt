@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,23 +58,25 @@ public class HabitList extends ArrayAdapter<Habit> {
 
         TextView habitName = view.findViewById(R.id.habit_name);
         TextView habitReason = view.findViewById(R.id.habit_reason_list_text);
+        ImageView scoreImg = view.findViewById(R.id.score_image);
 
         habitName.setText(habit.getTitle());
         habitReason.setText(habit.getReason());
 
-//        ImageView habit_score = view.findViewById(R.id.habit_score);
-//
-//        long score = habit.calculateScore();
-//        if (score < 20) {
-//            habit_score.setImageResource(R.drawable.ic_disappointed_emoji);
-//        } else if (score < 40) {
-//            habit_score.setImageResource(R.drawable.ic_orange_emoji);
-//        } else if (score < 60) {
-//            habit_score.setImageResource(R.drawable.ic_yellow_emoji);
-//        } else if (score < 80) {
-//            habit_score.setImageResource(R.drawable.ic_light_green_emoji);
-//        } else {
-//            habit_score.setImageResource(R.drawable.ic_bright_green_emoji);}
+        long score = habit.calculateScore();
+
+        if (score < 20) {
+            scoreImg.setImageResource(R.drawable.ic_disappointed_emoji);
+        } else if (score < 40) {
+            scoreImg.setImageResource(R.drawable.ic_orange_emoji);
+        } else if (score < 60) {
+            scoreImg.setImageResource(R.drawable.ic_yellow_emoji);
+        } else if (score < 80) {
+            scoreImg.setImageResource(R.drawable.ic_light_green_emoji);
+        } else {
+            scoreImg.setImageResource(R.drawable.ic_bright_green_emoji);
+        }
+
 
         return view;
     }
