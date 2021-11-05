@@ -1,5 +1,6 @@
 package com.CMPUT301F21T19.habitappt;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
@@ -10,6 +11,7 @@ import androidx.test.rule.ActivityTestRule;
 
 import com.robotium.solo.Solo;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -43,7 +45,7 @@ public class HabitTest {
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
             solo.clickOnView(solo.getView(R.id.add_habit_button));
-            solo.enterText((EditText) solo.getView(R.id.habit_title),"Habit1");
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"Mock Habit");
             solo.clearEditText((EditText) solo.getView(R.id.habit_reason));
             solo.enterText((EditText) solo.getView(R.id.habit_reason),"Reason_1");
             solo.clickOnButton("M");
@@ -69,7 +71,7 @@ public class HabitTest {
             solo.clickInList(0);
             solo.clickOnView(solo.getView(R.id.edit_button));
             solo.clearEditText((EditText) solo.getView(R.id.habit_title));
-            solo.enterText((EditText) solo.getView(R.id.habit_title),"New Habit_1");
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"Mock Habit 1");
             solo.clearEditText((EditText) solo.getView(R.id.habit_reason));
             solo.enterText((EditText) solo.getView(R.id.habit_reason),"New Reason_1");
             solo.clickOnView(solo.getView(R.id.public_private_button));
@@ -89,19 +91,21 @@ public class HabitTest {
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
             // add Habit before deleting in case there are none.
-//            solo.clickOnView(solo.getView(R.id.add_habit_button));
-//            solo.enterText((EditText) solo.getView(R.id.habit_title),"Habit1");
-//            solo.enterText((EditText) solo.getView(R.id.habit_reason),"Reason1");
-//            solo.clickOnButton("M");
-//            solo.clickOnButton("W");
-//            solo.clickOnButton("F");
-//            solo.clickOnView(solo.getView(R.id.date_to_start));
-//            solo.clickOnButton("Confirm");
+            solo.clickOnView(solo.getView(R.id.add_habit_button));
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"Habit to delete");
+            solo.enterText((EditText) solo.getView(R.id.habit_reason),"delete after");
+            solo.clickOnButton("M");
+            solo.clickOnButton("W");
+            solo.clickOnButton("F");
+            solo.clickOnView(solo.getView(R.id.date_to_start));
+            solo.clickOnButton("Confirm");
 
             //delete habit
-            solo.clickOnView(solo.getView(R.id.habit_list));
+            solo.clickOnText("Habit to delete");
             solo.clickOnView(solo.getView(R.id.edit_button));
             solo.clickOnButton("Remove Habit");
+
+            assertFalse(solo.searchText("Habit to delete"));
         }
         @Test
         public void viewHabit(){
@@ -115,26 +119,28 @@ public class HabitTest {
         }
 
         @Test
-        public  void characterlimit(){
+        public void title_characterlimit(){
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
-            solo.clickInList(0);
-            solo.clickOnView(solo.getView(R.id.edit_button));
-            solo.clearEditText((EditText) solo.getView(R.id.habit_title));
-            solo.enterText((EditText) solo.getView(R.id.habit_title),"20characterlimitttt");
-            solo.clearEditText((EditText) solo.getView(R.id.habit_reason));
-            solo.enterText((EditText) solo.getView(R.id.habit_reason),"thisisa30characterlimittttttt");
-            solo.clickOnButton("M");
-            solo.clickOnButton("S");
-            solo.clickOnButton("U");
-            solo.clickOnView(solo.getView(R.id.date_to_start));
-            solo.clickOnButton("Confirm");
+            solo.clickOnView(solo.getView(R.id.add_habit_button));
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"thisisover20characterlimittt");
+            solo.sleep(5000);
 
-            assertTrue(solo.waitForText("20characterlimittttt",1,2000));
         }
 
+      @Test
+      public  void reason_characterlimit() {
+
+          solo.clickOnView(solo.getView(R.id.all_habit_button));
+          solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+
+          solo.clickOnView(solo.getView(R.id.add_habit_button));
+          solo.enterText((EditText) solo.getView(R.id.habit_title),"title");
+          solo.enterText((EditText) solo.getView(R.id.habit_reason), "thisisover30characterlimittttttt");
+          solo.sleep(5000);
+      }
         @Test
         public void dailyHabits(){
             solo.clickOnView(solo.getView(R.id.daily_habit_button));
@@ -143,6 +149,8 @@ public class HabitTest {
             solo.sleep(5000);
         }
 
+        @After
+        public void tearDown(){ solo.finishOpenedActivities(); }
 
 }
 
