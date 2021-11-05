@@ -2,7 +2,7 @@
 # Habitappt
 HabitAppt is a new user-friendly app that can help you keep track of your goals and build healthy habits. Make good habits!
 
-##Screenshots
+## Screenshots
 
 ![Habitappt_login](https://github.com/CMPUT301F21T19/Habitappt/blob/47b10f85bd9fdd64267e4d0a10b115f7012f2fda/docs/login.png)
 ![Habitappt_all](https://github.com/CMPUT301F21T19/Habitappt/blob/47b10f85bd9fdd64267e4d0a10b115f7012f2fda/docs/all_habits.png)
