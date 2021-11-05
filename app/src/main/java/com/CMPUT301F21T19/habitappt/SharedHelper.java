@@ -104,8 +104,8 @@ class SharedHelper {
 
     /**
      * Gets the string date of a date in long integer format.
-     * @param l
-     * @return
+     * @param l Unix epoch
+     * @return The date in the form of a string (dd/MM/yyyy)
      */
     public static String getStringDateFromLong(long l){
         Date date= new Date(l);
