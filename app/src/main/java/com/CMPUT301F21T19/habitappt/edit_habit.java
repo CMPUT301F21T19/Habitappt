@@ -47,7 +47,6 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -327,14 +326,14 @@ public class edit_habit extends DialogFragment {
             THIS.habitTitle.setError("Title cannot be empty");
         }
         //too long
-        if(THIS.habitTitle.getText().length() > 20){
+        if(THIS.habitTitle.getText().length() > 19){
             THIS.habitTitle.setError("Maximum Length 0f 20: Please reduce");
         }
         //empty reason
         if(THIS.habitReason.getText().length() == 0){
             THIS.habitReason.setError("Reason cannot be empty");
         }
-        if(THIS.habitReason.getText().length() > 30){
+        if(THIS.habitReason.getText().length() > 29){
             THIS.habitReason.setError("Maximum Length 0f 30: Please reduce");
         }
     }
