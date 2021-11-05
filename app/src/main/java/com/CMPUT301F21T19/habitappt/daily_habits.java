@@ -40,7 +40,7 @@ public class daily_habits extends  abstract_habit_list_fragment {
     /**
      * This class defines a fragment that shows all of the habits a user must complete today.
      */
-    
+
     /**
      * This method returns all of the habits that must be completed today by the user
      * @param queryDocumentSnapshots

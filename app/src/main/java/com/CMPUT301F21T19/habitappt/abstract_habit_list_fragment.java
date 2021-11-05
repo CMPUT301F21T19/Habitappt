@@ -38,7 +38,7 @@ public abstract class abstract_habit_list_fragment extends Fragment {
 
 
     /**
-     * This method must be implemented by any classes that extend this module. It tells the class how to process the habits in the users collection.
+     * This method must be implemented by any classes that extend this class. It tells the class how to process the habits in the users collection.
      * @param queryDocumentSnapshots
      * @param error
      */
