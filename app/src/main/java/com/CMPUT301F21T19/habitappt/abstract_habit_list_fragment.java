@@ -20,7 +20,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+
 public abstract class abstract_habit_list_fragment extends Fragment {
+
+    /**
+     * Abstract class for whenever we want to display a list of habits from the database.
+     */
 
     ListView habitListView;
     ArrayAdapter<Habit> habitAdapter;
@@ -32,15 +37,29 @@ public abstract class abstract_habit_list_fragment extends Fragment {
     private View view;
 
 
-
-    //method for how a habit list fragment will parse a query.
+    /**
+     * This method must be implemented by any classes that extend this class. It tells the class how to process the habits in the users collection.
+     * @param queryDocumentSnapshots
+     * @param error
+     */
     public abstract void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error);
 
+    /**
+     * Called on creation of the fragment.
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Defines the habit list view
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_habits_list, container, false);
@@ -56,6 +75,7 @@ public abstract class abstract_habit_list_fragment extends Fragment {
         habitAdapter = new HabitList(getContext(), habitDataList);
         habitListView.setAdapter(habitAdapter);
 
+        //list view item listener
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -66,6 +86,7 @@ public abstract class abstract_habit_list_fragment extends Fragment {
             }
         });
 
+        //listener for pressing the button to add habits.
         addHabitButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +95,7 @@ public abstract class abstract_habit_list_fragment extends Fragment {
         });
 
 
-
+        //listener for database updates. uses the abstract method defined in this class.
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
