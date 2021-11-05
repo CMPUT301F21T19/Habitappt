@@ -35,7 +35,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 
 public class all_habits extends abstract_habit_list_fragment {
+    /**
+     * This class defines a fragment that shows all of a users habits.
+     */
 
+    /**
+     * This method returns all of the habits in the users collection
+     * @param queryDocumentSnapshots
+     * @param error
+     */
     @Override
     public void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
         habitDataList.clear();
