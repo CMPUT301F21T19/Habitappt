@@ -45,7 +45,6 @@ public class HabitEventTest {
             solo.clickOnView(solo.getView(R.id.all_habit_button));
 
             solo.clickOnView(solo.getView(R.id.habit_list));
-            solo.clickInList(0);
             solo.clickOnView(solo.getView(R.id.add_event_button));
             solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
             solo.clickOnView(solo.getView(R.id.event_date_calendar));
@@ -84,6 +83,13 @@ public class HabitEventTest {
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
             solo.clickOnText("Test Habit Event");
+            //add mock habit event to edit.
+            solo.clickOnView(solo.getView(R.id.habit_list));
+            solo.clickOnView(solo.getView(R.id.add_event_button));
+            solo.enterText((EditText) solo.getView(R.id.event_comments),"New Event ");
+            solo.clickOnView(solo.getView(R.id.event_date_calendar));
+            solo.clickOnButton("Confirm");
+
             int fromX, toX, fromY, toY;
             int[] location = new int[2];
 
@@ -124,7 +130,7 @@ public class HabitEventTest {
             solo.drag(fromX, toX, fromY, toY, 10);
 
             solo.sleep(1000);
-            solo.clickOnImage(R.drawable.ic_delete);
+            solo.clickOnButton(R.drawable.ic_delete);
             solo.clickOnButton("Remove Habit");
         }
 

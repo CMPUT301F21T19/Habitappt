@@ -45,7 +45,7 @@ public class HabitTest {
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
             solo.clickOnView(solo.getView(R.id.add_habit_button));
-            solo.enterText((EditText) solo.getView(R.id.habit_title),"Habit1");
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"Mock Habit");
             solo.clearEditText((EditText) solo.getView(R.id.habit_reason));
             solo.enterText((EditText) solo.getView(R.id.habit_reason),"Reason_1");
             solo.clickOnButton("M");
@@ -71,7 +71,7 @@ public class HabitTest {
             solo.clickInList(0);
             solo.clickOnView(solo.getView(R.id.edit_button));
             solo.clearEditText((EditText) solo.getView(R.id.habit_title));
-            solo.enterText((EditText) solo.getView(R.id.habit_title),"New Habit_1");
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"Mock Habit 1");
             solo.clearEditText((EditText) solo.getView(R.id.habit_reason));
             solo.enterText((EditText) solo.getView(R.id.habit_reason),"New Reason_1");
             solo.clickOnView(solo.getView(R.id.public_private_button));
