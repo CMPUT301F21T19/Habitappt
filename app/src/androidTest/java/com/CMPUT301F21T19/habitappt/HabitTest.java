@@ -55,7 +55,7 @@ public class HabitTest {
             solo.clickOnView(solo.getView(R.id.date_to_start));
             solo.clickOnButton("Confirm");
 
-            assertTrue(solo.waitForText("Habit1",1,2000));
+            assertTrue(solo.waitForText("Mock Habit",1,2000));
 
         }
 
@@ -81,7 +81,7 @@ public class HabitTest {
             solo.clickOnView(solo.getView(R.id.date_to_start));
             solo.clickOnButton("Confirm");
 
-            assertTrue(solo.waitForText("New Habit_1",1,5000));
+            assertTrue(solo.waitForText("Mock Habit 1",1,5000));
         }
 
         @Test
