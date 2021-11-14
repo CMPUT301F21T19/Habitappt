@@ -181,7 +181,7 @@ public class Habit {
      * Calculates the score of a given habit to track progress of how often the habit is being completed
      * @return Percentage of of habit events completed per total number of habit occurrences
      */
-    public long calculateScore() {
+    public void setScore() {
 
         // Not sure how to properly instantiate the correct date
         Date start_date = new Date(1000L * this.dateToStart);
@@ -213,15 +213,13 @@ public class Habit {
 
         // Checks if there is no habits that need to be done yet
         if (counter == 0) {
-            return 100;
+            this.score = 100;
         }
 
-        return (habitEvents.size() / counter) * 100;
+        this.score = (habitEvents.size() / counter) * 100;
     }
 
     public long getScore() { return score; }
-
-    public void setScore(int newScore) { this.score = newScore;}
 
 }
 

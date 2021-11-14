@@ -76,7 +76,7 @@ public class HabitList extends ArrayAdapter<Habit> {
         habitName.setText(habit.getTitle());
         habitReason.setText(habit.getReason());
 
-        long score = habit.calculateScore();
+        long score = habit.getScore();
 
         if (score < 20) {
             scoreImg.setImageResource(R.drawable.ic_disappointed_emoji);

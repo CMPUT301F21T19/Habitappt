@@ -78,7 +78,7 @@ public class Habit_test {
         assertTrue(mockHabit.getIsPrivate() == false);
         mockHabit.setDateSelected(2,true);
         assertTrue(mockHabit.getDateSelected(2) == true);
-        mockHabit.setScore(500);
+        mockHabit.setScore((500));
         assertTrue(mockHabit.getScore() == 500);
     }
 
