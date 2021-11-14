@@ -59,6 +59,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -89,6 +90,7 @@ public class edit_event extends DialogFragment {
     long date_selected;
 
     private FirebaseFirestore db;
+    private FirebaseAuth auth;
 
     private FirebaseStorage storage;
     private Habit habit;
@@ -142,6 +144,7 @@ public class edit_event extends DialogFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.edit_event,null);
 
         db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
 
         storage = FirebaseStorage.getInstance();
 
@@ -210,7 +213,7 @@ public class edit_event extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         if(getTag() == "EDIT"){
-                            DocumentReference doc = db.collection("Default User")
+                            DocumentReference doc = db.collection(auth.getCurrentUser().getEmail())
                                     .document(String.valueOf(THIS.event.getParentHabit().getId()))
                                     .collection("Event Collection")
                                     .document(String.valueOf(THIS.event.getId()));
@@ -292,7 +295,7 @@ public class edit_event extends DialogFragment {
 
                             event.setId(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
 
-                            DocumentReference doc = db.collection("Default User")
+                            DocumentReference doc = db.collection(auth.getCurrentUser().getEmail())
                                     .document(String.valueOf(THIS.event.getParentHabit().getId()))
                                     .collection("Event Collection")
                                     .document(event.getId());
