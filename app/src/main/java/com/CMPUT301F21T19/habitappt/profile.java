@@ -20,6 +20,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+<<<<<<< Updated upstream
+=======
+import android.widget.Button;
+>>>>>>> Stashed changes
 
 
 public class profile extends Fragment {
@@ -42,8 +46,38 @@ public class profile extends Fragment {
      * @return LayoutInflater
      */
     @Override
+<<<<<<< Updated upstream
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_profile, container, false);
+=======
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        Button followingButton = view.findViewById(R.id.following_button);
+        Button followersButton = view.findViewById(R.id.followers_button);
+        Button requestsButton = view.findViewById(R.id.requests_button);
+
+        followingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        followersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        requestsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Requests().show(getActivity().getSupportFragmentManager(), "REQUEST");
+            }
+        });
+
+        return view;
+>>>>>>> Stashed changes
     }
 }
