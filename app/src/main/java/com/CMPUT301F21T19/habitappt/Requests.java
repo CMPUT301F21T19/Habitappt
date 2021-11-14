@@ -27,6 +27,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +43,12 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.TimeZone;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -72,6 +76,7 @@ public class Requests extends DialogFragment {
         auth = FirebaseAuth.getInstance();
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.requests,null);
+        EditText requestedUserEditText = view.findViewById(R.id.requested_user);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setView(view)
@@ -84,6 +89,38 @@ public class Requests extends DialogFragment {
                 .setPositiveButton("Send", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        String requestedEmail = requestedUserEditText.getText().toString();
+                        if (Patterns.EMAIL_ADDRESS.matcher(requestedEmail).matches()) {
+                            auth.fetchSignInMethodsForEmail(requestedEmail).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                                    if (task.getResult().getSignInMethods().isEmpty()) {
+                                        // user does not exist
+                                    } else {
+                                        DocumentReference doc = db
+                                                .collection("Users")
+                                                .document(requestedEmail)
+                                                .collection("Requests")
+                                                .document(auth.getCurrentUser().getEmail());
+
+                                        HashMap<String,Object> data = new HashMap<>();
+                                        data.put("Time", GregorianCalendar.getInstance().getTimeInMillis());
+
+                                        doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                Log.i("data","success");
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.i("data", e.toString());
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
                     }
                 });
 
