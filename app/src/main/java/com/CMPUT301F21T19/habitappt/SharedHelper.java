@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -33,12 +34,11 @@ import java.util.Date;
 
 class SharedHelper {
     /**
-     * deletes image given storage instance
+     * deletes image given storage instance (after deleting event)
      * @param id
      * @param storage
      */
     public static void deleteImage(String id, FirebaseStorage storage) {
-        //remove image from firestore storage after deleting event
         StorageReference ref = storage.getReferenceFromUrl("gs://habitappt.appspot.com/default_user/" + id + ".jpg");
         ref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -60,7 +60,8 @@ class SharedHelper {
      * @param db
      */
     public static void removeEvent(HabitEvent event, Habit habit, FirebaseFirestore db){
-        db.collection("Default User")
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        db.collection(auth.getCurrentUser().getEmail())
                 .document(String.valueOf(habit.getId()))
                 .collection("Event Collection")
                 .document(String.valueOf(event.getId()))
@@ -85,7 +86,8 @@ class SharedHelper {
      * @param db
      */
     public static void removeHabit(Habit habit, FirebaseFirestore db){
-        db.collection("Default User")
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        db.collection(auth.getCurrentUser().getEmail())
                 .document(String.valueOf(habit.getId()))
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
