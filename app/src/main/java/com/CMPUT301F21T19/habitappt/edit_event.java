@@ -213,7 +213,10 @@ public class edit_event extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         if(getTag() == "EDIT"){
-                            DocumentReference doc = db.collection(auth.getCurrentUser().getEmail())
+                            DocumentReference doc = db
+                                    .collection("Users")
+                                    .document(auth.getCurrentUser().getEmail())
+                                    .collection("Habits")
                                     .document(String.valueOf(THIS.event.getParentHabit().getId()))
                                     .collection("Event Collection")
                                     .document(String.valueOf(THIS.event.getId()));
@@ -295,7 +298,10 @@ public class edit_event extends DialogFragment {
 
                             event.setId(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
 
-                            DocumentReference doc = db.collection(auth.getCurrentUser().getEmail())
+                            DocumentReference doc = db
+                                    .collection("Users")
+                                    .document(auth.getCurrentUser().getEmail())
+                                    .collection("Habits")
                                     .document(String.valueOf(THIS.event.getParentHabit().getId()))
                                     .collection("Event Collection")
                                     .document(event.getId());

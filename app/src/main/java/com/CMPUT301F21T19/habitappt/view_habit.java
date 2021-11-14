@@ -278,7 +278,11 @@ public class view_habit extends Fragment {
 
 
 
-        DocumentReference docReference = FirebaseFirestore.getInstance().collection(auth.getCurrentUser().getEmail()).document(String.valueOf(habit.getId()));
+        DocumentReference docReference = FirebaseFirestore.getInstance()
+                .collection("Users")
+                .document(auth.getCurrentUser().getEmail())
+                .collection("Habits")
+                .document(String.valueOf(habit.getId()));
 
         docReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -321,7 +325,9 @@ public class view_habit extends Fragment {
         });
 
         CollectionReference eventCollectionReference = FirebaseFirestore.getInstance()
-                .collection(auth.getCurrentUser().getEmail())
+                .collection("Users")
+                .document(auth.getCurrentUser().getEmail())
+                .collection("Habits")
                 .document(String.valueOf(habit.getId()))
                 .collection("Event Collection");
 

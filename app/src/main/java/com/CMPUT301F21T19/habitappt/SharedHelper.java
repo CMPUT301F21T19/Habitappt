@@ -61,7 +61,9 @@ class SharedHelper {
      */
     public static void removeEvent(HabitEvent event, Habit habit, FirebaseFirestore db){
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        db.collection(auth.getCurrentUser().getEmail())
+        db.collection("Users")
+                .document(auth.getCurrentUser().getEmail())
+                .collection("Habits")
                 .document(String.valueOf(habit.getId()))
                 .collection("Event Collection")
                 .document(String.valueOf(event.getId()))
@@ -87,7 +89,9 @@ class SharedHelper {
      */
     public static void removeHabit(Habit habit, FirebaseFirestore db){
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        db.collection(auth.getCurrentUser().getEmail())
+        db.collection("Users")
+                .document(auth.getCurrentUser().getEmail())
+                .collection("Habits")
                 .document(String.valueOf(habit.getId()))
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
