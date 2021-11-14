@@ -54,6 +54,12 @@ public class LoginActivity extends AppCompatActivity {
                 String username = usernameField.getText().toString();
                 String password = passwordField.getText().toString();
 
+                if(username.isEmpty() || password.isEmpty()){
+                    Toast toast = Toast.makeText( getApplicationContext(),"Please enter a username and password.",Toast.LENGTH_SHORT);
+                    toast.show();
+                    return;
+                }
+
                 auth.signInWithEmailAndPassword(username,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
