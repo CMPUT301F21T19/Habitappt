@@ -1,3 +1,33 @@
+/**
+ * Copyright 2021 - 2021 CMPUT301F21T19 (Habitappt). All rights reserved. This document nor any
+ * part of it may be reproduced, stored in a retrieval system or transmitted in any for or by any
+ * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
+ * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
+ *
+ * Class: edit_habit
+ *
+ * Description: Lets users to add & edit a habit
+ *
+ * Changelog:
+ * =|Version|=|User(s)|==|Date|========|Description|================================================
+ *   1.0       Andrew    Oct-23-2021   Added habits!
+ *   1.1       Logan     Oct-23-2021   Fix add/edit/remove bugs
+ *   1.2       Logan     Oct-23-2021   Display daily habits
+ *   1.3       Andrew    Oct-23-2021   Viewing and editing habits done
+ *   1.4       Hamzah    Oct-23-2021   Added checks for min and max input for habit title and reason
+ *   1.5       Sohaib    Oct-24-2021   Added habit events
+ *   1.6       Hamzah    Oct-25-2021   Added some comments
+ *   1.7       Hamzah    Oct-25-2021   Modified edit Habit
+ *   1.8       Hamzah    Oct-25-2021   Small fix
+ *   1.9       Andrew    Oct-26-2021   Fixed back button not working correctly after deleting a habit
+ *   1.10      Andrew    Oct-27-2021   Added image activity and uploading images with events to firestorage
+ *   1.11      Hamzah    Oct-31-2021   Refactored removing habit, moved functionality to SharedHelper.java class
+ *   1.12      Logan     Nov-01-2021   isPrivate UI and database implementation
+ *   1.13      Logan     Nov-01-2021   Added isPrivate indicator in view_habit
+ *   1.14      Logan     Nov-01-2021   Adjusted edit/add habit UI
+ * =|=======|=|======|===|====|========|===========|================================================
+ */
+
 package com.CMPUT301F21T19.habitappt;
 
 import android.app.AlertDialog;
@@ -17,11 +47,11 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -49,17 +79,24 @@ public class edit_habit extends DialogFragment {
 
     private FirebaseFirestore db;
     private FirebaseStorage storage;
+    private FirebaseAuth auth;
 
 
     protected edit_habit THIS;
 
+    /**
+     * Instantiate habit edit_habit object (habit already exists) with specified values
+     * @param habit existing habit
+     */
     public edit_habit(Habit habit){
         this.habit = habit;
         this.dialogTitle = "Edit Habit";
         this.removeTextTitle = "Remove Habit";
         this.date_selected = habit.getDateToStart();
     }
-
+    /**
+     * Instantiates new edit_habit object for new habit
+     */
     public edit_habit(){
         this.habit = new Habit();
         this.dialogTitle = "Add Habit";
@@ -78,6 +115,8 @@ public class edit_habit extends DialogFragment {
         db = FirebaseFirestore.getInstance();
 
         storage = FirebaseStorage.getInstance();
+
+        auth = FirebaseAuth.getInstance();
 
         isPrivateButton = view.findViewById(R.id.public_private_button);
         habitTitle = view.findViewById(R.id.habit_title);
@@ -184,7 +223,7 @@ public class edit_habit extends DialogFragment {
                 public void onClick(DialogInterface dialogInterface, int i) {
 
                     if(getTag() == "EDIT"){
-                        DocumentReference doc = db.collection("Default User").document(String.valueOf(THIS.habit.getId()));
+                        DocumentReference doc = db.collection(auth.getCurrentUser().getEmail()).document(String.valueOf(THIS.habit.getId()));
 
                         HashMap<String,Object> data = new HashMap<>();
 
@@ -207,7 +246,7 @@ public class edit_habit extends DialogFragment {
                         });
                     }
                     else if(getTag() == "ADD"){
-                        DocumentReference doc = db.collection("Default User").document(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
+                        DocumentReference doc = db.collection(auth.getCurrentUser().getEmail()).document(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
 
                         HashMap<String,Object> data = new HashMap<>();
 
@@ -284,21 +323,21 @@ public class edit_habit extends DialogFragment {
     }
 
     /**
-     * used to seterror when text input too much or too litte
+     * Displays error when habit title and reason text input is empty or greater than 20 characters
      */
     public void checkInput(){
         if(THIS.habitTitle.getText().length() == 0){
             THIS.habitTitle.setError("Title cannot be empty");
         }
         //too long
-        if(THIS.habitTitle.getText().length() > 20){
+        if(THIS.habitTitle.getText().length() > 19){
             THIS.habitTitle.setError("Maximum Length 0f 20: Please reduce");
         }
         //empty reason
         if(THIS.habitReason.getText().length() == 0){
             THIS.habitReason.setError("Reason cannot be empty");
         }
-        if(THIS.habitReason.getText().length() > 30){
+        if(THIS.habitReason.getText().length() > 29){
             THIS.habitReason.setError("Maximum Length 0f 30: Please reduce");
         }
     }

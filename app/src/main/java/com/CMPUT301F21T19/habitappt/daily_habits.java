@@ -1,3 +1,14 @@
+/**
+ * Copyright 2021 - 2021 CMPUT301F21T19 (Habitappt). All rights reserved. This document nor any
+ * part of it may be reproduced, stored in a retrieval system or transmitted in any for or by any
+ * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
+ * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
+ *
+ * Class: daily_habits
+ *
+ * Description: Populates a list with habits that need to be completed in the current day
+ */
+
 package com.CMPUT301F21T19.habitappt;
 
 import android.os.Bundle;
@@ -26,7 +37,15 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class daily_habits extends  abstract_habit_list_fragment {
+    /**
+     * This class defines a fragment that shows all of the habits a user must complete today.
+     */
 
+    /**
+     * This method returns all of the habits that must be completed today by the user
+     * @param queryDocumentSnapshots
+     * @param error
+     */
     @Override
     public void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
         habitDataList.clear();
