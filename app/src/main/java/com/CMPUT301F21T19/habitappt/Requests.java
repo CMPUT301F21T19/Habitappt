@@ -11,6 +11,7 @@
 
 package com.CMPUT301F21T19.habitappt;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -37,6 +38,7 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -60,7 +62,7 @@ import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 
 public class Requests extends DialogFragment {
-    protected Requests THIS;
+    protected Activity THIS;
     private String tag;
     private FirebaseFirestore db;
     private FirebaseStorage storage;
@@ -69,7 +71,7 @@ public class Requests extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        THIS = this;
+        THIS = this.getActivity();
         tag = getTag();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -84,18 +86,23 @@ public class Requests extends DialogFragment {
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        // "Cancel" button pressed
                     }
                 })
                 .setPositiveButton("Send", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String requestedEmail = requestedUserEditText.getText().toString();
-                        if (Patterns.EMAIL_ADDRESS.matcher(requestedEmail).matches()) {
+                        if (requestedEmail.equals(auth.getCurrentUser().getEmail())) {
+                            // user requested self
+                            Toast.makeText(THIS, "Failure: cannot request self", Toast.LENGTH_LONG).show();
+                        } else if (Patterns.EMAIL_ADDRESS.matcher(requestedEmail).matches()) {
                             auth.fetchSignInMethodsForEmail(requestedEmail).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
                                     if (task.getResult().getSignInMethods().isEmpty()) {
                                         // user does not exist
+                                        Toast.makeText(THIS, "Failure: user does not exist", Toast.LENGTH_LONG).show();
                                     } else {
                                         DocumentReference doc = db
                                                 .collection("Users")
@@ -110,16 +117,23 @@ public class Requests extends DialogFragment {
                                             @Override
                                             public void onSuccess(Void unused) {
                                                 Log.i("data","success");
+                                                // request success
+                                                Toast.makeText(THIS, "Success: requested to follow user " + requestedEmail, Toast.LENGTH_LONG).show();
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 Log.i("data", e.toString());
+                                                // request failure
+                                                Toast.makeText(THIS, "Failure: request incomplete", Toast.LENGTH_LONG).show();
                                             }
                                         });
                                     }
                                 }
                             });
+                        } else {
+                            // incorrect email format
+                            Toast.makeText(THIS, "Failure: requests must be made to an email", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
