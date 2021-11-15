@@ -223,7 +223,11 @@ public class edit_habit extends DialogFragment {
                 public void onClick(DialogInterface dialogInterface, int i) {
 
                     if(getTag() == "EDIT"){
-                        DocumentReference doc = db.collection(auth.getCurrentUser().getEmail()).document(String.valueOf(THIS.habit.getId()));
+                        DocumentReference doc = db
+                                .collection("Users")
+                                .document(auth.getCurrentUser().getEmail())
+                                .collection("Habits")
+                                .document(String.valueOf(THIS.habit.getId()));
 
                         HashMap<String,Object> data = new HashMap<>();
 
@@ -246,7 +250,11 @@ public class edit_habit extends DialogFragment {
                         });
                     }
                     else if(getTag() == "ADD"){
-                        DocumentReference doc = db.collection(auth.getCurrentUser().getEmail()).document(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
+                        DocumentReference doc = db
+                                .collection("Users")
+                                .document(auth.getCurrentUser().getEmail())
+                                .collection("Habits")
+                                .document(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
 
                         HashMap<String,Object> data = new HashMap<>();
 

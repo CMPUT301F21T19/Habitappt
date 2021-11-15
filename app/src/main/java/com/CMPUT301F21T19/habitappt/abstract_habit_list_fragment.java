@@ -72,7 +72,10 @@ public abstract class abstract_habit_list_fragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
-        final CollectionReference collectionReference = db.collection(auth.getCurrentUser().getEmail());
+        final CollectionReference collectionReference = db
+                .collection("Users")
+                .document(auth.getCurrentUser().getEmail())
+                .collection("Habits");
 
         habitDataList = new ArrayList<>();
         habitAdapter = new HabitList(getContext(), habitDataList);
