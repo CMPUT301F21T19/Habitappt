@@ -53,13 +53,10 @@
         </LinearLayout>
 
         <ListView
-            android:id="@+id/display_profile_list"
+            android:id="@+id/profile_list"
             android:layout_width="match_parent"
-            android:layout_height="637dp"
-            android:layout_weight="1">
-
-
-        </ListView>
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
