@@ -64,6 +64,7 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -109,6 +110,7 @@ public class view_habit extends Fragment {
     SwipeMenuItem editItem;
 
     private FirebaseStorage storage;
+    private FirebaseAuth auth;
 
     /**
      * @param habit Habit object in which to display in view
@@ -139,6 +141,8 @@ public class view_habit extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_view_habit, container, false);
+
+        auth = FirebaseAuth.getInstance();
 
         habitIsPrivate = view.findViewById(R.id.isPrivate_text_view);
         habitTitle = view.findViewById(R.id.habit_title_display);
@@ -274,7 +278,11 @@ public class view_habit extends Fragment {
 
 
 
-        DocumentReference docReference = FirebaseFirestore.getInstance().collection("Default User").document(String.valueOf(habit.getId()));
+        DocumentReference docReference = FirebaseFirestore.getInstance()
+                .collection("Users")
+                .document(auth.getCurrentUser().getEmail())
+                .collection("Habits")
+                .document(String.valueOf(habit.getId()));
 
         docReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -317,7 +325,9 @@ public class view_habit extends Fragment {
         });
 
         CollectionReference eventCollectionReference = FirebaseFirestore.getInstance()
-                .collection("Default User")
+                .collection("Users")
+                .document(auth.getCurrentUser().getEmail())
+                .collection("Habits")
                 .document(String.valueOf(habit.getId()))
                 .collection("Event Collection");
 

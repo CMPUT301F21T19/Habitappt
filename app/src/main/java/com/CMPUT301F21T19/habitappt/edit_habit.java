@@ -51,6 +51,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -78,6 +79,7 @@ public class edit_habit extends DialogFragment {
 
     private FirebaseFirestore db;
     private FirebaseStorage storage;
+    private FirebaseAuth auth;
 
 
     protected edit_habit THIS;
@@ -113,6 +115,8 @@ public class edit_habit extends DialogFragment {
         db = FirebaseFirestore.getInstance();
 
         storage = FirebaseStorage.getInstance();
+
+        auth = FirebaseAuth.getInstance();
 
         isPrivateButton = view.findViewById(R.id.public_private_button);
         habitTitle = view.findViewById(R.id.habit_title);
@@ -219,7 +223,11 @@ public class edit_habit extends DialogFragment {
                 public void onClick(DialogInterface dialogInterface, int i) {
 
                     if(getTag() == "EDIT"){
-                        DocumentReference doc = db.collection("Default User").document(String.valueOf(THIS.habit.getId()));
+                        DocumentReference doc = db
+                                .collection("Users")
+                                .document(auth.getCurrentUser().getEmail())
+                                .collection("Habits")
+                                .document(String.valueOf(THIS.habit.getId()));
 
                         HashMap<String,Object> data = new HashMap<>();
 
@@ -242,7 +250,11 @@ public class edit_habit extends DialogFragment {
                         });
                     }
                     else if(getTag() == "ADD"){
-                        DocumentReference doc = db.collection("Default User").document(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
+                        DocumentReference doc = db
+                                .collection("Users")
+                                .document(auth.getCurrentUser().getEmail())
+                                .collection("Habits")
+                                .document(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
 
                         HashMap<String,Object> data = new HashMap<>();
 

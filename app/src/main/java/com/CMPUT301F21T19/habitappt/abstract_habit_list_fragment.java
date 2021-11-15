@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,6 +34,7 @@ public abstract class abstract_habit_list_fragment extends Fragment {
 
     View addHabitButton;
     FirebaseFirestore db;
+    FirebaseAuth auth;
 
     private View view;
 
@@ -68,8 +70,12 @@ public abstract class abstract_habit_list_fragment extends Fragment {
         habitListView = view.findViewById(R.id.habit_list);
 
         db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
 
-        final CollectionReference collectionReference = db.collection("Default User");
+        final CollectionReference collectionReference = db
+                .collection("Users")
+                .document(auth.getCurrentUser().getEmail())
+                .collection("Habits");
 
         habitDataList = new ArrayList<>();
         habitAdapter = new HabitList(getContext(), habitDataList);

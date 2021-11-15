@@ -41,8 +41,7 @@ public class MainActivity extends AppCompatActivity implements nav_bar.nav_bar_s
         //get base firestore instance
         db = FirebaseFirestore.getInstance();
 
-        //TEST: add to it
-        FirestoreOps.testDBAddition(db);
+
 
         //start bottom navigation bar!
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
