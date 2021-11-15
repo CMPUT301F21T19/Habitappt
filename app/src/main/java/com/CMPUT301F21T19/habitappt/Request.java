@@ -7,12 +7,12 @@ public class Request {
     /**
      * The email of the user that made the follow request
      */
-    String requesterEmail;
+    private String requesterEmail;
 
     /**
      * The email of the user that the request is sent to
      */
-    String requestedEmail;
+    private String requestedEmail;
 
     long time;
 

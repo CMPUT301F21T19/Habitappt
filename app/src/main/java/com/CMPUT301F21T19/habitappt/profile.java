@@ -21,9 +21,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,27 +37,24 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 
 public class profile extends Fragment {
-    FirebaseFirestore db;
-    FirebaseAuth auth;
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
 
-    ListView profileListView;
-    Button followingButton;
-    Button followersButton;
-    Button requestsButton;
-    FloatingActionButton makeRequestButton;
+    private ListView profileListView;
+    private Button followingButton;
+    private Button followerButton;
+    private Button requestButton;
+    private FloatingActionButton makeRequestButton;
 
-    ArrayAdapter<Request> requestAdapter;
-    ArrayList<Request> requestDataList;
-    ArrayAdapter<Follower> followerAdapter;
-    ArrayList<Follower> followerDataList;
-    ArrayAdapter<Following> followingAdapter;
-    ArrayList<Following> followingDataList;
+    private ArrayAdapter<Request> requestAdapter;
+    private ArrayList<Request> requestDataList;
+    private ArrayAdapter<Follower> followerAdapter;
+    private ArrayList<Follower> followerDataList;
+    private ArrayAdapter<Following> followingAdapter;
+    private ArrayList<Following> followingDataList;
 
     /**
      * Creates profile fragment from saved state
@@ -82,8 +81,8 @@ public class profile extends Fragment {
 
         profileListView = view.findViewById(R.id.profile_list);
         followingButton = view.findViewById(R.id.following_button);
-        followersButton = view.findViewById(R.id.followers_button);
-        requestsButton = view.findViewById(R.id.requests_button);
+        followerButton = view.findViewById(R.id.followers_button);
+        requestButton = view.findViewById(R.id.requests_button);
         makeRequestButton = view.findViewById(R.id.make_request);
         makeRequestButton.setVisibility(View.VISIBLE);
 
@@ -98,7 +97,7 @@ public class profile extends Fragment {
         final CollectionReference followingReference = db
                 .collection("Users")
                 .document(auth.getCurrentUser().getEmail())
-                .collection("Following");
+                .collection("Followings");
 
         requestDataList = new ArrayList<>();
         requestAdapter = new RequestList(getContext(), requestDataList);
@@ -115,14 +114,14 @@ public class profile extends Fragment {
                 profileListView.setAdapter(followingAdapter);
             }
         });
-        followersButton.setOnClickListener(new View.OnClickListener() {
+        followerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 makeRequestButton.setVisibility(View.GONE);
                 profileListView.setAdapter(followerAdapter);
             }
         });
-        requestsButton.setOnClickListener(new View.OnClickListener() {
+        requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 makeRequestButton.setVisibility(View.GONE);
@@ -132,7 +131,7 @@ public class profile extends Fragment {
         makeRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new Requests().show(getActivity().getSupportFragmentManager(), "REQUEST");
+                new RequestMake().show(getActivity().getSupportFragmentManager(), "REQUEST");
             }
         });
 
@@ -169,6 +168,23 @@ public class profile extends Fragment {
                     followingDataList.add(new Following(followingEmail));
                 }
                 followingAdapter.notifyDataSetChanged();
+            }
+        });
+
+        profileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (adapterView.getItemAtPosition(i).getClass().getSimpleName().equals("Request")) {
+                    // clicked on request
+                    Request clickedRequest = (Request) adapterView.getItemAtPosition(i);
+                    new RequestRespond(clickedRequest).show(getActivity().getSupportFragmentManager(), "REQUEST");
+                } else if (adapterView.getItemAtPosition(i).getClass().getSimpleName().equals("Follower")) {
+                    // clicked on follower
+                } else if (adapterView.getItemAtPosition(i).getClass().getSimpleName().equals("Following")) {
+                    // clicked on following
+                } else {
+                    Toast.makeText(getActivity(), "Error: " + adapterView.getItemAtPosition(i).getClass().getSimpleName(), Toast.LENGTH_LONG).show();
+                }
             }
         });
 

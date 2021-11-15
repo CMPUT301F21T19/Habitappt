@@ -7,7 +7,7 @@ public class User {
     /**
      * The email of the user
      */
-    String userEmail;
+    private String userEmail;
 
     public User(String userEmail) {
         this.userEmail = userEmail;
