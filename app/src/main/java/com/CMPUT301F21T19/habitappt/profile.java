@@ -22,9 +22,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 public class profile extends Fragment {
 
+    Button followingButton;
+    Button followersButton;
+    Button requestsButton;
+    FloatingActionButton makeRequestButton;
     /**
      * Creates profile fragment from saved state
      * @param savedInstanceState Bundle
@@ -45,23 +51,32 @@ public class profile extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        Button followingButton = view.findViewById(R.id.following_button);
-        Button followersButton = view.findViewById(R.id.followers_button);
-        Button requestsButton = view.findViewById(R.id.requests_button);
+        followingButton = view.findViewById(R.id.following_button);
+        followersButton = view.findViewById(R.id.followers_button);
+        requestsButton = view.findViewById(R.id.requests_button);
+        makeRequestButton = view.findViewById(R.id.make_request);
+
+        makeRequestButton.setVisibility(View.VISIBLE);
 
         followingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                makeRequestButton.setVisibility(View.VISIBLE);
             }
         });
         followersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                makeRequestButton.setVisibility(View.GONE);
             }
         });
         requestsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                makeRequestButton.setVisibility(View.GONE);
+            }
+        });
+        makeRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new Requests().show(getActivity().getSupportFragmentManager(), "REQUEST");

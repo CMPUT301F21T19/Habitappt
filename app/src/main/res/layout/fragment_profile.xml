@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -55,7 +56,24 @@
             android:id="@+id/display_profile_list"
             android:layout_width="match_parent"
             android:layout_height="637dp"
-            android:layout_weight="1" />
+            android:layout_weight="1">
+
+
+        </ListView>
+
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/make_request"
+        android:layout_width="74dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:tint="@color/colorWhite"
+        app:backgroundTint="@color/colorPrimary"
+        app:borderWidth="0dp"
+        app:srcCompat="@drawable/follow_request_img" />
 
 </FrameLayout>
