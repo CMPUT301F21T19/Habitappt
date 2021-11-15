@@ -111,6 +111,8 @@ public class Requests extends DialogFragment {
                                                 .document(auth.getCurrentUser().getEmail());
 
                                         HashMap<String,Object> data = new HashMap<>();
+                                        data.put("Requester", auth.getCurrentUser().getEmail());
+                                        data.put("Requested", requestedEmail);
                                         data.put("Time", GregorianCalendar.getInstance().getTimeInMillis());
 
                                         doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -15,6 +15,7 @@ package com.CMPUT301F21T19.habitappt;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -27,9 +28,16 @@ import android.widget.ListView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 
 public class profile extends Fragment {
@@ -79,39 +87,88 @@ public class profile extends Fragment {
         makeRequestButton = view.findViewById(R.id.make_request);
         makeRequestButton.setVisibility(View.VISIBLE);
 
-        /* THIS IS SOME COOL STUFF THAT CAN BE USED LATER
-        final CollectionReference collectionReference = db
+        final CollectionReference requestReference = db
                 .collection("Users")
                 .document(auth.getCurrentUser().getEmail())
-                .collection("Habits");
+                .collection("Requests");
+        final CollectionReference followerReference = db
+                .collection("Users")
+                .document(auth.getCurrentUser().getEmail())
+                .collection("Followers");
+        final CollectionReference followingReference = db
+                .collection("Users")
+                .document(auth.getCurrentUser().getEmail())
+                .collection("Following");
 
         requestDataList = new ArrayList<>();
-        requestAdapter = new HabitList(getContext(), requestDataList);
-        profileListView.setAdapter(requestAdapter);
-         */
+        requestAdapter = new RequestList(getContext(), requestDataList);
+        followerDataList = new ArrayList<>();
+        followerAdapter = new FollowerList(getContext(), followerDataList);
+        followingDataList = new ArrayList<>();
+        followingAdapter = new FollowingList(getContext(), followingDataList);
+        profileListView.setAdapter(followingAdapter);
 
         followingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 makeRequestButton.setVisibility(View.VISIBLE);
+                profileListView.setAdapter(followingAdapter);
             }
         });
         followersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 makeRequestButton.setVisibility(View.GONE);
+                profileListView.setAdapter(followerAdapter);
             }
         });
         requestsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 makeRequestButton.setVisibility(View.GONE);
+                profileListView.setAdapter(requestAdapter);
             }
         });
         makeRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new Requests().show(getActivity().getSupportFragmentManager(), "REQUEST");
+            }
+        });
+
+        requestReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                requestDataList.clear();
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String requestedEmail = (String) doc.getData().get("Requested");
+                    String requesterEmail = (String) doc.getData().get("Requester");
+                    long time = (long) doc.getData().get("Time");
+                    requestDataList.add(new Request(requesterEmail, requestedEmail, time));
+                }
+                requestAdapter.notifyDataSetChanged();
+            }
+        });
+        followerReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                followerDataList.clear();
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String followerEmail = doc.getId();
+                    followerDataList.add(new Follower(followerEmail));
+                }
+                followerAdapter.notifyDataSetChanged();
+            }
+        });
+        followingReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                followingDataList.clear();
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String followingEmail = doc.getId();
+                    followingDataList.add(new Following(followingEmail));
+                }
+                followingAdapter.notifyDataSetChanged();
             }
         });
 
