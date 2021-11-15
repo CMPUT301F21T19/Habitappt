@@ -85,7 +85,6 @@ import java.util.GregorianCalendar;
 public class view_habit extends Fragment {
 
     private View view;
-    private ImageView view_indicator;
     public MainActivity main;
     private TextView habitIsPrivate;
     private TextView habitTitle;
@@ -146,7 +145,6 @@ public class view_habit extends Fragment {
         habitReason = view.findViewById(R.id.habit_reason_display);
         habitDateToStart = view.findViewById(R.id.start_date_display);
         editButton = view.findViewById(R.id.edit_button);
-        view_indicator = view.findViewById(R.id.view_indicator);
 
         daysToDo.add(view.findViewById(R.id.monday_display));
         daysToDo.add(view.findViewById(R.id.tuesday_display));
@@ -156,20 +154,6 @@ public class view_habit extends Fragment {
         daysToDo.add(view.findViewById(R.id.saturday_display));
         daysToDo.add(view.findViewById(R.id.sunday_display));
 
-
-        long score = habit.getScore();
-
-        if (score < 20) {
-            view_indicator.setImageResource(R.drawable.ic_disappointed_emoji);
-        } else if (score < 40) {
-            view_indicator.setImageResource(R.drawable.ic_orange_emoji);
-        } else if (score < 60) {
-            view_indicator.setImageResource(R.drawable.ic_yellow_emoji);
-        } else if (score < 80) {
-            view_indicator.setImageResource(R.drawable.ic_light_green_emoji);
-        } else {
-            view_indicator.setImageResource(R.drawable.ic_bright_green_emoji);
-        }
 
         if (habit.getIsPrivate()) {
             habitIsPrivate.setText("Private Habit");
