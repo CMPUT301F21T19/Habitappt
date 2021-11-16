@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,7 +37,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class view_following extends Fragment {
-
     MainActivity main;
 
     ListView habitListView;
@@ -42,12 +48,16 @@ public class view_following extends Fragment {
 
     Button allHabitsButton;
     Button dailyHabitsButton;
+    Button unFollowButton;
 
     TextView userProfileName;
 
     FirebaseFirestore db;
+    FirebaseAuth auth;
 
     String user;
+
+    Activity THIS;
 
     public view_following(String user){
         this.user = user;
@@ -56,9 +66,8 @@ public class view_following extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof Activity) {
-            main = (MainActivity) context;
-        }
+
+        main = (MainActivity) context;
     }
 
 
@@ -66,6 +75,10 @@ public class view_following extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_following,container,false);
+
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        THIS = getActivity();
 
         habitListView = view.findViewById(R.id.profile_list);
 
@@ -78,6 +91,7 @@ public class view_following extends Fragment {
 
         allHabitsButton = view.findViewById(R.id.all_habits_following);
         dailyHabitsButton = view.findViewById(R.id.daily_habits_following);
+        unFollowButton = view.findViewById(R.id.unfollow_button);
 
         userProfileName = view.findViewById(R.id.username_field);
 
@@ -102,6 +116,43 @@ public class view_following extends Fragment {
                     allHabitsButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
                     dailyHabitsButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimaryDark));
                 }
+            }
+        });
+
+        unFollowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.collection("Users")
+                        .document(auth.getCurrentUser().getEmail())
+                        .collection("Followings").document(user).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast toast = Toast.makeText(THIS,user + " unfollowed.",Toast.LENGTH_SHORT);
+                        toast.show();
+
+                        db.collection("Users")
+                                .document(user)
+                                .collection("Followers")
+                                .document(auth.getCurrentUser().getEmail()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d("success","removed from following");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("error",e.toString());
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("error",e.toString());
+                    }
+                });
+
+                main.getSupportFragmentManager().popBackStackImmediate();
             }
         });
 
