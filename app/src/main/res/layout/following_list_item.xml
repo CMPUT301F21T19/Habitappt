@@ -19,7 +19,7 @@
 
             <TextView
                 android:id="@+id/following_email_text_view"
-                android:layout_width="370dp"
+                android:layout_width="358dp"
                 android:layout_height="wrap_content"
                 android:text="followingEmail"
                 android:textSize="30sp"></TextView>
