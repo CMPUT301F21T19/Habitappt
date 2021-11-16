@@ -13,9 +13,14 @@
  * **/
 package com.CMPUT301F21T19.habitappt;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -25,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,6 +54,7 @@ public class profile extends Fragment {
     private Button followerButton;
     private Button requestButton;
     private FloatingActionButton makeRequestButton;
+    private TextView usernameLabel;
 
     private ArrayAdapter<Request> requestAdapter;
     private ArrayList<Request> requestDataList;
@@ -65,6 +72,12 @@ public class profile extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+    }
+
     /**
      * Inflates layout for profile fragment
      * @param inflater LayoutInflater
@@ -79,12 +92,18 @@ public class profile extends Fragment {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
+
+
+
         profileListView = view.findViewById(R.id.profile_list);
         followingButton = view.findViewById(R.id.following_button);
         followerButton = view.findViewById(R.id.followers_button);
         requestButton = view.findViewById(R.id.requests_button);
         makeRequestButton = view.findViewById(R.id.make_request);
-        makeRequestButton.setVisibility(View.VISIBLE);
+        usernameLabel = view.findViewById(R.id.username_field);
+        //makeRequestButton.setVisibility(View.VISIBLE);
+
+        usernameLabel.setText(auth.getCurrentUser().getEmail());
 
         final CollectionReference requestReference = db
                 .collection("Users")
@@ -108,26 +127,50 @@ public class profile extends Fragment {
         profileListView.setAdapter(followingAdapter);
 
         followingButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                makeRequestButton.setVisibility(View.VISIBLE);
+                //makeRequestButton.setVisibility(View.VISIBLE);
+
+                //changing button tints programmatically isn't available in older apis so we gotta do this.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    followingButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimaryDark));
+                    followerButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
+                    requestButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
+                }
+
                 profileListView.setAdapter(followingAdapter);
             }
         });
         followerButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                makeRequestButton.setVisibility(View.GONE);
+                //makeRequestButton.setVisibility(View.GONE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    followingButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
+                    followerButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimaryDark));
+                    requestButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
+                }
+
                 profileListView.setAdapter(followerAdapter);
             }
         });
         requestButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                makeRequestButton.setVisibility(View.GONE);
+                //makeRequestButton.setVisibility(View.GONE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    followingButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
+                    followerButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
+                    requestButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimaryDark));
+                }
+
                 profileListView.setAdapter(requestAdapter);
             }
         });
+
         makeRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,7 +222,8 @@ public class profile extends Fragment {
                     Request clickedRequest = (Request) adapterView.getItemAtPosition(i);
                     new RequestRespond(clickedRequest).show(getActivity().getSupportFragmentManager(), "REQUEST");
                 } else if (adapterView.getItemAtPosition(i).getClass().getSimpleName().equals("Follower")) {
-                    // clicked on follower
+                    Follower clickFollower = (Follower) adapterView.getItemAtPosition(i);
+                    new manage_follower(clickFollower.getUserEmail()).show(getActivity().getSupportFragmentManager(),"MANAGE");
                 } else if (adapterView.getItemAtPosition(i).getClass().getSimpleName().equals("Following")) {
                     // clicked on following
                 } else {
