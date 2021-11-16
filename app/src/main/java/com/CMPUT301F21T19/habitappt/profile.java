@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -226,6 +227,11 @@ public class profile extends Fragment {
                     new manage_follower(clickFollower.getUserEmail()).show(getActivity().getSupportFragmentManager(),"MANAGE");
                 } else if (adapterView.getItemAtPosition(i).getClass().getSimpleName().equals("Following")) {
                     // clicked on following
+                    Following clickFollowing = (Following) adapterView.getItemAtPosition(i);
+                    FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+                    trans.replace(R.id.main_container, new view_following(clickFollowing.getUserEmail()));
+                    trans.addToBackStack("view_following");
+                    trans.commit();
                 } else {
                     Toast.makeText(getActivity(), "Error: " + adapterView.getItemAtPosition(i).getClass().getSimpleName(), Toast.LENGTH_LONG).show();
                 }
