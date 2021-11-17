@@ -57,6 +57,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -83,7 +85,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class view_habit extends Fragment {
+public class view_habit extends Fragment{
 
     private View view;
     public MainActivity main;
@@ -92,6 +94,7 @@ public class view_habit extends Fragment {
     private TextView habitReason;
     private TextView habitDateToStart;
     private ImageButton editButton;
+
 
     private view_habit THIS = this;
 
@@ -135,7 +138,8 @@ public class view_habit extends Fragment {
             main = (MainActivity) context;
         }
     }
-    
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
