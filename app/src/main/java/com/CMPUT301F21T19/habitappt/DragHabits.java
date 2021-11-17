@@ -8,13 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import javax.annotation.Nullable;
 
-public class DragHabits {
+public class DragHabits extends ItemTouchHelper.Callback{
 
     private ItemTouchHelperAdapter touchHelper;
 
     public DragHabits(ItemTouchHelperAdapter touchHelper){
         this.touchHelper = touchHelper;
     }
+
     @Override
     public boolean isLongPressDragEnabled(){
         return true;

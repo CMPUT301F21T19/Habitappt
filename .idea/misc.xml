@@ -60,8 +60,9 @@
         <entry key="app/src/main/res/layout/edit_habit.xml" value="0.21979166666666666" />
         <entry key="app/src/main/res/layout/event_list_item.xml" value="0.2210144927536232" />
         <entry key="app/src/main/res/layout/fragment_events_list.xml" value="0.17239583333333333" />
-        <entry key="app/src/main/res/layout/fragment_habits_list.xml" value="0.21979166666666666" />
+        <entry key="app/src/main/res/layout/fragment_habits_list.xml" value="0.2815100247304718" />
         <entry key="app/src/main/res/layout/fragment_view_habit.xml" value="0.21979166666666666" />
+        <entry key="app/src/main/res/layout/habit_list_fragment.xml" value="0.31354166666666666" />
         <entry key="app/src/main/res/layout/habit_list_item.xml" value="0.39344262295081966" />
       </map>
     </option>
