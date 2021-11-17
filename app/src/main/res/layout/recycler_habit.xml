@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/habit_list_fragment"
+        android:id="@+id/recycler_habit_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="4dp"
