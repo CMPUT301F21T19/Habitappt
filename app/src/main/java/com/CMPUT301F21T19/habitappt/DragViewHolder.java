@@ -11,11 +11,11 @@ public class DragViewHolder extends RecyclerView.ViewHolder implements View.OnTo
 
 
     private ItemTouchHelper touchHelper;
-    private DragListener moveHabit;
+    private DragMoveAdapter.DragListener moveHabit;
     GestureDetector gestureDetector;
 
 
-    public DragViewHolder(View habitView, ItemTouchHelper helper, DragListener habitListener) {
+    public DragViewHolder(View habitView, ItemTouchHelper helper, DragMoveAdapter.DragListener habitListener) {
         super(habitView);
         touchHelper = helper;
         moveHabit = habitListener;
@@ -60,8 +60,4 @@ public class DragViewHolder extends RecyclerView.ViewHolder implements View.OnTo
         return false;
     }
 
-    public void attachData(Habit habit) {
-        Habit.title.setText(habit.getTitle());
-        Habit.reason.setText(habit.getReason());
-    }
 }

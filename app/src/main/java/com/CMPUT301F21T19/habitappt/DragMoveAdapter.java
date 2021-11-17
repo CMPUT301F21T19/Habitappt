@@ -17,6 +17,10 @@ public class DragMoveAdapter extends RecyclerView.Adapter implements ItemTouchHe
 
     private ArrayList<Habit> habitList;
     private ItemTouchHelper touchHelper;
+
+    public interface DragListener {
+        void onHabitClick(int position);}
+
     private DragListener moveHabit;
 
     public DragMoveAdapter(ArrayList<Habit> habitList, DragListener moveHabit) {
@@ -33,7 +37,6 @@ public class DragMoveAdapter extends RecyclerView.Adapter implements ItemTouchHe
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((DragViewHolder) holder).attachData(habitList.get(position));
 
     }
 
