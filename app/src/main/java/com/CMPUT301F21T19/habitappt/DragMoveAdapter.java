@@ -1,8 +1,10 @@
 package com.CMPUT301F21T19.habitappt;
 
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -13,11 +15,10 @@ import com.google.android.ads.mediationtestsuite.viewmodels.ItemViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DragMoveAdapter extends RecyclerView.Adapter implements ItemTouchHelperAdapter {
+public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragViewHolder> implements DragHabits.ItemTouchHelperAdapter {
 
     private ArrayList<Habit> habitList;
     private ItemTouchHelper touchHelper;
-
     public interface DragListener {
         void onHabitClick(int position);}
 
@@ -28,39 +29,52 @@ public class DragMoveAdapter extends RecyclerView.Adapter implements ItemTouchHe
         this.moveHabit = moveHabit;
     }
 
+    public class DragViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        DragListener moveHabit;
+        public DragViewHolder(View view, DragListener moveHabit){
+            super(view);
+            this.moveHabit = moveHabit;
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            moveHabit.onHabitClick(getAdapterPosition());
+        }
+    }
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_list_item, parent, false);
-        return new DragViewHolder(view, touchHelper, moveHabit);
+    public DragViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View habitView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_habits_list, parent, false);
+        return new DragViewHolder(habitView, moveHabit);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DragViewHolder holder, int position) {
 
     }
 
     @Override
     public int getItemCount() {
-        return habitList.size();
+        return 0;
     }
 
     @Override
-    public void onItemMove(int fromPosition, int toPosition) {
-        Habit fromHabit = habitList.get(fromPosition);
-        habitList.remove(fromHabit);
-        habitList.add(toPosition, fromHabit);   //Removed habit is re-added at the new position.
-        notifyItemMoved(fromPosition, toPosition);
+    public void onRowMoved(int fromPosition, int toPosition) {
+
     }
 
     @Override
-    public void onItemSwipe(int position) {
-        habitList.remove(position);
-        notifyItemRemoved(position);
+    public void onRowSelected(DragViewHolder myViewHolder) {
+
     }
 
-    public void setTouchHelper(ItemTouchHelper helper) {
-        this.touchHelper = helper;
+    @Override
+    public void onRowClear(DragViewHolder myViewHolder) {
+
     }
+
 
 }
+
