@@ -93,16 +93,16 @@ public class profile extends Fragment {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
-
-
-
         profileListView = view.findViewById(R.id.profile_list);
         followingButton = view.findViewById(R.id.following_button);
         followerButton = view.findViewById(R.id.followers_button);
         requestButton = view.findViewById(R.id.requests_button);
         makeRequestButton = view.findViewById(R.id.make_request);
         usernameLabel = view.findViewById(R.id.username_field);
-        //makeRequestButton.setVisibility(View.VISIBLE);
+
+        followingButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+        followerButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+        requestButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
 
         usernameLabel.setText(auth.getCurrentUser().getEmail());
 
@@ -134,11 +134,9 @@ public class profile extends Fragment {
                 //makeRequestButton.setVisibility(View.VISIBLE);
 
                 //changing button tints programmatically isn't available in older apis so we gotta do this.
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    followingButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimaryDark));
-                    followerButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
-                    requestButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
-                }
+                followingButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+                followerButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                requestButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
 
                 profileListView.setAdapter(followingAdapter);
             }
@@ -148,11 +146,9 @@ public class profile extends Fragment {
             @Override
             public void onClick(View view) {
                 //makeRequestButton.setVisibility(View.GONE);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    followingButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
-                    followerButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimaryDark));
-                    requestButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
-                }
+                followingButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                followerButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+                requestButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
 
                 profileListView.setAdapter(followerAdapter);
             }
@@ -162,11 +158,9 @@ public class profile extends Fragment {
             @Override
             public void onClick(View view) {
                 //makeRequestButton.setVisibility(View.GONE);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    followingButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
-                    followerButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
-                    requestButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimaryDark));
-                }
+                followingButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                followerButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                requestButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
 
                 profileListView.setAdapter(requestAdapter);
             }
