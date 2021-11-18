@@ -102,10 +102,8 @@ public class view_habit extends Fragment {
 
     private Habit habit;
 
-    ListView eventListView;
     SwipeMenuListView eventSwipeListView;
     ArrayAdapter<HabitEvent> eventAdapter;
-//    protected ArrayList<HabitEvent> eventDataList;
 
     SwipeMenuItem deleteItem;
     SwipeMenuItem editItem;
