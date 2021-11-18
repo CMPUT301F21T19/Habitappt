@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.ads.mediationtestsuite.viewmodels.ItemViewHolder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,7 +37,7 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
 
     public DragMoveAdapter(ArrayList<Habit> habitList, DragListener dragListener) {
         this.habitList = habitList;
-        this.dragListener = double;
+        this.dragListener = dragListener;
     }
 
     public class DragViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
