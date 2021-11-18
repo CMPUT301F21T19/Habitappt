@@ -45,7 +45,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-
+/**
+ * This class is the fragment for viewing ones own profile. Displays followers, following, and follow requests
+ * and allows a user to send follow requests to others.
+ */
 public class profile extends Fragment {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
@@ -100,6 +103,7 @@ public class profile extends Fragment {
         makeRequestButton = view.findViewById(R.id.make_request);
         usernameLabel = view.findViewById(R.id.username_field);
 
+        //change button highlights based on which list is being viewed
         followingButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
         followerButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
         requestButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
@@ -131,9 +135,7 @@ public class profile extends Fragment {
 
             @Override
             public void onClick(View view) {
-                //makeRequestButton.setVisibility(View.VISIBLE);
-
-                //changing button tints programmatically isn't available in older apis so we gotta do this.
+                //change button highlights and switch listview
                 followingButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
                 followerButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
                 requestButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
@@ -145,7 +147,7 @@ public class profile extends Fragment {
 
             @Override
             public void onClick(View view) {
-                //makeRequestButton.setVisibility(View.GONE);
+                //change button highlights and switch listview
                 followingButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
                 followerButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
                 requestButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
@@ -157,7 +159,7 @@ public class profile extends Fragment {
 
             @Override
             public void onClick(View view) {
-                //makeRequestButton.setVisibility(View.GONE);
+                //change button highlights and switch listview
                 followingButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
                 followerButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
                 requestButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
@@ -169,6 +171,7 @@ public class profile extends Fragment {
         makeRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //open up make request dialog
                 new RequestMake().show(getActivity().getSupportFragmentManager(), "REQUEST");
             }
         });
@@ -176,6 +179,7 @@ public class profile extends Fragment {
         requestReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                //update follow request list from db
                 requestDataList.clear();
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String requestedEmail = (String) doc.getData().get("Requested");
@@ -189,6 +193,7 @@ public class profile extends Fragment {
         followerReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                //update follower list from db
                 followerDataList.clear();
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String followerEmail = doc.getId();
@@ -200,6 +205,7 @@ public class profile extends Fragment {
         followingReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                //update following list from db
                 followingDataList.clear();
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String followingEmail = doc.getId();
@@ -212,6 +218,7 @@ public class profile extends Fragment {
         profileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //decide behavior of clicking on a listview item depending on which listview is open
                 if (adapterView.getItemAtPosition(i).getClass().getSimpleName().equals("Request")) {
                     // clicked on request
                     Request clickedRequest = (Request) adapterView.getItemAtPosition(i);

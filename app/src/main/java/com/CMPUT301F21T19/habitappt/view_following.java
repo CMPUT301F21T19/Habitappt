@@ -36,6 +36,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+/**
+ * This class is the fragment used for viewing followed users profiles. Shows their public habits and visual indicators,
+ * aswell as the habits they have to complete today.
+ */
 public class view_following extends Fragment {
     MainActivity main;
 
@@ -59,6 +63,10 @@ public class view_following extends Fragment {
 
     Activity THIS;
 
+    /**
+     * Constructor that takes in the user whos profile is being viewed.
+     * @param user
+     */
     public view_following(String user){
         this.user = user;
     }
@@ -97,12 +105,14 @@ public class view_following extends Fragment {
 
         userProfileName.setText(user);
 
+        //button highlight changes when pressed
         allHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
         dailyHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
 
         allHabitsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //update button colors and listview
                 habitListView.setAdapter(habitAdapter);
                 allHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
                 dailyHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
@@ -112,6 +122,7 @@ public class view_following extends Fragment {
         dailyHabitsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //update button colors and listview
                 habitListView.setAdapter(dailyHabitAdapter);
                 allHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
                 dailyHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
@@ -121,6 +132,7 @@ public class view_following extends Fragment {
         unFollowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //remove user from following, and remove current user from users follower list
                 db.collection("Users")
                         .document(auth.getCurrentUser().getEmail())
                         .collection("Followings").document(user).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -156,7 +168,6 @@ public class view_following extends Fragment {
         });
 
 
-        db = FirebaseFirestore.getInstance();
 
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -172,6 +183,7 @@ public class view_following extends Fragment {
         all_habits.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                //update habit list based on privacy rule
                 habitDataList.clear();
 
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
@@ -197,6 +209,7 @@ public class view_following extends Fragment {
         all_habits.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                //update daily habit list based on privacy rule
                 dailyHabitDataList.clear();
 
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
