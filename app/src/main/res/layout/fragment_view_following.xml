@@ -13,13 +13,27 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/username_field"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="49dp"
-            android:gravity="center|center_horizontal"
-            android:text="username"
-            android:textSize="20sp" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/username_field"
+                android:layout_width="250dp"
+                android:layout_height="49dp"
+                android:gravity="center|center_horizontal"
+                android:text="username"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/unfollow_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#60B4F6"
+                android:layout_weight="1"
+                android:text="Unfollow" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,28 +41,20 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/following_button"
+                android:id="@+id/all_habits_following"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="Following" />
+                android:background="@color/colorPrimaryDark"
+                android:text="All Habits" />
 
             <Button
-                android:id="@+id/followers_button"
+                android:id="@+id/daily_habits_following"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
-                android:text="Followers" />
-
-            <Button
-                android:id="@+id/requests_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="Requests" />
+                android:text="Daily Habits" />
 
         </LinearLayout>
 
@@ -59,18 +65,5 @@
             android:layout_weight="1" />
 
     </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/make_request"
-        android:layout_width="74dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="20dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:tint="@color/colorWhite"
-        app:backgroundTint="@color/colorPrimary"
-        app:borderWidth="0dp"
-        app:srcCompat="@drawable/follow_request_img" />
 
 </FrameLayout>
