@@ -11,9 +11,6 @@ import android.widget.ListView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -31,11 +28,10 @@ public abstract class abstract_habit_list_fragment extends Fragment {
      * Abstract class for whenever we want to display a list of habits from the database.
      */
 
-    //ListView habitListView;
-    //ArrayAdapter<Habit>habitAdapter;
+    ListView habitListView;
+    ArrayAdapter<Habit> habitAdapter;
     ArrayList<Habit> habitDataList;
-    private DragMoveAdapter habitAdapter;
-    private RecyclerView habitListView;
+
     View addHabitButton;
     FirebaseFirestore db;
     FirebaseAuth auth;
@@ -68,7 +64,7 @@ public abstract class abstract_habit_list_fragment extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.recycler_habit, container, false);
+        view = inflater.inflate(R.layout.fragment_habits_list, container, false);
 
         addHabitButton = view.findViewById(R.id.add_habit_button);
         habitListView = view.findViewById(R.id.habit_list);
@@ -82,14 +78,8 @@ public abstract class abstract_habit_list_fragment extends Fragment {
                 .collection("Habits");
 
         habitDataList = new ArrayList<>();
-        //habitAdapter = new HabitList(getContext(), habitDataList);
-        habitAdapter = new DragMoveAdapter(habitDataList, this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        habitListView.setLayoutManager(layoutManager);
-        initHabitOrder();
-        //showList();
+        habitAdapter = new HabitList(getContext(), habitDataList);
         habitListView.setAdapter(habitAdapter);
-        //habitListView.setAdapter(habitAdapter);
 
         //list view item listener
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -120,13 +110,6 @@ public abstract class abstract_habit_list_fragment extends Fragment {
         });
 
         return view;
-    }
-
-    public void initHabitOrder(){
-        ItemTouchHelper.Callback callback = new DragHabits(habitAdapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(habitListView);
-        //showList();
     }
 
 }

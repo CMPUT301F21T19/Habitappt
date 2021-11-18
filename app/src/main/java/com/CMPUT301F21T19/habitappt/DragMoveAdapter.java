@@ -11,8 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-//import com.google.android.ads.mediationtestsuite.viewmodels.ItemViewHolder;
-
+import com.google.android.ads.mediationtestsuite.viewmodels.ItemViewHolder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,35 +34,35 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
     public interface DragListener {
         void onHabitClick(int position);}
 
-    private DragListener dragListener;
+    private DragListener moveHabit;
 
-    public DragMoveAdapter(ArrayList<Habit> habitList, DragListener dragListener) {
+    public DragMoveAdapter(ArrayList<Habit> habitList, DragListener moveHabit) {
         this.habitList = habitList;
-        this.dragListener = dragListener;
+        this.moveHabit = moveHabit;
     }
 
     public class DragViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView title;
         private TextView reason;
-        DragListener dragListener;
-        public DragViewHolder(View view, DragListener dragListener){
+        DragListener moveHabit;
+        public DragViewHolder(View view, DragListener moveHabit){
             super(view);
             title = view.findViewById(R.id.habit_title);
             reason = view.findViewById(R.id.habit_reason_list_text);
-            this.dragListener = dragListener;
+            this.moveHabit = moveHabit;
             view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            dragListener.onHabitClick(getAdapterPosition());
+            moveHabit.onHabitClick(getAdapterPosition());
         }
     }
     @NonNull
     @Override
     public DragViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View habitView = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_list_item, parent, false);
-        return new DragViewHolder(habitView, dragListener);
+        return new DragViewHolder(habitView, moveHabit);
     }
 
     @Override
