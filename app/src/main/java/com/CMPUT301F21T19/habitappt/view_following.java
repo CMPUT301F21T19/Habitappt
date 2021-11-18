@@ -97,14 +97,15 @@ public class view_following extends Fragment {
 
         userProfileName.setText(user);
 
+        allHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+        dailyHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+
         allHabitsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 habitListView.setAdapter(habitAdapter);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    allHabitsButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimaryDark));
-                    dailyHabitsButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
-                }
+                allHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+                dailyHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
             }
         });
 
@@ -112,10 +113,8 @@ public class view_following extends Fragment {
             @Override
             public void onClick(View view) {
                 habitListView.setAdapter(dailyHabitAdapter);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    allHabitsButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
-                    dailyHabitsButton.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimaryDark));
-                }
+                allHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                dailyHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
             }
         });
 

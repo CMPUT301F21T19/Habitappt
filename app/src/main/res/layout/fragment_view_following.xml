@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="@color/colorPrimaryDark"
+                android:background="@color/colorPrimaryDark"
                 android:text="All Habits" />
 
             <Button
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="#60B4F6"
+                android:background="@color/colorPrimary"
                 android:text="Daily Habits" />
 
         </LinearLayout>
