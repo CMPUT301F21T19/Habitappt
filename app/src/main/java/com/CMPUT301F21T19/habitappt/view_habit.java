@@ -112,6 +112,7 @@ public class view_habit extends Fragment {
 
     private FirebaseStorage storage;
     private FirebaseAuth auth;
+    private FirebaseFirestore db;
 
     /**
      * @param habit Habit object in which to display in view
@@ -144,6 +145,8 @@ public class view_habit extends Fragment {
         view = inflater.inflate(R.layout.fragment_view_habit, container, false);
 
         auth = FirebaseAuth.getInstance();
+
+        db = FirebaseFirestore.getInstance();
 
         habitIsPrivate = view.findViewById(R.id.isPrivate_text_view);
         habitTitle = view.findViewById(R.id.habit_title_display);
@@ -248,7 +251,8 @@ public class view_habit extends Fragment {
                         //get event
                         HabitEvent delEvent = (HabitEvent) eventSwipeListView.getItemAtPosition(position);
                         //NEED TO DO
-                        new edit_event(delEvent, habit, "REMOVE").show(getActivity().getSupportFragmentManager(), "REMOVE");
+                        SharedHelper.deleteImage(delEvent.getId(), storage);
+                        SharedHelper.removeEvent(delEvent, habit, db);
                         break;
                 }
                 return false;
