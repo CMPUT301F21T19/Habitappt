@@ -35,7 +35,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 
-public class all_habits extends abstract_habit_list_fragment {
+public class all_habits extends abstractHabitListFragment {
     /**
      * This class defines a fragment that shows all of a users habits.
      */

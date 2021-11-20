@@ -36,7 +36,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class daily_habits extends  abstract_habit_list_fragment {
+public class daily_habits extends abstractHabitListFragment {
     /**
      * This class defines a fragment that shows all of the habits a user must complete today.
      */

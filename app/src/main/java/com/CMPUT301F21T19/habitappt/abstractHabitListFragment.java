@@ -1,6 +1,8 @@
 package com.CMPUT301F21T19.habitappt;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,9 @@ import android.widget.ListView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -22,16 +27,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 
-public abstract class abstract_habit_list_fragment extends Fragment implements DragMoveAdapter.DragListener {
+public abstract class abstractHabitListFragment extends Fragment implements DragMoveAdapter.DragListener {
 
     /**
      * Abstract class for whenever we want to display a list of habits from the database.
      */
 
-    ListView habitListView;
-    ArrayAdapter<Habit> habitAdapter;
+    RecyclerView habitListView;
+    DragMoveAdapter habitAdapter;
     ArrayList<Habit> habitDataList;
-
+    RecyclerView habitView;
     View addHabitButton;
     FirebaseFirestore db;
     FirebaseAuth auth;
@@ -64,10 +69,10 @@ public abstract class abstract_habit_list_fragment extends Fragment implements D
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_habits_list, container, false);
+        view = inflater.inflate(R.layout.recycler_view, container, false);
 
-        addHabitButton = view.findViewById(R.id.add_habit_button);
-        habitListView = view.findViewById(R.id.habit_list);
+        //addHabitButton = view.findViewById(R.id.add_habit_button);
+        //habitListView = view.findViewById(R.id.habit_list);
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -77,28 +82,32 @@ public abstract class abstract_habit_list_fragment extends Fragment implements D
                 .document(auth.getCurrentUser().getEmail())
                 .collection("Habits");
 
+
+        habitView = view.findViewById(R.id.recycler_habitList);
         habitDataList = new ArrayList<>();
-        habitAdapter = new HabitList(getContext(), habitDataList);
-        habitListView.setAdapter(habitAdapter);
+        habitAdapter = new DragMoveAdapter(habitDataList, this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        habitView.setLayoutManager(layoutManager);
+        initHabitOrder();
+        habitView.setAdapter(habitAdapter);
 
         //list view item listener
-        habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
-                trans.replace(R.id.main_container,new view_habit(habitDataList.get(position)));
-                trans.addToBackStack("view_habit");
-                trans.commit();
-            }
-        });
+//        @Override
+//        public void onHabitClick(int position) {
+//            FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+//            trans.replace(R.id.main_container,new view_habit(habitDataList.get(position)));
+//            trans.addToBackStack("view_habit");
+//            trans.commit();
+//        };
+
 
         //listener for pressing the button to add habits.
-        addHabitButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new edit_habit().show(getActivity().getSupportFragmentManager(), "ADD");
-            }
-        });
+//        addHabitButton.setOnClickListener( new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                new edit_habit().show(getActivity().getSupportFragmentManager(), "ADD");
+//            }
+//        });
 
 
         //listener for database updates. uses the abstract method defined in this class.
@@ -112,4 +121,18 @@ public abstract class abstract_habit_list_fragment extends Fragment implements D
         return view;
     }
 
+
+    public void onHabitClick(int position) {
+        FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+        trans.replace(R.id.main_container,new view_habit(habitDataList.get(position)));
+        trans.addToBackStack("view_habit");
+        trans.commit();
+    };
+
+    public void initHabitOrder(){
+        ItemTouchHelper.Callback callback = new DragHabits(habitAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(habitView);
+
+    }
 }

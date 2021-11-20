@@ -8,8 +8,6 @@
         <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/drawable/profile_icon.xml" value="0.128" />
         <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/layout/activity_main.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/layout/fragment_all_habits.xml" value="0.1793478260869565" />
-        <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/layout/fragment_profile.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/layout/fragment_view_following.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/layout/nav_bar.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/menu/nav_bar_bottom.xml" value="0.21979166666666666" />
         <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/menu/nav_bar_menu.xml" value="0.2" />
@@ -19,19 +17,23 @@
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/edit_event.xml" value="0.21041666666666667" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/edit_habit.xml" value="0.2140625" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/event_list_item.xml" value="0.21041666666666667" />
-        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/follower_list_item.xml" value="0.19375" />
-        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/following_list_item.xml" value="0.19375" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_all_habits.xml" value="0.2140625" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_events_list.xml" value="0.21041666666666667" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_habits_list.xml" value="0.35190217391304346" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_view_following.xml" value="0.19375" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_view_habit.xml" value="0.21041666666666667" />
-        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/manage_follower.xml" value="0.19375" />
-        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/request_list_item.xml" value="0.3875" />
-        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/request_make.xml" value="0.19375" />
+        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/request_list_item.xml" value="0.5" />
+        <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/MakeRequest.xml" value="0.3625" />
         <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/edit_habit.xml" value="0.3625" />
+        <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/follower_list_item.xml" value="0.3625" />
+        <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/following_list_item.xml" value="0.3625" />
         <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/fragment_profile.xml" value="0.3625" />
+        <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/habit_list_item.xml" value="0.3625" />
+        <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/makeRequest.xml" value="0.3625" />
+        <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/make_request.xml" value="0.3625" />
+        <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/request_list_item.xml" value="0.3625" />
+        <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/request_make.xml" value="0.3625" />
+        <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/request_respond.xml" value="0.3625" />
         <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/requests.xml" value="0.3625" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/drawable-anydpi/ic_daily_habit.xml" value="0.31302083333333336" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.31302083333333336" />
@@ -54,14 +56,15 @@
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/profile_fragment_layout.xml" value="0.1" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/menu/bottom_nav_bar.xml" value="0.5" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/menu/nav_bar_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.24895833333333334" />
         <entry key="app/src/main/res/layout/edit_event.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/edit_habit.xml" value="0.21979166666666666" />
         <entry key="app/src/main/res/layout/event_list_item.xml" value="0.2210144927536232" />
         <entry key="app/src/main/res/layout/fragment_events_list.xml" value="0.17239583333333333" />
-        <entry key="app/src/main/res/layout/fragment_habits_list.xml" value="0.2815100247304718" />
+        <entry key="app/src/main/res/layout/fragment_habits_list.xml" value="0.30427714130999445" />
         <entry key="app/src/main/res/layout/fragment_view_habit.xml" value="0.21979166666666666" />
-        <entry key="app/src/main/res/layout/habit_list_fragment.xml" value="0.31354166666666666" />
         <entry key="app/src/main/res/layout/habit_list_item.xml" value="0.39344262295081966" />
+        <entry key="app/src/main/res/layout/recycler_view.xml" value="0.23854166666666668" />
       </map>
     </option>
   </component>

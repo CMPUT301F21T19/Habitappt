@@ -40,13 +40,13 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
     }
 
     public class DragViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView title;
-        private TextView reason;
+        private TextView habitTitle;
+        private TextView habitReason;
         DragListener dragListener;
         public DragViewHolder(View view, DragListener dragListener){
             super(view);
-            title = view.findViewById(R.id.habit_title);
-            reason = view.findViewById(R.id.habit_reason_list_text);
+            habitTitle = view.findViewById(R.id.habit_name);
+            habitReason = view.findViewById(R.id.habit_reason_list_text);
             this.dragListener = dragListener;
             view.setOnClickListener(this);
         }
@@ -67,8 +67,8 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
     public void onBindViewHolder(@NonNull DragViewHolder holder, int position) {
         String title = habitList.get(position).getTitle();
         String reason = habitList.get(position).getReason();
-        holder.title.setText(title);
-        holder.reason.setText(reason);
+        holder.habitTitle.setText(title);
+        holder.habitReason.setText(reason);
 
     }
 
