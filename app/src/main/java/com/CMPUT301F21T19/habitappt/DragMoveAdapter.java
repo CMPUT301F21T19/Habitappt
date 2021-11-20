@@ -28,12 +28,11 @@ import java.util.List;
 public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragViewHolder> implements DragHabits.ItemTouchHelperAdapter {
 
     private ArrayList<Habit> habitList;
-    private ItemTouchHelper touchHelper;
+    private DragListener dragListener;
 
     public interface DragListener {
         void onHabitClick(int position);}
 
-    private DragListener dragListener;
 
     public DragMoveAdapter(ArrayList<Habit> habitList, DragListener dragListener) {
         this.habitList = habitList;
