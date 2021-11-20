@@ -48,6 +48,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -79,6 +80,8 @@ public class edit_event extends DialogFragment {
     private CalendarView eventDate;
 
     private ImageButton imgButton;
+
+    private Button locationButton;
 
     private HabitEvent event;
 
@@ -152,6 +155,9 @@ public class edit_event extends DialogFragment {
         eventDate = view.findViewById(R.id.event_date_calendar);
         imgButton = view.findViewById(R.id.event_img);
 
+        //location button ref
+        locationButton = view.findViewById(R.id.location_button);
+
         if(event.getImg() != null){
             imgButton.setImageBitmap(event.getImg());
         }
@@ -166,6 +172,16 @@ public class edit_event extends DialogFragment {
                 startActivityForResult(takePictureIntent, 1);
             }
         });
+
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent getLocationIntent = new Intent(getContext(), LocationActivity.class);
+                startActivity(getLocationIntent);
+            }
+        });
+
+
 
         eventDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override

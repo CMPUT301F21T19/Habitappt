@@ -42,10 +42,17 @@
                 android:id="@+id/event_img"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/no_image_provided_event"
+                app:srcCompat="@drawable/no_image_provided_event"
                 tools:src="@drawable/no_image_provided_event"
                 tools:srcCompat="@tools:sample/avatars" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/location_button"
+                android:text="Select Location"
+
+                ></Button>
             <TextView
                 android:id="@+id/event_date_label"
                 android:layout_width="match_parent"
