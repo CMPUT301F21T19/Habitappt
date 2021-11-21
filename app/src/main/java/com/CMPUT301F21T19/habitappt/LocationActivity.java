@@ -83,12 +83,20 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         latTextView = findViewById(R.id.current_lat);
         lonTextView = findViewById(R.id.current_lon);
 
+
+
+
+
         //setup button
         saveButton = findViewById(R.id.save_button);
 
         //create location provider instance
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
+
+
+        latTextView.setText("Current Latitude: Select location to calibrate") ;
+        lonTextView.setText("Current Longitude: Select location to calibrate");
 
         // Build the map.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -101,11 +109,12 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void onClick(View view) {
                 //pass lat/lon back to edit_event
-                Intent returnToEditEvent = new Intent();
+                Intent returnToEditEvent = new Intent(getApplicationContext(), edit_event.class);
                 returnToEditEvent.putExtra("latitude", currLat);
                 returnToEditEvent.putExtra("longitude", currLong);
                 setResult(Activity.RESULT_OK, returnToEditEvent);
                 finish();
+
             }
         });
 
@@ -128,6 +137,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
+
     }
 
     /**
@@ -215,7 +225,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     /**
-     * When map is clicked, move marker
+     * When map is clicked, move marker/save context, also update textview
      */
     @Override
     public void onMapClick(LatLng latLng) {
@@ -237,8 +247,8 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         currLong = latLng.longitude;
 
         //update text view
-        latTextView.setText("Current Latitude: " + (int)currLat);
-        lonTextView.setText("Current Longitude: " + (int)currLong);
+        latTextView.setText("Current Latitude: " + (int)currLat + "\u00B0");
+        lonTextView.setText("Current Longitude: " + (int)currLong + "\u00B0");
 
 
     }

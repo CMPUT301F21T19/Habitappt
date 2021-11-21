@@ -53,6 +53,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -103,6 +104,9 @@ public class edit_event extends DialogFragment {
 
     final int LAUNCH_MAP_ACTIVITY = 1;
 
+
+    private double oldLat, oldLon;
+    TextView latTextView, lonTextView;
     /**
      * create a edit_event object with the specified values
      * @param event habit event object
@@ -160,6 +164,21 @@ public class edit_event extends DialogFragment {
 
         //location button ref
         locationButton = view.findViewById(R.id.location_button);
+
+        //get textviews
+        latTextView = view.findViewById(R.id.current_lat_disp);
+        lonTextView = view.findViewById(R.id.current_lon_disp);
+
+        //if presaved valid #'s, set them
+        if(event.getLocationLat() != -1 && event.getLocationLon() != -1){
+            //set textview
+            latTextView.setText("Latitude: " + (int) event.getLocationLat() +  "\u00B0");
+            lonTextView.setText("Longitude: " + (int) event.getLocationLon() +  "\u00B0");
+        }
+
+        //keep reference to old lat and lon
+        oldLat = event.getLocationLat();
+        oldLon = event.getLocationLon();
 
         if(event.getImg() != null){
             imgButton.setImageBitmap(event.getImg());
@@ -225,7 +244,12 @@ public class edit_event extends DialogFragment {
                             //remove image from firestore storage after deleting event
                             SharedHelper.deleteImage(event.getId(), storage);
                             SharedHelper.removeEvent(event, habit, db);
+
+
                         }
+                        //save old lat and lon
+                        event.setLocationLat(oldLat);
+                        event.setLocationLon(oldLon);
                     }
                 })
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -468,6 +492,13 @@ public class edit_event extends DialogFragment {
                 double latitude = data.getDoubleExtra("latitude", Activity.RESULT_CANCELED);
                 double longitude = data.getDoubleExtra("longitude", Activity.RESULT_CANCELED);
 
+                //update current coordinates
+                event.setLocationLat(latitude);
+                event.setLocationLon(longitude);
+
+                //set textview
+                latTextView.setText("Latitude: " + (int) latitude + "\u00B0");
+                lonTextView.setText("Longitude: " + (int) longitude + "\u00B0");
             }
         }
     }

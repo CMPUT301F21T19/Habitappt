@@ -20,7 +20,7 @@
                     android:background="#f9f9f9"
                     android:orientation="vertical"
                     android:padding="10dp"
-                    android:alpha="0.6"
+                    android:alpha="0.7"
                     android:layout_centerHorizontal="true"
                     android:layout_alignParentBottom="true"
                     android:id="@+id/lin_layout">
@@ -29,15 +29,16 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/current_latitude"
                             android:id="@+id/current_lat"
-                            android:text=""
-                                />
+                            android:textColor="@color/quantum_black_100"
+                            />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:hint="@string/current_longitude"
                             android:id="@+id/current_lon"
-                            android:text=""/>
+                            android:textColor="@color/quantum_black_100"
+                            />
 
                         <Button
                             android:layout_width="wrap_content"
@@ -47,6 +48,8 @@
                             android:padding="10dp"
                             android:layout_marginTop="20dp"
                             android:paddingRight="10dp"
+                            android:textColor="@color/quantum_black_100"
+
                             android:id="@+id/save_button"/>
 
                 </LinearLayout>
