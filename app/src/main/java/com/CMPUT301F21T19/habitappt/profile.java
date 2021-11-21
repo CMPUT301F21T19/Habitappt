@@ -13,10 +13,16 @@
  * **/
 package com.CMPUT301F21T19.habitappt;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,7 +45,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-
+/**
+ * This class is the fragment for viewing ones own profile. Displays followers, following, and follow requests
+ * and allows a user to send follow requests to others.
+ */
 public class profile extends Fragment {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
@@ -48,6 +58,7 @@ public class profile extends Fragment {
     private Button followerButton;
     private Button requestButton;
     private FloatingActionButton makeRequestButton;
+    private TextView usernameLabel;
 
     private ArrayAdapter<Request> requestAdapter;
     private ArrayList<Request> requestDataList;
@@ -63,6 +74,12 @@ public class profile extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
     }
 
     /**
@@ -84,7 +101,14 @@ public class profile extends Fragment {
         followerButton = view.findViewById(R.id.followers_button);
         requestButton = view.findViewById(R.id.requests_button);
         makeRequestButton = view.findViewById(R.id.make_request);
-        makeRequestButton.setVisibility(View.VISIBLE);
+        usernameLabel = view.findViewById(R.id.username_field);
+
+        //change button highlights based on which list is being viewed
+        followingButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+        followerButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+        requestButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+
+        usernameLabel.setText(auth.getCurrentUser().getEmail());
 
         final CollectionReference requestReference = db
                 .collection("Users")
@@ -108,29 +132,46 @@ public class profile extends Fragment {
         profileListView.setAdapter(followingAdapter);
 
         followingButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                makeRequestButton.setVisibility(View.VISIBLE);
+                //change button highlights and switch listview
+                followingButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+                followerButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                requestButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+
                 profileListView.setAdapter(followingAdapter);
             }
         });
         followerButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                makeRequestButton.setVisibility(View.GONE);
+                //change button highlights and switch listview
+                followingButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                followerButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+                requestButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+
                 profileListView.setAdapter(followerAdapter);
             }
         });
         requestButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                makeRequestButton.setVisibility(View.GONE);
+                //change button highlights and switch listview
+                followingButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                followerButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                requestButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+
                 profileListView.setAdapter(requestAdapter);
             }
         });
+
         makeRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //open up make request dialog
                 new RequestMake().show(getActivity().getSupportFragmentManager(), "REQUEST");
             }
         });
@@ -138,6 +179,7 @@ public class profile extends Fragment {
         requestReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                //update follow request list from db
                 requestDataList.clear();
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String requestedEmail = (String) doc.getData().get("Requested");
@@ -151,6 +193,7 @@ public class profile extends Fragment {
         followerReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                //update follower list from db
                 followerDataList.clear();
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String followerEmail = doc.getId();
@@ -162,6 +205,7 @@ public class profile extends Fragment {
         followingReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                //update following list from db
                 followingDataList.clear();
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String followingEmail = doc.getId();
@@ -174,14 +218,21 @@ public class profile extends Fragment {
         profileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //decide behavior of clicking on a listview item depending on which listview is open
                 if (adapterView.getItemAtPosition(i).getClass().getSimpleName().equals("Request")) {
                     // clicked on request
                     Request clickedRequest = (Request) adapterView.getItemAtPosition(i);
                     new RequestRespond(clickedRequest).show(getActivity().getSupportFragmentManager(), "REQUEST");
                 } else if (adapterView.getItemAtPosition(i).getClass().getSimpleName().equals("Follower")) {
-                    // clicked on follower
+                    Follower clickFollower = (Follower) adapterView.getItemAtPosition(i);
+                    new manage_follower(clickFollower.getUserEmail()).show(getActivity().getSupportFragmentManager(),"MANAGE");
                 } else if (adapterView.getItemAtPosition(i).getClass().getSimpleName().equals("Following")) {
                     // clicked on following
+                    Following clickFollowing = (Following) adapterView.getItemAtPosition(i);
+                    FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+                    trans.replace(R.id.main_container, new view_following(clickFollowing.getUserEmail()));
+                    trans.addToBackStack("view_following");
+                    trans.commit();
                 } else {
                     Toast.makeText(getActivity(), "Error: " + adapterView.getItemAtPosition(i).getClass().getSimpleName(), Toast.LENGTH_LONG).show();
                 }

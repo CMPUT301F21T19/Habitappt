@@ -19,11 +19,15 @@
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/event_list_item.xml" value="0.21041666666666667" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_all_habits.xml" value="0.2140625" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_events_list.xml" value="0.21041666666666667" />
-        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_habits_list.xml" value="0.35190217391304346" />
+        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_habits_list.xml" value="0.25" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_view_event.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_view_following.xml" value="0.19375" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_view_habit.xml" value="0.21041666666666667" />
-        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/request_list_item.xml" value="0.5" />
-        <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/MakeRequest.xml" value="0.3625" />
+        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/habit_list_item.xml" value="0.2140625" />
+        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/manage_follower.xml" value="0.19375" />
+        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/request_list_item.xml" value="0.3875" />
+        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/request_make.xml" value="0.19375" />
         <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/edit_habit.xml" value="0.3625" />
         <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/follower_list_item.xml" value="0.3625" />
         <entry key="..\:/Users/logan/AndroidStudioProjects/Habitappt/app/src/main/res/layout/following_list_item.xml" value="0.3625" />
@@ -56,13 +60,15 @@
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/profile_fragment_layout.xml" value="0.1" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/menu/bottom_nav_bar.xml" value="0.5" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/menu/nav_bar_menu.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/edit_event.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/edit_event.xml" value="0.47705627705627707" />
         <entry key="app/src/main/res/layout/edit_habit.xml" value="0.21979166666666666" />
         <entry key="app/src/main/res/layout/event_list_item.xml" value="0.2210144927536232" />
         <entry key="app/src/main/res/layout/fragment_events_list.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/fragment_habits_list.xml" value="0.21979166666666666" />
         <entry key="app/src/main/res/layout/fragment_view_habit.xml" value="0.21979166666666666" />
         <entry key="app/src/main/res/layout/habit_list_item.xml" value="0.39344262295081966" />
+        <entry key="app/src/main/res/layout/loaction_view.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/manage_follower.xml" value="0.3880208333333333" />
       </map>
     </option>
   </component>
@@ -71,5 +77,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.3333333333333333" />
+      </ProjectState>
+    </option>
   </component>
 </project>

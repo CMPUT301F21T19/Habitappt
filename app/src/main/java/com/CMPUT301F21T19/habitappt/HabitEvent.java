@@ -56,6 +56,14 @@ public class HabitEvent {
         this.img = img;
     }
 
+
+
+    /**
+     * location lat and lon for current habit event location
+     */
+    double locationLat;
+    double locationLon;
+
     /**
      * constructor that takes the associated habit and basic event info w/out image
      * @param comment comment associates to event
@@ -68,6 +76,9 @@ public class HabitEvent {
         this.eventDate = eventDate;
         this.parentHabit = parentHabit;
         this.id = id;
+        //base no location instantiation
+        this.locationLat = -1;
+        this.locationLon = -1;
     }
 
     /**
@@ -84,6 +95,9 @@ public class HabitEvent {
         this.parentHabit = parentHabit;
         this.id = id;
         this.img = img;
+        //base no location instantiation
+        this.locationLat = -1;
+        this.locationLon = -1;
     }
 
     /**
@@ -93,6 +107,9 @@ public class HabitEvent {
     public HabitEvent(Habit parentHabit){
         this.parentHabit = parentHabit;
         this.eventDate = GregorianCalendar.getInstance().getTimeInMillis();
+        //base no location instantiation
+        this.locationLat = -1;
+        this.locationLon = -1;
     }
 
     /**
@@ -157,5 +174,22 @@ public class HabitEvent {
      */
     public void setParentHabit(Habit parentHabit) {
         this.parentHabit = parentHabit;
+    }
+
+
+    public double getLocationLat() {
+        return locationLat;
+    }
+
+    public void setLocationLat(double locationLat) {
+        this.locationLat = locationLat;
+    }
+
+    public double getLocationLon() {
+        return locationLon;
+    }
+
+    public void setLocationLon(double locationLon) {
+        this.locationLon = locationLon;
     }
 }

@@ -101,16 +101,15 @@ public class view_habit extends Fragment {
 
     private Habit habit;
 
-    ListView eventListView;
     SwipeMenuListView eventSwipeListView;
     ArrayAdapter<HabitEvent> eventAdapter;
-//    protected ArrayList<HabitEvent> eventDataList;
 
     SwipeMenuItem deleteItem;
     SwipeMenuItem editItem;
 
     private FirebaseStorage storage;
     private FirebaseAuth auth;
+    private FirebaseFirestore db;
 
     /**
      * @param habit Habit object in which to display in view
@@ -143,6 +142,8 @@ public class view_habit extends Fragment {
         view = inflater.inflate(R.layout.fragment_view_habit, container, false);
 
         auth = FirebaseAuth.getInstance();
+
+        db = FirebaseFirestore.getInstance();
 
         habitIsPrivate = view.findViewById(R.id.isPrivate_text_view);
         habitTitle = view.findViewById(R.id.habit_title_display);
@@ -190,6 +191,17 @@ public class view_habit extends Fragment {
         habit.setHabitEvents(new ArrayList<>());
         eventAdapter = new EventList(getContext(), habit.getHabitEvents());
         eventSwipeListView.setAdapter(eventAdapter);
+
+        eventSwipeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                FragmentTransaction trans = main.getSupportFragmentManager().beginTransaction();
+                trans.replace(R.id.main_container,new view_event(habit.getHabitEvents().get(i)));
+                trans.addToBackStack("view_event");
+                trans.commit();
+
+            }
+        });
 
         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
@@ -248,13 +260,13 @@ public class view_habit extends Fragment {
                         //get event
                         HabitEvent delEvent = (HabitEvent) eventSwipeListView.getItemAtPosition(position);
                         //NEED TO DO
-                        new edit_event(delEvent, habit, "REMOVE").show(getActivity().getSupportFragmentManager(), "REMOVE");
+                        SharedHelper.deleteImage(delEvent.getId(), storage);
+                        SharedHelper.removeEvent(delEvent, habit, db);
                         break;
                 }
                 return false;
             }
         });
-        //new
 
 
         addEventButton = view.findViewById(R.id.add_event_button);

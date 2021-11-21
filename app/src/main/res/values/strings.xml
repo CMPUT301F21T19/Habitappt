@@ -8,4 +8,6 @@
     <string name="habit_reason">Habit Reason</string>
     <string name="event_date">event date</string>
     <string name="event_name">event name</string>
+    <string name="current_latitude">Current Latitude</string>
+    <string name="current_longitude">Current Longitude</string>
 </resources>

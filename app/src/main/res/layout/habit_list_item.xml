@@ -42,11 +42,5 @@
 
         />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="53dp"
-        android:layout_height="72dp"
-        app:srcCompat="@drawable/ic_baseline_more_vert_24" />
-
 
 </LinearLayout>

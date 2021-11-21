@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_background"
     android:orientation="vertical">
 
     <LinearLayout
@@ -17,22 +17,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView
-                android:id="@+id/view_habit_title_label"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.15"
-                android:text="title:"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp" />
+
             <TextView
                 android:id="@+id/habit_title_display"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.75"
+                android:gravity="center_vertical"
                 android:text="Habit Title"
-                android:textSize="25dp"
-                android:gravity="center_vertical" />
+                android:textSize="25dp" />
+
             <ImageButton
                 android:id="@+id/edit_button"
                 android:layout_width="0dp"
@@ -47,14 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView
-                android:id="@+id/view_habit_reason_label"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.15"
-                android:text="reason:"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp" />
+
             <TextView
                 android:id="@+id/habit_reason_display"
                 android:layout_width="0dp"
@@ -69,19 +56,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView
-                android:id="@+id/view_habit_date_label"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.15"
-                android:text="start:"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp" />
+
             <TextView
                 android:id="@+id/start_date_display"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.85"
+                android:gravity="center"
                 android:text="00/00/00"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -91,75 +72,75 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView
-                android:id="@+id/view_habit_days_label"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.15"
-                android:text="days:"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp" />
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_weight="0.85" >
+                android:layout_weight="0.85"
+                android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/monday_display"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.1"
+                    android:gravity="center"
                     android:text="M"
-                    android:textSize="18dp"
-                    android:gravity="center" />
+                    android:textSize="18dp" />
+
                 <TextView
                     android:id="@+id/tuesday_display"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.1"
+                    android:gravity="center"
                     android:text="T"
-                    android:textSize="18dp"
-                    android:gravity="center" />
+                    android:textSize="18dp" />
+
                 <TextView
                     android:id="@+id/wednesday_display"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.1"
+                    android:gravity="center"
                     android:text="W"
-                    android:textSize="18dp"
-                    android:gravity="center" />
+                    android:textSize="18dp" />
+
                 <TextView
                     android:id="@+id/thursday_display"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.1"
+                    android:gravity="center"
                     android:text="R"
-                    android:textSize="18dp"
-                    android:gravity="center" />
+                    android:textSize="18dp" />
+
                 <TextView
                     android:id="@+id/friday_display"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.1"
+                    android:gravity="center"
                     android:text="F"
-                    android:textSize="18dp"
-                    android:gravity="center" />
+                    android:textSize="18dp" />
+
                 <TextView
                     android:id="@+id/saturday_display"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.1"
+                    android:gravity="center"
                     android:text="S"
-                    android:textSize="18dp"
-                    android:gravity="center" />
+                    android:textSize="18dp" />
+
                 <TextView
                     android:id="@+id/sunday_display"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.1"
+                    android:gravity="center"
                     android:text="U"
-                    android:textSize="18dp"
-                    android:gravity="center" />
+                    android:textSize="18dp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -168,22 +149,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView
-                android:id="@+id/view_habit_public_private_label"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.15"
-                android:text="access:"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp" />
+
             <TextView
                 android:id="@+id/isPrivate_text_view"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.85"
+                android:gravity="center"
                 android:text="public/private"
-                android:textSize="18dp"
-                android:gravity="center" />
+                android:textSize="18dp" />
         </LinearLayout>
 
         <!-- event list title -->
@@ -191,25 +165,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
-                android:textColor="#FFF"
                 android:gravity="center_vertical"
-                android:text="Events"
-                android:textSize="18dp"
                 android:paddingLeft="20dp"
                 android:paddingTop="10dp"
-                android:paddingBottom="10dp"/>
+                android:paddingBottom="10dp"
+                android:text="Events"
+                android:textColor="#FFF"
+                android:textSize="18dp" />
         </LinearLayout>
 
         <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:id="@id/event_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@id/event_list">
-        </com.baoyz.swipemenulistview.SwipeMenuListView>
+            android:layout_height="wrap_content"></com.baoyz.swipemenulistview.SwipeMenuListView>
 
     </LinearLayout>
 
@@ -221,10 +195,9 @@
         android:layout_margin="20dp"
         android:clickable="true"
         android:focusable="true"
-        app:backgroundTint="@color/colorPrimary"
         android:tint="@color/colorWhite"
-        app:srcCompat="@android:drawable/ic_input_add"
-        app:borderWidth="0dp" >
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
+        app:backgroundTint="@color/colorPrimary"
+        app:borderWidth="0dp"
+        app:srcCompat="@android:drawable/ic_input_add"></com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 </FrameLayout>
