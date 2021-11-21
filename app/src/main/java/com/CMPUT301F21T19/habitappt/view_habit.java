@@ -192,6 +192,17 @@ public class view_habit extends Fragment {
         eventAdapter = new EventList(getContext(), habit.getHabitEvents());
         eventSwipeListView.setAdapter(eventAdapter);
 
+        eventSwipeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                FragmentTransaction trans = main.getSupportFragmentManager().beginTransaction();
+                trans.replace(R.id.main_container,new view_event(habit.getHabitEvents().get(i)));
+                trans.addToBackStack("view_event");
+                trans.commit();
+
+            }
+        });
+
         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
             @Override
@@ -256,7 +267,6 @@ public class view_habit extends Fragment {
                 return false;
             }
         });
-        //new
 
 
         addEventButton = view.findViewById(R.id.add_event_button);

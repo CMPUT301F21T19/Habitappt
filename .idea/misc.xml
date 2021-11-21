@@ -8,8 +8,6 @@
         <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/drawable/profile_icon.xml" value="0.128" />
         <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/layout/activity_main.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/layout/fragment_all_habits.xml" value="0.1793478260869565" />
-        <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/layout/fragment_profile.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/layout/fragment_view_following.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/layout/nav_bar.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/menu/nav_bar_bottom.xml" value="0.21979166666666666" />
         <entry key="..\:/Users/dagga/Documents/GitHub/Habitappt/app/src/main/res/menu/nav_bar_menu.xml" value="0.2" />
@@ -23,10 +21,12 @@
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/following_list_item.xml" value="0.19375" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_all_habits.xml" value="0.2140625" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_events_list.xml" value="0.21041666666666667" />
-        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_habits_list.xml" value="0.35190217391304346" />
+        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_habits_list.xml" value="0.25" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_view_event.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_view_following.xml" value="0.19375" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_view_habit.xml" value="0.21041666666666667" />
+        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/habit_list_item.xml" value="0.2140625" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/manage_follower.xml" value="0.19375" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/request_list_item.xml" value="0.3875" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/request_make.xml" value="0.19375" />
@@ -69,5 +69,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.3333333333333333" />
+      </ProjectState>
+    </option>
   </component>
 </project>

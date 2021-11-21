@@ -30,8 +30,10 @@
 
 package com.CMPUT301F21T19.habitappt;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -47,7 +49,9 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -62,6 +66,8 @@ import java.util.HashMap;
 import java.util.TimeZone;
 
 public class edit_habit extends DialogFragment {
+
+    private MainActivity main;
 
     private Button isPrivateButton;
     private EditText habitTitle;
@@ -83,6 +89,13 @@ public class edit_habit extends DialogFragment {
 
 
     protected edit_habit THIS;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        this.main = (MainActivity) context;
+    }
 
     /**
      * Instantiate habit edit_habit object (habit already exists) with specified values
@@ -250,11 +263,13 @@ public class edit_habit extends DialogFragment {
                         });
                     }
                     else if(getTag() == "ADD"){
+
+                        String id = String.valueOf(GregorianCalendar.getInstance().getTimeInMillis());
                         DocumentReference doc = db
                                 .collection("Users")
                                 .document(auth.getCurrentUser().getEmail())
                                 .collection("Habits")
-                                .document(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
+                                .document(id);
 
                         HashMap<String,Object> data = new HashMap<>();
 
@@ -264,10 +279,22 @@ public class edit_habit extends DialogFragment {
                         data.put("dateToStart",THIS.date_selected);
                         data.put("daysToDo",THIS.habit.getWeekly());
 
+                        habit.setDateToStart(THIS.date_selected);
+                        habit.setTitle(THIS.habitTitle.getText().toString());
+                        habit.setReason(THIS.habitReason.getText().toString());
+                        habit.id = id;
+
+
                         doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
                                 Log.i("data","Data has been added succesfully!");
+
+                                FragmentTransaction trans = main.getSupportFragmentManager().beginTransaction();
+                                trans.replace(R.id.main_container,new view_habit(THIS.habit));
+                                trans.addToBackStack(null);
+                                trans.commit();
+
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
