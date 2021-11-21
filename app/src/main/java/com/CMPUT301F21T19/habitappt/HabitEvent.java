@@ -71,6 +71,22 @@ public class HabitEvent {
      * @param parentHabit parent habit for given event
      * @param id id of event in firestore
      */
+    public HabitEvent(String comment, long eventDate,Habit parentHabit, String id, double locationLat, double locationLon){
+        this.comment = comment;
+        this.eventDate = eventDate;
+        this.parentHabit = parentHabit;
+        this.id = id;
+        //base no location instantiation
+        this.locationLat = locationLat;
+        this.locationLon = locationLon;
+    }
+    /**
+     * constructor that takes the associated habit and basic event info w/out image
+     * @param comment comment associates to event
+     * @param eventDate date associated to event
+     * @param parentHabit parent habit for given event
+     * @param id id of event in firestore
+     */
     public HabitEvent(String comment, long eventDate,Habit parentHabit, String id){
         this.comment = comment;
         this.eventDate = eventDate;
