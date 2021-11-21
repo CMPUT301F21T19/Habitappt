@@ -19,15 +19,6 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/view_habit_title_label"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.15"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:text="title:" />
-
-            <TextView
                 android:id="@+id/habit_title_display"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -52,15 +43,6 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/view_habit_reason_label"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.15"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:text="reason:" />
-
-            <TextView
                 android:id="@+id/habit_reason_display"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -76,19 +58,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/view_habit_date_label"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.15"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:text="start:" />
-
-            <TextView
                 android:id="@+id/start_date_display"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.85"
+                android:gravity="center"
                 android:text="00/00/00"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -98,15 +72,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/view_habit_days_label"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.15"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:text="days:" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -184,15 +149,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/view_habit_public_private_label"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.15"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:text="access:" />
 
             <TextView
                 android:id="@+id/isPrivate_text_view"
