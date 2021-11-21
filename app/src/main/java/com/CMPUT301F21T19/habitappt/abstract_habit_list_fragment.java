@@ -14,9 +14,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -28,16 +31,15 @@ public abstract class abstract_habit_list_fragment extends Fragment implements D
      * Abstract class for whenever we want to display a list of habits from the database.
      */
 
-    ListView habitListView;
-    ArrayAdapter<Habit> habitAdapter;
-    ArrayList<Habit> habitDataList;
+     ListView habitListView;
+     ArrayAdapter<Habit> habitAdapter;
+     ArrayList<Habit> habitDataList;
 
     View addHabitButton;
     FirebaseFirestore db;
     FirebaseAuth auth;
 
     private View view;
-
 
     /**
      * This method must be implemented by any classes that extend this class. It tells the class how to process the habits in the users collection.
@@ -111,5 +113,6 @@ public abstract class abstract_habit_list_fragment extends Fragment implements D
 
         return view;
     }
+
 
 }

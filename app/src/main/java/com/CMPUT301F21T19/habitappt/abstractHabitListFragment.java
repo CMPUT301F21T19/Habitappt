@@ -19,9 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -33,7 +36,6 @@ public abstract class abstractHabitListFragment extends Fragment implements Drag
      * Abstract class for whenever we want to display a list of habits from the database.
      */
 
-    RecyclerView habitListView;
     DragMoveAdapter habitAdapter;
     ArrayList<Habit> habitDataList;
     RecyclerView habitView;
@@ -42,7 +44,6 @@ public abstract class abstractHabitListFragment extends Fragment implements Drag
     FirebaseAuth auth;
 
     private View view;
-
 
     /**
      * This method must be implemented by any classes that extend this class. It tells the class how to process the habits in the users collection.
@@ -71,8 +72,7 @@ public abstract class abstractHabitListFragment extends Fragment implements Drag
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.recycler_view, container, false);
 
-        //addHabitButton = view.findViewById(R.id.add_habit_button);
-        //habitListView = view.findViewById(R.id.habit_list);
+        addHabitButton = view.findViewById(R.id.add_habit_button);
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -91,24 +91,13 @@ public abstract class abstractHabitListFragment extends Fragment implements Drag
         initHabitOrder();
         habitView.setAdapter(habitAdapter);
 
-        //list view item listener
-//        @Override
-//        public void onHabitClick(int position) {
-//            FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
-//            trans.replace(R.id.main_container,new view_habit(habitDataList.get(position)));
-//            trans.addToBackStack("view_habit");
-//            trans.commit();
-//        };
-
-
         //listener for pressing the button to add habits.
-//        addHabitButton.setOnClickListener( new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                new edit_habit().show(getActivity().getSupportFragmentManager(), "ADD");
-//            }
-//        });
-
+        addHabitButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new edit_habit().show(getActivity().getSupportFragmentManager(), "ADD");
+            }
+        });
 
         //listener for database updates. uses the abstract method defined in this class.
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -117,11 +106,11 @@ public abstract class abstractHabitListFragment extends Fragment implements Drag
                 parseDataBaseUpdate(queryDocumentSnapshots,error);
             }
         });
-
+        
         return view;
     }
 
-
+    @Override
     public void onHabitClick(int position) {
         FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
         trans.replace(R.id.main_container,new view_habit(habitDataList.get(position)));
@@ -133,6 +122,6 @@ public abstract class abstractHabitListFragment extends Fragment implements Drag
         ItemTouchHelper.Callback callback = new DragHabits(habitAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(habitView);
-
     }
+
 }
