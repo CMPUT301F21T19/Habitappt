@@ -35,6 +35,7 @@
 
 package com.CMPUT301F21T19.habitappt;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -99,6 +100,8 @@ public class edit_event extends DialogFragment {
     private Habit habit;
 
     protected edit_event THIS;
+
+    final int LAUNCH_MAP_ACTIVITY = 1;
 
     /**
      * create a edit_event object with the specified values
@@ -177,7 +180,8 @@ public class edit_event extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Intent getLocationIntent = new Intent(getContext(), LocationActivity.class);
-                startActivity(getLocationIntent);
+
+                startActivityForResult(getLocationIntent , LAUNCH_MAP_ACTIVITY);
             }
         });
 
@@ -456,6 +460,15 @@ public class edit_event extends DialogFragment {
             event.setImg(imageBitmap);
 
 
+        }
+
+        //if returning from map activity
+        if(requestCode == LAUNCH_MAP_ACTIVITY){
+            if(resultCode == Activity.RESULT_OK){
+                double latitude = data.getDoubleExtra("latitude", Activity.RESULT_CANCELED);
+                double longitude = data.getDoubleExtra("longitude", Activity.RESULT_CANCELED);
+
+            }
         }
     }
 }
