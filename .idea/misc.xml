@@ -19,7 +19,7 @@
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/event_list_item.xml" value="0.21041666666666667" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_all_habits.xml" value="0.2140625" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_events_list.xml" value="0.21041666666666667" />
-        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_habits_list.xml" value="0.35190217391304346" />
+        <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_habits_list.xml" value="0.25" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/fragment_view_habit.xml" value="0.21041666666666667" />
         <entry key="..\:/Users/dagga/Documents/repos/Habitappt/app/src/main/res/layout/request_list_item.xml" value="0.5" />
@@ -73,5 +73,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.3333333333333333" />
+      </ProjectState>
+    </option>
   </component>
 </project>
