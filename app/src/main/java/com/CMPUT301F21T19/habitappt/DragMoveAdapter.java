@@ -5,6 +5,7 @@ import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
 
     private ArrayList<Habit> habitList;
     private DragListener dragListener;
+    private VisualIndicator visualIndicator;
 
     public interface DragListener {
         void onHabitClick(int position);}
@@ -42,11 +44,13 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
     public class DragViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView habitTitle;
         private TextView habitReason;
+        private ImageView visual_indicator;
         DragListener dragListener;
         public DragViewHolder(View view, DragListener dragListener){
             super(view);
             habitTitle = view.findViewById(R.id.habit_name);
             habitReason = view.findViewById(R.id.habit_reason_list_text);
+            visual_indicator = view.findViewById(R.id.score_image);
             this.dragListener = dragListener;
             view.setOnClickListener(this);
         }
@@ -67,8 +71,24 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
     public void onBindViewHolder(@NonNull DragViewHolder holder, int position) {
         String title = habitList.get(position).getTitle();
         String reason = habitList.get(position).getReason();
+        //double score = habitList.get(position).getScore();
         holder.habitTitle.setText(title);
         holder.habitReason.setText(reason);
+        holder.visual_indicator.setImageResource(R.drawable.ic_bright_green_emoji);
+
+//        if (score < 20) {
+//            holder.visual_indicator.setImageResource(R.drawable.ic_disappointed_emoji);
+//        } else if (score < 40) {
+//            holder.visual_indicator.setImageResource(R.drawable.ic_orange_emoji);
+//        } else if (score < 60) {
+//            holder.visual_indicator.setImageResource(R.drawable.ic_yellow_emoji);
+//        } else if (score < 80) {
+//            holder.visual_indicator.setImageResource(R.drawable.ic_light_green_emoji);
+//        } else {
+//            holder.visual_indicator.setImageResource(R.drawable.ic_bright_green_emoji);
+//        }
+
+
 
     }
 

@@ -30,7 +30,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 
-public abstract class abstractHabitListFragment extends Fragment implements DragMoveAdapter.DragListener {
+public abstract class recycler_view_fragment extends Fragment implements DragMoveAdapter.DragListener {
 
     /**
      * Abstract class for whenever we want to display a list of habits from the database.
