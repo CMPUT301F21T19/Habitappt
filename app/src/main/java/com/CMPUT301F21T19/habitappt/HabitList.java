@@ -16,6 +16,7 @@
 package com.CMPUT301F21T19.habitappt;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
+import android.os.Handler;
+import java.util.logging.LogRecord;
 
 
 public class HabitList extends ArrayAdapter<Habit> {
@@ -76,19 +86,29 @@ public class HabitList extends ArrayAdapter<Habit> {
         habitName.setText(habit.getTitle());
         habitReason.setText(habit.getReason());
 
-        long score = habit.getScore();
+        VisualIndicator visualIndicator = new VisualIndicator(habit);
+        visualIndicator.populateEventList();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                double score = visualIndicator.getScore();
 
-        if (score < 20) {
-            scoreImg.setImageResource(R.drawable.ic_disappointed_emoji);
-        } else if (score < 40) {
-            scoreImg.setImageResource(R.drawable.ic_orange_emoji);
-        } else if (score < 60) {
-            scoreImg.setImageResource(R.drawable.ic_yellow_emoji);
-        } else if (score < 80) {
-            scoreImg.setImageResource(R.drawable.ic_light_green_emoji);
-        } else {
-            scoreImg.setImageResource(R.drawable.ic_bright_green_emoji);
-        }
+                if (score < 20) {
+                    scoreImg.setImageResource(R.drawable.ic_disappointed_emoji);
+                } else if (score < 40) {
+                    scoreImg.setImageResource(R.drawable.ic_orange_emoji);
+                } else if (score < 60) {
+                    scoreImg.setImageResource(R.drawable.ic_yellow_emoji);
+                } else if (score < 80) {
+                    scoreImg.setImageResource(R.drawable.ic_light_green_emoji);
+                } else {
+                    scoreImg.setImageResource(R.drawable.ic_bright_green_emoji);
+                }
+            }
+        }, 200);
+
+
 
 
         return view;

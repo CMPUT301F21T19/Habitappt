@@ -349,7 +349,7 @@ public class edit_event extends DialogFragment {
                         else if(getTag() == "ADD"){
 
                             event.setId(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
-
+                            habit.getHabitEvents().add(THIS.event); //////////////////////////////////////////////////////////////////////
                             DocumentReference doc = db
                                     .collection("Users")
                                     .document(auth.getCurrentUser().getEmail())
