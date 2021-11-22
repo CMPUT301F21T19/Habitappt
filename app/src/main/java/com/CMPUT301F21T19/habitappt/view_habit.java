@@ -34,7 +34,6 @@ package com.CMPUT301F21T19.habitappt;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -46,19 +45,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -78,23 +71,19 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.ByteArrayOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
-public class view_habit extends Fragment{
+public class view_habit extends Fragment {
 
     private View view;
+
     public MainActivity main;
+
     private TextView habitIsPrivate;
     private TextView habitTitle;
     private TextView habitReason;
     private TextView habitDateToStart;
     private ImageButton editButton;
-
 
     private view_habit THIS = this;
 
@@ -137,8 +126,7 @@ public class view_habit extends Fragment{
             main = (MainActivity) context;
         }
     }
-
-
+    
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -162,7 +150,6 @@ public class view_habit extends Fragment{
         daysToDo.add(view.findViewById(R.id.friday_display));
         daysToDo.add(view.findViewById(R.id.saturday_display));
         daysToDo.add(view.findViewById(R.id.sunday_display));
-
 
         if (habit.getIsPrivate()) {
             habitIsPrivate.setText("Private Habit");
@@ -195,6 +182,17 @@ public class view_habit extends Fragment{
         habit.setHabitEvents(new ArrayList<>());
         eventAdapter = new EventList(getContext(), habit.getHabitEvents());
         eventSwipeListView.setAdapter(eventAdapter);
+
+        eventSwipeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                FragmentTransaction trans = main.getSupportFragmentManager().beginTransaction();
+                trans.replace(R.id.main_container,new view_event(habit.getHabitEvents().get(i)));
+                trans.addToBackStack("view_event");
+                trans.commit();
+
+            }
+        });
 
         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
@@ -260,7 +258,6 @@ public class view_habit extends Fragment{
                 return false;
             }
         });
-        //new
 
 
         addEventButton = view.findViewById(R.id.add_event_button);
@@ -351,7 +348,15 @@ public class view_habit extends Fragment{
                     String comments = (String) doc.getData().get("comments");
                     Long eventDate = (Long) doc.getData().get("eventDate");
 
-                    HabitEvent newEvent = new HabitEvent(comments, eventDate, habit, id);
+                    double locationLat = -1;
+                    double locationLon = -1;
+                    if(doc.getData().get("latitude") != null && doc.getData().get("longitude") != null) {
+                        //get lat and lon
+                        locationLat = (double) doc.getData().get("latitude");
+                        locationLon = (double) doc.getData().get("longitude");
+                    }
+
+                    HabitEvent newEvent = new HabitEvent(comments, eventDate, habit, id, locationLat, locationLon);
 
                     //adding to habitEventsList
                     habit.getHabitEvents().add(newEvent);

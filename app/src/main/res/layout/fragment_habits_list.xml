@@ -11,13 +11,12 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <ListView
-        android:id="@+id/habit_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@color/colorPrimaryDark"
-        android:dividerHeight="5px">
-    </ListView>
+
+        <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:id="@id/habit_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.baoyz.swipemenulistview.SwipeMenuListView>
+
 
 
 

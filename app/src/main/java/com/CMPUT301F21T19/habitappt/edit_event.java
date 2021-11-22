@@ -35,6 +35,7 @@
 
 package com.CMPUT301F21T19.habitappt;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -48,9 +49,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -80,6 +83,8 @@ public class edit_event extends DialogFragment {
 
     private ImageButton imgButton;
 
+    private Button locationButton;
+
     private HabitEvent event;
 
     private String dialogTitle;
@@ -97,6 +102,11 @@ public class edit_event extends DialogFragment {
 
     protected edit_event THIS;
 
+    final int LAUNCH_MAP_ACTIVITY = 1;
+
+
+    private double oldLat, oldLon;
+    TextView latTextView, lonTextView;
     /**
      * create a edit_event object with the specified values
      * @param event habit event object
@@ -114,6 +124,7 @@ public class edit_event extends DialogFragment {
         }
         this.date_selected = event.getEventDate();
         this.habit = habit;
+
     }
 
 //    public edit_event(){
@@ -152,6 +163,24 @@ public class edit_event extends DialogFragment {
         eventDate = view.findViewById(R.id.event_date_calendar);
         imgButton = view.findViewById(R.id.event_img);
 
+        //location button ref
+        locationButton = view.findViewById(R.id.location_button);
+
+        //get textviews
+        latTextView = view.findViewById(R.id.current_lat_disp);
+        lonTextView = view.findViewById(R.id.current_lon_disp);
+
+        //if presaved valid #'s, set them
+        if(event.getLocationLat() != -1 && event.getLocationLon() != -1){
+            //set textview
+            latTextView.setText("Latitude: " + (int) event.getLocationLat() +  "\u00B0");
+            lonTextView.setText("Longitude: " + (int) event.getLocationLon() +  "\u00B0");
+        }
+
+        //keep reference to old lat and lon
+        oldLat = event.getLocationLat();
+        oldLon = event.getLocationLon();
+
         if(event.getImg() != null){
             imgButton.setImageBitmap(event.getImg());
         }
@@ -166,6 +195,17 @@ public class edit_event extends DialogFragment {
                 startActivityForResult(takePictureIntent, 1);
             }
         });
+
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent getLocationIntent = new Intent(getContext(), LocationActivity.class);
+
+                startActivityForResult(getLocationIntent , LAUNCH_MAP_ACTIVITY);
+            }
+        });
+
+
 
         eventDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -206,6 +246,13 @@ public class edit_event extends DialogFragment {
                             SharedHelper.deleteImage(event.getId(), storage);
                             SharedHelper.removeEvent(event, habit, db);
                         }
+                        //cancel selected
+                        else{
+                            //put back old locations
+                            event.setLocationLat(oldLat);
+                            event.setLocationLon(oldLon);
+                        }
+
                     }
                 })
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -225,6 +272,11 @@ public class edit_event extends DialogFragment {
 
                             data.put("comments",THIS.eventComments.getText().toString());
                             data.put("eventDate",THIS.date_selected);
+                            //if real lat and lon, SAVE
+                            if(event.getLocationLon() != -1 && event.getLocationLat() != -1) {
+                                data.put("latitude", event.getLocationLat());
+                                data.put("longitude", event.getLocationLon());
+                            }
 
                             //get image and upload to firestorage!
                             if(THIS.event.getImg() != null){
@@ -310,6 +362,12 @@ public class edit_event extends DialogFragment {
 
                             data.put("comments",THIS.eventComments.getText().toString());
                             data.put("eventDate",THIS.date_selected);
+
+                            //if real lat and lon, SAVE
+                            if(event.getLocationLon() != -1 && event.getLocationLat() != -1) {
+                                data.put("latitude", event.getLocationLat());
+                                data.put("longitude", event.getLocationLon());
+                            }
 
                             if(THIS.event.getImg() != null){
 
@@ -440,6 +498,22 @@ public class edit_event extends DialogFragment {
             event.setImg(imageBitmap);
 
 
+        }
+
+        //if returning from map activity
+        if(requestCode == LAUNCH_MAP_ACTIVITY){
+            if(resultCode == Activity.RESULT_OK){
+                double latitude = data.getDoubleExtra("latitude", Activity.RESULT_CANCELED);
+                double longitude = data.getDoubleExtra("longitude", Activity.RESULT_CANCELED);
+
+                //update current coordinates
+                event.setLocationLat(latitude);
+                event.setLocationLon(longitude);
+
+                //set textview
+                latTextView.setText("Latitude: " + (int) latitude + "\u00B0");
+                lonTextView.setText("Longitude: " + (int) longitude + "\u00B0");
+            }
         }
     }
 }

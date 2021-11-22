@@ -1,6 +1,9 @@
 package com.CMPUT301F21T19.habitappt;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,34 +15,39 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
 
-public abstract class abstract_habit_list_fragment extends Fragment implements DragMoveAdapter.DragListener {
+public abstract class abstract_habit_list_fragment extends Fragment {
 
     /**
      * Abstract class for whenever we want to display a list of habits from the database.
      */
 
-     ListView habitListView;
-     ArrayAdapter<Habit> habitAdapter;
-     ArrayList<Habit> habitDataList;
+    SwipeMenuListView habitListView;
+    ArrayAdapter<Habit> habitAdapter;
+    ArrayList<Habit> habitDataList;
 
     View addHabitButton;
     FirebaseFirestore db;
     FirebaseAuth auth;
 
+    SwipeMenuItem deleteItem;
+    SwipeMenuItem editItem;
+
     private View view;
+
 
     /**
      * This method must be implemented by any classes that extend this class. It tells the class how to process the habits in the users collection.
@@ -111,8 +119,72 @@ public abstract class abstract_habit_list_fragment extends Fragment implements D
             }
         });
 
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+                // create "open" item
+                editItem = new SwipeMenuItem(
+                        getContext());
+                // set item background
+                editItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
+                        0xCE)));
+                // set item width
+                editItem.setWidth(170);
+                // set item title
+                editItem.setTitle("Edit");
+                // set item title fontsize
+                editItem.setTitleSize(18);
+                // set item title font color
+                editItem.setTitleColor(Color.WHITE);
+                // add to menu
+                menu.addMenuItem(editItem);
+
+                // create "delete" item
+                deleteItem = new SwipeMenuItem(
+                        getContext());
+                // set item background
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                        0x3F, 0x25)));
+                // set item width
+                deleteItem.setWidth(170);
+                // set a icon
+                deleteItem.setIcon(R.drawable.ic_delete);
+                // add to menu
+                menu.addMenuItem(deleteItem);
+            }
+        };
+
+        habitListView.setMenuCreator(creator);
+
+        habitListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    //edit selected
+                    case 0:
+                        Log.d("MENUSELECT", "OnMenuItemClick: selected item" + index);
+                        //get event
+                        Habit editHabit = (Habit) habitListView.getItemAtPosition(position);
+                        //create fragement
+                        new edit_habit(editHabit).show(getActivity().getSupportFragmentManager(), "EDIT");
+                        break;
+                    //delete selected
+                    case 1:
+                        Log.d("MENUSELECT", "OnMenuItemClick: selected item" + index);
+
+
+                        Habit delHabit = (Habit) habitListView.getItemAtPosition(position);
+
+                        SharedHelper.removeHabit(delHabit,db);
+                        break;
+                }
+                return false;
+            }
+        });
+
+
         return view;
     }
-
 
 }
