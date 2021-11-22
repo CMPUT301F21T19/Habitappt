@@ -91,11 +91,11 @@ public class view_following extends Fragment {
         habitListView = view.findViewById(R.id.profile_list);
 
         habitDataList = new ArrayList<>();
-        habitAdapter = new HabitList(getContext(), habitDataList);
+        habitAdapter = new HabitList(getContext(), habitDataList, true, this.user);
         habitListView.setAdapter(habitAdapter);
 
         dailyHabitDataList = new ArrayList<>();
-        dailyHabitAdapter = new HabitList(getContext(),dailyHabitDataList);
+        dailyHabitAdapter = new HabitList(getContext(),dailyHabitDataList, true, this.user);
 
         allHabitsButton = view.findViewById(R.id.all_habits_following);
         dailyHabitsButton = view.findViewById(R.id.daily_habits_following);

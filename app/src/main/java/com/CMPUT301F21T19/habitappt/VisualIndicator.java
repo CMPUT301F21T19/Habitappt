@@ -43,13 +43,17 @@ public class VisualIndicator {
     private double score;
     private long eventListSize;
     private FirebaseAuth auth;
+    private Boolean isFollowing;
+    private String user;
 
     /**
      * Instantiates a new visual Indicator object
      * @param habit
      */
-    public VisualIndicator(Habit habit) {
+    public VisualIndicator(Habit habit, Boolean isFollowing, String user) {
         this.habit = habit;
+        this.isFollowing = isFollowing;
+        this.user = user;
     }
 
     /**
@@ -106,28 +110,54 @@ public class VisualIndicator {
      */
     public void populateEventList() {
         auth = FirebaseAuth.getInstance();
-        CollectionReference eventCollectionReference = FirebaseFirestore.getInstance()
-                .collection("Users")
-                .document(auth.getCurrentUser().getEmail())
-                .collection("Habits")
-                .document(String.valueOf(this.habit.getId()))
-                .collection("Event Collection");
-        //System.out.println("First");
+        if (isFollowing) {
+            CollectionReference eventCollectionReference = FirebaseFirestore.getInstance()
+                    .collection("Users")
+                    .document(this.user)
+                    .collection("Habits")
+                    .document(String.valueOf(this.habit.getId()))
+                    .collection("Event Collection");
+            //System.out.println("First");
 
-        eventCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    InitializeEventListSize();
-                    int size;
-                    size = task.getResult().size(); // gets the number of events in the collection
-                    setEventListSize(size);
+            eventCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        InitializeEventListSize();
+                        int size;
+                        size = task.getResult().size(); // gets the number of events in the collection
+                        setEventListSize(size);
 
-                } else {
-                    Log.d("TAG", "Error getting documents: ", task.getException());
+                    } else {
+                        Log.d("TAG", "Error getting documents: ", task.getException());
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            CollectionReference eventCollectionReference = FirebaseFirestore.getInstance()
+                    .collection("Users")
+                    .document(auth.getCurrentUser().getEmail())
+                    .collection("Habits")
+                    .document(String.valueOf(this.habit.getId()))
+                    .collection("Event Collection");
+            //System.out.println("First");
+
+            eventCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        InitializeEventListSize();
+                        int size;
+                        size = task.getResult().size(); // gets the number of events in the collection
+                        setEventListSize(size);
+
+                    } else {
+                        Log.d("TAG", "Error getting documents: ", task.getException());
+                    }
+                }
+            });
+        }
+
 
     }
 

@@ -50,15 +50,19 @@ public class HabitList extends ArrayAdapter<Habit> {
      */
     private Context context;
 
+    private boolean isFollowing;
+    private String user;
     /**
      * constructs habit list array adpater with passed context and list of habits
      * @param context
      * @param habits
      */
-    public HabitList(Context context, ArrayList<Habit> habits) {
+    public HabitList(Context context, ArrayList<Habit> habits, boolean isFollowing, String user) {
         super(context,0, habits);
         this.habits = habits;
         this.context = context;
+        this.isFollowing = isFollowing;
+        this.user = user;
     }
 
     /**
@@ -86,7 +90,7 @@ public class HabitList extends ArrayAdapter<Habit> {
         habitName.setText(habit.getTitle());
         habitReason.setText(habit.getReason());
 
-        VisualIndicator visualIndicator = new VisualIndicator(habit);
+        VisualIndicator visualIndicator = new VisualIndicator(habit, this.isFollowing, this.user);
         visualIndicator.populateEventList();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
