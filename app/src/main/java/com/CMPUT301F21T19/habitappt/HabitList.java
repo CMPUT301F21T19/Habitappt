@@ -35,6 +35,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import android.os.Handler;
+import java.util.logging.LogRecord;
 
 
 public class HabitList extends ArrayAdapter<Habit> {
@@ -85,20 +87,28 @@ public class HabitList extends ArrayAdapter<Habit> {
         habitReason.setText(habit.getReason());
 
         VisualIndicator visualIndicator = new VisualIndicator(habit);
+        visualIndicator.populateEventList();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                double score = visualIndicator.getScore();
 
-        long score = visualIndicator.getScore();
+                if (score < 20) {
+                    scoreImg.setImageResource(R.drawable.ic_disappointed_emoji);
+                } else if (score < 40) {
+                    scoreImg.setImageResource(R.drawable.ic_orange_emoji);
+                } else if (score < 60) {
+                    scoreImg.setImageResource(R.drawable.ic_yellow_emoji);
+                } else if (score < 80) {
+                    scoreImg.setImageResource(R.drawable.ic_light_green_emoji);
+                } else {
+                    scoreImg.setImageResource(R.drawable.ic_bright_green_emoji);
+                }
+            }
+        }, 200);
 
-        if (score < 20) {
-            scoreImg.setImageResource(R.drawable.ic_disappointed_emoji);
-        } else if (score < 40) {
-            scoreImg.setImageResource(R.drawable.ic_orange_emoji);
-        } else if (score < 60) {
-            scoreImg.setImageResource(R.drawable.ic_yellow_emoji);
-        } else if (score < 80) {
-            scoreImg.setImageResource(R.drawable.ic_light_green_emoji);
-        } else {
-            scoreImg.setImageResource(R.drawable.ic_bright_green_emoji);
-        }
+
 
 
         return view;

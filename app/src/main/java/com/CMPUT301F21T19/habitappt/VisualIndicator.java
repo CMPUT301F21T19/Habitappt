@@ -1,6 +1,8 @@
 package com.CMPUT301F21T19.habitappt;
 
 
+import static io.grpc.okhttp.internal.Platform.logger;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -8,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -21,10 +24,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Semaphore;
 
 public class VisualIndicator {
     private Habit habit;
-    private long score;
+    private double score;
     private long eventListSize;
     ArrayList<HabitEvent> eventList;
     private FirebaseFirestore db;
@@ -36,8 +41,8 @@ public class VisualIndicator {
         this.habit = habit;
     }
 
-    public long getScore() {
-        populateEventList();
+    public double getScore() {
+        //populateEventList();
         // Not sure how to properly instantiate the correct date
         Date start_date = new Date(this.habit.getDateToStart());
         Calendar c = Calendar.getInstance();
@@ -77,7 +82,8 @@ public class VisualIndicator {
             this.score = 0;
             return this.score;
         }
-        this.score = (getEventListSize() / counter) * 100;
+        this.score = (((float) getEventListSize() * 1/counter) * 100);
+        System.out.println("Score = " + this.score);
         return this.score;
     }
 
@@ -95,8 +101,8 @@ public class VisualIndicator {
                 .document(String.valueOf(this.habit.getId()))
                 .collection("Event Collection");
         //System.out.println("First");
-        eventCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
+        eventCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -111,8 +117,27 @@ public class VisualIndicator {
                     Log.d("TAG", "Error getting documents: ", task.getException());
                 }
             }
-
         });
+
+    }
+
+//        eventCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    InitializeEventListSize();
+//                    int size;
+//                    size = task.getResult().size();
+//                    System.out.println("The number of the events corresponding to habit title (" + habit.getTitle() + ") is " + size);
+//                    EventListSize(size);
+//
+//                } else {
+//                    System.out.println("error");
+//                    Log.d("TAG", "Error getting documents: ", task.getException());
+//                }
+//            }
+//        });
 //
 //        eventCollectionReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 //            @Override
@@ -129,7 +154,7 @@ public class VisualIndicator {
 //
 //    }
 
-    }
+
     public void InitializeEventListSize() {
         this.eventListSize = 0;
     }
