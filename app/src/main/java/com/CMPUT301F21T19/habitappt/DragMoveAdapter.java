@@ -115,7 +115,7 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
             String habitTitle = habitList.get(i).getTitle();
             int finalI = i;
             collectionReference
-                    .whereEqualTo("Name", habitTitle)
+                    .whereEqualTo("title", habitTitle)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
