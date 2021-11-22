@@ -124,6 +124,7 @@ public class edit_event extends DialogFragment {
         }
         this.date_selected = event.getEventDate();
         this.habit = habit;
+
     }
 
 //    public edit_event(){
@@ -244,12 +245,14 @@ public class edit_event extends DialogFragment {
                             //remove image from firestore storage after deleting event
                             SharedHelper.deleteImage(event.getId(), storage);
                             SharedHelper.removeEvent(event, habit, db);
-
-
                         }
-                        //save old lat and lon
-                        event.setLocationLat(oldLat);
-                        event.setLocationLon(oldLon);
+                        //cancel selected
+                        else{
+                            //put back old locations
+                            event.setLocationLat(oldLat);
+                            event.setLocationLon(oldLon);
+                        }
+
                     }
                 })
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -269,6 +272,11 @@ public class edit_event extends DialogFragment {
 
                             data.put("comments",THIS.eventComments.getText().toString());
                             data.put("eventDate",THIS.date_selected);
+                            //if real lat and lon, SAVE
+                            if(event.getLocationLon() != -1 && event.getLocationLat() != -1) {
+                                data.put("latitude", event.getLocationLat());
+                                data.put("longitude", event.getLocationLon());
+                            }
 
                             //get image and upload to firestorage!
                             if(THIS.event.getImg() != null){
@@ -354,6 +362,12 @@ public class edit_event extends DialogFragment {
 
                             data.put("comments",THIS.eventComments.getText().toString());
                             data.put("eventDate",THIS.date_selected);
+
+                            //if real lat and lon, SAVE
+                            if(event.getLocationLon() != -1 && event.getLocationLat() != -1) {
+                                data.put("latitude", event.getLocationLat());
+                                data.put("longitude", event.getLocationLon());
+                            }
 
                             if(THIS.event.getImg() != null){
 
