@@ -34,7 +34,6 @@ package com.CMPUT301F21T19.habitappt;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -46,16 +45,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -76,17 +71,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.ByteArrayOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class view_habit extends Fragment {
 
     private View view;
+
     public MainActivity main;
+
     private TextView habitIsPrivate;
     private TextView habitTitle;
     private TextView habitReason;
@@ -158,7 +150,6 @@ public class view_habit extends Fragment {
         daysToDo.add(view.findViewById(R.id.friday_display));
         daysToDo.add(view.findViewById(R.id.saturday_display));
         daysToDo.add(view.findViewById(R.id.sunday_display));
-
 
         if (habit.getIsPrivate()) {
             habitIsPrivate.setText("Private Habit");
@@ -262,7 +253,6 @@ public class view_habit extends Fragment {
                         //NEED TO DO
                         SharedHelper.deleteImage(delEvent.getId(), storage);
                         SharedHelper.removeEvent(delEvent, habit, db);
-                        habit.getHabitEvents().remove(delEvent); ///////////////////////////////////////////////////////////
                         break;
                 }
                 return false;
@@ -358,7 +348,15 @@ public class view_habit extends Fragment {
                     String comments = (String) doc.getData().get("comments");
                     Long eventDate = (Long) doc.getData().get("eventDate");
 
-                    HabitEvent newEvent = new HabitEvent(comments, eventDate, habit, id);
+                    double locationLat = -1;
+                    double locationLon = -1;
+                    if(doc.getData().get("latitude") != null && doc.getData().get("longitude") != null) {
+                        //get lat and lon
+                        locationLat = (double) doc.getData().get("latitude");
+                        locationLon = (double) doc.getData().get("longitude");
+                    }
+
+                    HabitEvent newEvent = new HabitEvent(comments, eventDate, habit, id, locationLat, locationLon);
 
                     //adding to habitEventsList
                     habit.getHabitEvents().add(newEvent);

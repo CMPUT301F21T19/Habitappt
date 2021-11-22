@@ -66,10 +66,6 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //setup text views
-        latTextView = findViewById(R.id.current_lat);
-        lonTextView = findViewById(R.id.current_lon);
-
         // Retrieve location and camera position from saved instance state.
         if (savedInstanceState != null) {
             lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
@@ -120,6 +116,34 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (map != null) {
+            outState.putParcelable(KEY_CAMERA_POSITION, map.getCameraPosition());
+            outState.putParcelable(KEY_LOCATION, lastKnownLocation);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    /**
+     * Handles the result of the request for location permissions.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        locationPermissionGranted = false;
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    locationPermissionGranted = true;
+                }
+            }
+        }
+        updateLocationUI();
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -202,6 +226,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                             if (lastKnownLocation != null) {
                                 double lat = currLat = lastKnownLocation.getLatitude();
                                 double lon = currLong = lastKnownLocation.getLongitude();
+
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(lat,
                                                 lon), DEFAULT_ZOOM));
