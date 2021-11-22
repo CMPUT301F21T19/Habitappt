@@ -262,6 +262,7 @@ public class view_habit extends Fragment {
                         //NEED TO DO
                         SharedHelper.deleteImage(delEvent.getId(), storage);
                         SharedHelper.removeEvent(delEvent, habit, db);
+                        habit.getHabitEvents().remove(delEvent); ///////////////////////////////////////////////////////////
                         break;
                 }
                 return false;
