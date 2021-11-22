@@ -1,3 +1,14 @@
+/**
+ * Copyright 2021 - 2021 CMPUT301F21T19 (Habitappt). All rights reserved. This document nor any
+ * part of it may be reproduced, stored in a retrieval system or transmitted in any for or by any
+ * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
+ * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
+ *
+ * Class: VisualIndicator
+ *
+ * Description: Creates a score denoting the progress of a given habit
+ */
+
 package com.CMPUT301F21T19.habitappt;
 
 
@@ -31,67 +42,68 @@ public class VisualIndicator {
     private Habit habit;
     private double score;
     private long eventListSize;
-    ArrayList<HabitEvent> eventList;
-    private FirebaseFirestore db;
     private FirebaseAuth auth;
-    private FirebaseStorage storage;
 
-
+    /**
+     * Instantiates a new visual Indicator object
+     * @param habit
+     */
     public VisualIndicator(Habit habit) {
         this.habit = habit;
     }
 
+    /**
+     * Calculates the the number of events associated with the habit by the total number of habits
+     * that were supposed to be done
+     * @return score
+     */
     public double getScore() {
-        //populateEventList();
-        // Not sure how to properly instantiate the correct date
+        // Create a start date and use it to instantiate calender object (which we will be using more)
         Date start_date = new Date(this.habit.getDateToStart());
         Calendar c = Calendar.getInstance();
         c.setTime(start_date);
 
         Date current_date = new Date();
 
-        long counter = 0; // Tracks total days habit is to be performed
-        System.out.println("\n\n\n " + "Habit Title: " + this.habit.getTitle());
-        System.out.println("Start Date: " + start_date);
-        System.out.println("Current Date: " + current_date);
+        long totalNumHabits = 0; // Tracks total days habit is to be performed
+
         // iterates through all the dates from start to current
         // Checks to see if habit needs to be performed at each date
         // When loop if done, counter should have the total number of habit that should have been completed
         while (start_date.before(current_date)) {
+            // Checks if the habit falls on a Sunday
             if (c.get(Calendar.DAY_OF_WEEK) == 1) {
                 if (this.habit.getDateSelected(6)) {
-                    counter += 1;
+                    totalNumHabits += 1;
                 }
+              // Checks if habit falls under all other days of the week
             } else if (this.habit.getDateSelected(c.get(Calendar.DAY_OF_WEEK) - 2)) {
-                counter += 1;
+                totalNumHabits += 1;
             }
-            c.add(Calendar.DATE, 1);
+            c.add(Calendar.DATE, 1); // Increment the start date to one day forward
             start_date = c.getTime();
         }
-        System.out.println("Counter: " + counter);
-        System.out.println("number of events: " + getEventListSize());
-
 
         // Checks if there is no habits that need to be done yet
-        if (counter == 0) {
+        if (totalNumHabits == 0) {
             this.score = 100;
             return this.score;
-            //more than one event shouldve been done and none were completed
-        } else if (counter > 0 && getEventListSize() == 0) {
-            System.out.println("score " + score);
-            this.score = 0;
-            return this.score;
         }
-        this.score = (((float) getEventListSize() * 1/counter) * 100);
-        System.out.println("Score = " + this.score);
+        this.score = (((float) getEventListSize() * 1/totalNumHabits) * 100);
         return this.score;
     }
 
+    /**
+     * Sets the score of a given habit (Primarily used for testing)
+     * @param score
+     */
     public void setScore(long score) {
         this.score = score;
     }
 
-
+    /**
+     * Retrieves the number of habit events of a given habit and stores that value into eventListSize
+     */
     public void populateEventList() {
         auth = FirebaseAuth.getInstance();
         CollectionReference eventCollectionReference = FirebaseFirestore.getInstance()
@@ -108,12 +120,10 @@ public class VisualIndicator {
                 if (task.isSuccessful()) {
                     InitializeEventListSize();
                     int size;
-                    size = task.getResult().size();
-                    System.out.println("The number of the events corresponding to habit title (" + habit.getTitle() + ") is " + size);
-                    EventListSize(size);
+                    size = task.getResult().size(); // gets the number of events in the collection
+                    setEventListSize(size);
 
                 } else {
-                    System.out.println("error");
                     Log.d("TAG", "Error getting documents: ", task.getException());
                 }
             }
@@ -121,48 +131,25 @@ public class VisualIndicator {
 
     }
 
-//        eventCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    InitializeEventListSize();
-//                    int size;
-//                    size = task.getResult().size();
-//                    System.out.println("The number of the events corresponding to habit title (" + habit.getTitle() + ") is " + size);
-//                    EventListSize(size);
-//
-//                } else {
-//                    System.out.println("error");
-//                    Log.d("TAG", "Error getting documents: ", task.getException());
-//                }
-//            }
-//        });
-//
-//        eventCollectionReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//            @Override
-//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                int size = 0;
-//                habit.InitializeEventListSize();
-//                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
-//                    size++;
-//                    habit.IncrementEventListSize();
-//                }
-//                System.out.println("The number of the events corresponding to habit title (" + habit.getTitle() + ") is " + size);
-//            }
-//        });
-//
-//    }
-
-
+    /**
+     * Initializes eventListSize to be 0
+     */
     public void InitializeEventListSize() {
         this.eventListSize = 0;
     }
 
-    public void EventListSize(long size) {
+    /**
+     * Sets the eventListSize to the given parameter
+     * @param size
+     */
+    public void setEventListSize(long size) {
         this.eventListSize = size;
     }
 
+    /**
+     * Returns the size of the eventListSize
+     * @return eventListSize
+     */
     public long getEventListSize() {
         return this.eventListSize;
     }
