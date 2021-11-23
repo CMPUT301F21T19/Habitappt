@@ -124,30 +124,22 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
     }
 
     public void updateDocIndex() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String emailID = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         CollectionReference collectionReference = FirebaseFirestore.getInstance()
-                .collection("Habits")
-                .document(userId)
+                .collection("Users")
+                .document(emailID)
                 .collection("Habits");
         int length = habitList.size();
 
         for (int i = 0; i < length; i++) {
             String habitTitle = habitList.get(i).getTitle();
+            //int finalIndex = i;
             int finalI = i;
             collectionReference
-                    .whereEqualTo("title", habitTitle)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()){
-                                for (QueryDocumentSnapshot document : task.getResult()){
-                                    collectionReference.document(document.getId())
-                                            .update("Index", finalI);
-                                }
-                            }
-                        }
-                    });
+                    .document(habitList.get(i).id)
+                    .update("index",i);
+
+
         }
     }
 
