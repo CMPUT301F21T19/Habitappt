@@ -37,7 +37,7 @@ public class DragHabits extends ItemTouchHelper.Callback{
 
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-        this.touchHelper.onRowMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        touchHelper.onRowMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
         return true;
     }
 

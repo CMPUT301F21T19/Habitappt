@@ -1,5 +1,6 @@
 package com.CMPUT301F21T19.habitappt;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -38,19 +40,41 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
 
     DragMoveAdapter habitAdapter;
     ArrayList<Habit> habitDataList;
+    ArrayList<String> habitIdList;
+
     RecyclerView habitView;
     View addHabitButton;
     FirebaseFirestore db;
     FirebaseAuth auth;
+    String emailID;
+
+    CollectionReference habitCollection;
+    DocumentReference userDocument;
+    CollectionReference currentUserHabits;
 
     private View view;
+
 
     /**
      * This method must be implemented by any classes that extend this class. It tells the class how to process the habits in the users collection.
      * @param queryDocumentSnapshots
      * @param error
      */
-    public abstract void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error);
+    public void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error){
+        habitDataList.clear();
+        for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+            String id = doc.getId();
+            boolean isPrivate = (boolean) doc.getData().get("isPrivate");
+            String title = (String) doc.getData().get("title");
+            String reason = (String) doc.getData().get("reason");
+            long dateToStart = (long) doc.getData().get("dateToStart");
+            ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
+
+            habitDataList.add(new Habit(title, reason, dateToStart, datesToDo,id, isPrivate));
+        }
+
+        habitAdapter.notifyDataSetChanged();
+    }
 
     /**
      * Called on creation of the fragment.
@@ -72,10 +96,17 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.recycler_view, container, false);
 
-        addHabitButton = view.findViewById(R.id.add_habit_button);
-
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        emailID = user.getEmail();
+
+        habitCollection = db.collection("Habits");
+        userDocument = habitCollection.document(emailID);
+        currentUserHabits = userDocument.collection("Habits");
+
+        addHabitButton = view.findViewById(R.id.add_habit_button);
+
 
         final CollectionReference collectionReference = db
                 .collection("Users")
@@ -89,6 +120,7 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         habitView.setLayoutManager(layoutManager);
         initHabitOrder();
+        updateList();
         habitView.setAdapter(habitAdapter);
 
         //listener for pressing the button to add habits.
@@ -122,6 +154,28 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
         ItemTouchHelper.Callback callback = new DragHabits(habitAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(habitView);
+        updateList();
+    }
+
+
+
+    public void updateList(){
+        Query currentUserCol = currentUserHabits.orderBy("Index", Query.Direction.ASCENDING);
+        currentUserCol.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                for (QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String title = (String) doc.getData().get("title");
+                    String reason = (String) doc.getData().get("reason");
+                    long dateToStart = (long) doc.getData().get("dateToStart");
+                    ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
+                    boolean isPrivate = (boolean) doc.getData().get("isPrivate");
+                    String id = doc.getId();
+                    habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id,isPrivate));
+                    habitAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
 }

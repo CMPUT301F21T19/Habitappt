@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,7 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
     private ArrayList<Habit> habitList;
     private DragListener dragListener;
     private VisualIndicator visualIndicator;
+
 
     public interface DragListener {
         void onHabitClick(int position);}
@@ -115,12 +117,12 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
 
     @Override
     public void onRowSelected(DragViewHolder myViewHolder) {
-        myViewHolder.itemView.setBackgroundColor(Color.LTGRAY);
+        //myViewHolder.itemView.setBackgroundColor(Color.LTGRAY);
     }
 
     @Override
     public void onRowClear(DragViewHolder myViewHolder) {
-        myViewHolder.itemView.setBackgroundColor(Color.WHITE);
+        //myViewHolder.itemView.setBackgroundColor(Color.WHITE);
     }
 
     public void updateDocIndex() {
@@ -131,17 +133,39 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
                 .collection("Habits");
         int length = habitList.size();
 
-        for (int i = 0; i < length; i++) {
-            String habitTitle = habitList.get(i).getTitle();
-            //int finalIndex = i;
-            int finalI = i;
-            collectionReference
-                    .document(habitList.get(i).id)
-                    .update("index",i);
+//        for (int i = 0; i < length; i++) {
+//            //String habitTitle = habitList.get(i).getTitle();
+//            //int finalIndex = i;
+//            int finalI = i;
+//            collectionReference
+//                    .document(habitList.get(i).id)
+//                    .update("index",finalI);
+
+
+            for (int i = 0; i < length; i++) {
+                int finalI = i;
+                String id = habitList.get(i).getId();
+                String habitTitle = habitList.get(i).getTitle();
+
+                collectionReference
+                        .whereEqualTo("id",id)
+                        .get()
+                        //.update("Index",i);
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        collectionReference.document(document.getId())
+                                                .update("Index", finalI);
+                                    }
+                                }
+                            }
+                        });
+            }
 
 
         }
     }
 
-}
 
