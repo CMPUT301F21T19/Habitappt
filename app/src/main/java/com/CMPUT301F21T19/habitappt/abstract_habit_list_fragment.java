@@ -88,7 +88,7 @@ public abstract class abstract_habit_list_fragment extends Fragment {
                 .collection("Habits");
 
         habitDataList = new ArrayList<>();
-        habitAdapter = new HabitList(getContext(), habitDataList);
+        habitAdapter = new HabitList(getContext(), habitDataList, false, null);
         habitListView.setAdapter(habitAdapter);
 
         //list view item listener
