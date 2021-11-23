@@ -1,8 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/map"
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LocationActivity" />
+    tools:context=".LocationActivity">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:background="#f9f9f9"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:alpha="0.7"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/lin_layout">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/current_latitude"
+                            android:id="@+id/current_lat"
+                            android:textColor="@color/quantum_black_100"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/current_longitude"
+                            android:id="@+id/current_lon"
+                            android:textColor="@color/quantum_black_100"
+                            />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|bottom"
+                            android:text="Save Location"
+                            android:padding="10dp"
+                            android:layout_marginTop="20dp"
+                            android:paddingRight="10dp"
+                            android:textColor="@color/quantum_black_100"
+
+                            android:id="@+id/save_button"/>
+
+                </LinearLayout>
+        </RelativeLayout>
+</fragment>

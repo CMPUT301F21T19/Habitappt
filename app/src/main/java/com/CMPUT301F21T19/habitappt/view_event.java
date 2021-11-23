@@ -80,6 +80,10 @@ public class view_event extends Fragment {
         //locationTextView stuff here when location is done
         commentTextView.setText(event.getComment());
 
+        if(event.getLocationLat() != -1 || event.getLocationLon() != -1){
+            locationTextView.setText("Location: " + Long.toString(Math.round(event.getLocationLat()) ) + ", " + Long.toString(Math.round(event.getLocationLon())));
+        }
+
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,6 +105,14 @@ public class view_event extends Fragment {
                 String eventDate = SharedHelper.getStringDateFromLong((long) value.get("eventDate"));
 
                 StorageReference ref = storage.getReferenceFromUrl("gs://habitappt.appspot.com/default_user/" + imgId + ".jpg");
+
+
+                if(value.contains("latitude") && value.contains("longitude")){
+                    Double lat = (Double) value.get("latitude");
+                    Double lon = (Double) value.get("longitude");
+
+                    locationTextView.setText("Location: " + Long.toString(Math.round(lat) ) + ", " + Long.toString(Math.round(lon)));
+                }
 
 
                 ref.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
