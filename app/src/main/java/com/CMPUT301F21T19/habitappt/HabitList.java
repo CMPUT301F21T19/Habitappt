@@ -86,6 +86,7 @@ public class HabitList extends ArrayAdapter<Habit> {
         TextView habitName = view.findViewById(R.id.habit_name);
         TextView habitReason = view.findViewById(R.id.habit_reason_list_text);
         ImageView scoreImg = view.findViewById(R.id.score_image);
+        ImageView checkmarkImg = view.findViewById(R.id.check_mark);
 
         habitName.setText(habit.getTitle());
         habitReason.setText(habit.getReason());
@@ -97,7 +98,7 @@ public class HabitList extends ArrayAdapter<Habit> {
             @Override
             public void run() {
                 double score = visualIndicator.getScore();
-
+                boolean checkToday = visualIndicator.GetIsTodayEventDone();
                 if (score < 20) {
                     scoreImg.setImageResource(R.drawable.ic_disappointed_emoji);
                 } else if (score < 40) {
@@ -108,6 +109,12 @@ public class HabitList extends ArrayAdapter<Habit> {
                     scoreImg.setImageResource(R.drawable.ic_light_green_emoji);
                 } else {
                     scoreImg.setImageResource(R.drawable.ic_bright_green_emoji);
+                }
+
+                if (checkToday) {
+                    checkmarkImg.setImageResource(R.drawable.ic_green_checkmark);
+                } else {
+                    checkmarkImg.setImageResource(R.drawable.ic_empty);
                 }
             }
         }, 200);
