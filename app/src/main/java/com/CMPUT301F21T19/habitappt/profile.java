@@ -225,7 +225,10 @@ public class profile extends Fragment {
                     new RequestRespond(clickedRequest).show(getActivity().getSupportFragmentManager(), "REQUEST");
                 } else if (adapterView.getItemAtPosition(i).getClass().getSimpleName().equals("Follower")) {
                     Follower clickFollower = (Follower) adapterView.getItemAtPosition(i);
-                    new manage_follower(clickFollower.getUserEmail()).show(getActivity().getSupportFragmentManager(),"MANAGE");
+                    FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+                    trans.replace(R.id.main_container, new view_following(clickFollower.getUserEmail()));
+                    trans.addToBackStack("view_following");
+                    trans.commit();
                 } else if (adapterView.getItemAtPosition(i).getClass().getSimpleName().equals("Following")) {
                     // clicked on following
                     Following clickFollowing = (Following) adapterView.getItemAtPosition(i);
