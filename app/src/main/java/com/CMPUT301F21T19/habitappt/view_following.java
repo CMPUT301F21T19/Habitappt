@@ -20,10 +20,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -35,6 +40,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 /**
  * This class is the fragment used for viewing followed users profiles. Shows their public habits and visual indicators,
@@ -52,7 +58,8 @@ public class view_following extends Fragment {
 
     Button allHabitsButton;
     Button dailyHabitsButton;
-    Button unFollowButton;
+    Button followButton;
+    Button removeFollowerButton;
 
     TextView userProfileName;
 
@@ -91,15 +98,16 @@ public class view_following extends Fragment {
         habitListView = view.findViewById(R.id.profile_list);
 
         habitDataList = new ArrayList<>();
-        habitAdapter = new HabitList(getContext(), habitDataList);
+        habitAdapter = new HabitList(getContext(), habitDataList, true, this.user);
         habitListView.setAdapter(habitAdapter);
 
         dailyHabitDataList = new ArrayList<>();
-        dailyHabitAdapter = new HabitList(getContext(),dailyHabitDataList);
+        dailyHabitAdapter = new HabitList(getContext(),dailyHabitDataList, true, this.user);
 
         allHabitsButton = view.findViewById(R.id.all_habits_following);
         dailyHabitsButton = view.findViewById(R.id.daily_habits_following);
-        unFollowButton = view.findViewById(R.id.unfollow_button);
+        followButton = view.findViewById(R.id.follow_button);
+        removeFollowerButton = view.findViewById(R.id.remove_follower);
 
         userProfileName = view.findViewById(R.id.username_field);
 
@@ -108,6 +116,81 @@ public class view_following extends Fragment {
         //button highlight changes when pressed
         allHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
         dailyHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+
+        removeFollowerButton.setVisibility(View.GONE);
+        followButton.setVisibility(View.GONE);
+
+        db.collection("Users")
+                .document(auth.getCurrentUser().getEmail())
+                .collection("Followers")
+                .document(user).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists()){
+                    removeFollowerButton.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        //change follow button functionality if you are following the user or not.
+        db.collection("Users")
+                .document(auth.getCurrentUser().getEmail())
+                .collection("Followings")
+                .document(user).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                if(documentSnapshot.exists()){
+                    followButton.setText("UNFOLLOW");
+                }
+                else{
+                    followButton.setText("FOLLOW");
+                }
+                followButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+        removeFollowerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast toast = Toast.makeText(THIS,user + " removed as a follower.",Toast.LENGTH_SHORT);
+                toast.show();
+
+                removeFollowerButton.setVisibility(View.GONE);
+
+                db.collection("Users")
+                        .document(auth.getCurrentUser().getEmail())
+                        .collection("Followers").document(user).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast toast = Toast.makeText(THIS,user + " removed as a follower.",Toast.LENGTH_SHORT);
+                        toast.show();
+
+                        db.collection("Users")
+                                .document(user)
+                                .collection("Followings")
+                                .document(auth.getCurrentUser().getEmail()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d("success","removed from following");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("error",e.toString());
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("error",e.toString());
+                    }
+                });
+
+            }
+
+        });
 
         allHabitsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,41 +212,82 @@ public class view_following extends Fragment {
             }
         });
 
-        unFollowButton.setOnClickListener(new View.OnClickListener() {
+        followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //remove user from following, and remove current user from users follower list
-                db.collection("Users")
-                        .document(auth.getCurrentUser().getEmail())
-                        .collection("Followings").document(user).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast toast = Toast.makeText(THIS,user + " unfollowed.",Toast.LENGTH_SHORT);
-                        toast.show();
 
-                        db.collection("Users")
-                                .document(user)
-                                .collection("Followers")
-                                .document(auth.getCurrentUser().getEmail()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Log.d("success","removed from following");
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("error",e.toString());
-                            }
-                        });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("error",e.toString());
-                    }
-                });
+                if(followButton.getText().toString().equals("UNFOLLOW")){
+                    //remove user from following, and remove current user from users follower list
+                    db.collection("Users")
+                            .document(auth.getCurrentUser().getEmail())
+                            .collection("Followings").document(user).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast toast = Toast.makeText(THIS,user + " unfollowed.",Toast.LENGTH_SHORT);
+                            toast.show();
 
-                main.getSupportFragmentManager().popBackStackImmediate();
+                            db.collection("Users")
+                                    .document(user)
+                                    .collection("Followers")
+                                    .document(auth.getCurrentUser().getEmail()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Log.d("success","removed from following");
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d("error",e.toString());
+                                }
+                            });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("error",e.toString());
+                        }
+                    });
+                    main.getSupportFragmentManager().popBackStackImmediate();
+                }
+                else{
+                    auth.fetchSignInMethodsForEmail(user).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                            if (task.getResult().getSignInMethods().isEmpty()) {
+                                // user does not exist
+                                Toast.makeText(THIS, "Failure: user does not exist", Toast.LENGTH_LONG).show();
+                            } else {
+                                DocumentReference doc = db
+                                        .collection("Users")
+                                        .document(user)
+                                        .collection("Requests")
+                                        .document(auth.getCurrentUser().getEmail());
+
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("Requester", auth.getCurrentUser().getEmail());
+                                data.put("Requested", user);
+                                data.put("Time", GregorianCalendar.getInstance().getTimeInMillis());
+
+                                doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.i("data", "success");
+                                        // request success
+                                        Toast.makeText(THIS, "Success: requested to follow user " + user, Toast.LENGTH_LONG).show();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.i("data", e.toString());
+                                        // request failure
+                                        Toast.makeText(THIS, "Failure: request incomplete", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+
             }
         });
 
@@ -187,22 +311,35 @@ public class view_following extends Fragment {
                 habitDataList.clear();
 
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
-                    String id = doc.getId();
-                    boolean isPrivate = (boolean) doc.getData().get("isPrivate");
 
-                    if(isPrivate){
-                        continue;
-                    }
+                    db.collection("Users")
+                            .document(auth.getCurrentUser().getEmail())
+                            .collection("Followings")
+                            .document(user).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                    String title = (String) doc.getData().get("title");
-                    String reason = (String) doc.getData().get("reason");
-                    long dateToStart = (long) doc.getData().get("dateToStart");
-                    ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
+                            if(documentSnapshot.exists()){
+                                String id = doc.getId();
+                                boolean isPrivate = (boolean) doc.getData().get("isPrivate");
 
-                    habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate));
+                                if(isPrivate){
+                                    return;
+                                }
+
+                                String title = (String) doc.getData().get("title");
+                                String reason = (String) doc.getData().get("reason");
+                                long dateToStart = (long) doc.getData().get("dateToStart");
+                                ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
+
+                                habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate));
+                                habitAdapter.notifyDataSetChanged();
+                            }
+
+                        }
+                    });
+
                 }
-
-                habitAdapter.notifyDataSetChanged();
             }
         });
 
@@ -214,34 +351,49 @@ public class view_following extends Fragment {
 
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String id = doc.getId();
-                    boolean isPrivate = (boolean) doc.getData().get("isPrivate");
-                    if(isPrivate){
-                        continue;
-                    }
-                    String title = (String) doc.getData().get("title");
-                    String reason = (String) doc.getData().get("reason");
-                    long dateToStart = (long) doc.getData().get("dateToStart");
-                    ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
 
-                    Date todayDate = new Date(GregorianCalendar.getInstance().getTimeInMillis());
-                    Date startDate = new Date(dateToStart);
-                    Calendar todayCal = Calendar.getInstance();
-                    todayCal.setTime(todayDate);
-                    Calendar startCal = Calendar.getInstance();
-                    startCal.setTime(startDate);
+                    db.collection("Users")
+                            .document(auth.getCurrentUser().getEmail())
+                            .collection("Followings")
+                            .document(user).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                    if (todayDate.getTime() > startDate.getTime()) {
-                        for (int i=0; i<datesToDo.size(); i++) {
-                            if (datesToDo.get(i) && todayCal.get(Calendar.DAY_OF_WEEK) == ((i+1)%7)+1) {
-                                dailyHabitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate));
+                            if(documentSnapshot.exists()){
+                                boolean isPrivate = (boolean) doc.getData().get("isPrivate");
+                                if(isPrivate){
+                                    return;
+                                }
+                                String title = (String) doc.getData().get("title");
+                                String reason = (String) doc.getData().get("reason");
+                                long dateToStart = (long) doc.getData().get("dateToStart");
+                                ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
+
+                                Date todayDate = new Date(GregorianCalendar.getInstance().getTimeInMillis());
+                                Date startDate = new Date(dateToStart);
+                                Calendar todayCal = Calendar.getInstance();
+                                todayCal.setTime(todayDate);
+                                Calendar startCal = Calendar.getInstance();
+                                startCal.setTime(startDate);
+
+                                if (todayDate.getTime() > startDate.getTime()) {
+                                    for (int i=0; i<datesToDo.size(); i++) {
+                                        if (datesToDo.get(i) && todayCal.get(Calendar.DAY_OF_WEEK) == ((i+1)%7)+1) {
+                                            dailyHabitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate));
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
+                    });
+
                 }
 
                 dailyHabitAdapter.notifyDataSetChanged();
             }
         });
+
+
 
 
         return view;

@@ -39,8 +39,15 @@
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         tools:srcCompat="@tools:sample/avatars"
-
         />
 
+
+    <ImageView
+        android:id="@+id/check_mark"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        tools:srcCompat="@tools:sample/avatars" />
 
 </LinearLayout>

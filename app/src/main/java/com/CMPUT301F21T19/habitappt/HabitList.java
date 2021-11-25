@@ -50,15 +50,19 @@ public class HabitList extends ArrayAdapter<Habit> {
      */
     private Context context;
 
+    private boolean isFollowing;
+    private String user;
     /**
      * constructs habit list array adpater with passed context and list of habits
      * @param context
      * @param habits
      */
-    public HabitList(Context context, ArrayList<Habit> habits) {
+    public HabitList(Context context, ArrayList<Habit> habits, boolean isFollowing, String user) {
         super(context,0, habits);
         this.habits = habits;
         this.context = context;
+        this.isFollowing = isFollowing;
+        this.user = user;
     }
 
     /**
@@ -82,18 +86,19 @@ public class HabitList extends ArrayAdapter<Habit> {
         TextView habitName = view.findViewById(R.id.habit_name);
         TextView habitReason = view.findViewById(R.id.habit_reason_list_text);
         ImageView scoreImg = view.findViewById(R.id.score_image);
+        ImageView checkmarkImg = view.findViewById(R.id.check_mark);
 
         habitName.setText(habit.getTitle());
         habitReason.setText(habit.getReason());
 
-        VisualIndicator visualIndicator = new VisualIndicator(habit);
+        VisualIndicator visualIndicator = new VisualIndicator(habit, this.isFollowing, this.user);
         visualIndicator.populateEventList();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 double score = visualIndicator.getScore();
-
+                boolean checkToday = visualIndicator.GetIsTodayEventDone();
                 if (score < 20) {
                     scoreImg.setImageResource(R.drawable.ic_disappointed_emoji);
                 } else if (score < 40) {
@@ -104,6 +109,12 @@ public class HabitList extends ArrayAdapter<Habit> {
                     scoreImg.setImageResource(R.drawable.ic_light_green_emoji);
                 } else {
                     scoreImg.setImageResource(R.drawable.ic_bright_green_emoji);
+                }
+
+                if (checkToday) {
+                    checkmarkImg.setImageResource(R.drawable.ic_green_checkmark);
+                } else {
+                    checkmarkImg.setImageResource(R.drawable.ic_empty);
                 }
             }
         }, 200);

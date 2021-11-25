@@ -15,6 +15,7 @@ package com.CMPUT301F21T19.habitappt;
 import static io.grpc.okhttp.internal.Platform.logger;
 
 import android.util.Log;
+import android.widget.ListAdapter;
 
 import androidx.annotation.NonNull;
 
@@ -41,23 +42,31 @@ import java.util.concurrent.Semaphore;
 public class VisualIndicator {
     private Habit habit;
     private double score;
-    private long eventListSize;
+    private long eventListSize = 0;
     private FirebaseAuth auth;
+    private Boolean isFollowing;
+    private String user;
+    private ArrayList<Long> recordedEventDates = new ArrayList<Long>();
+    private long eventDate;
+    private boolean getIsTodayEventDone = false;
 
     /**
      * Instantiates a new visual Indicator object
      * @param habit
      */
-    public VisualIndicator(Habit habit) {
+    public VisualIndicator(Habit habit, Boolean isFollowing, String user) {
         this.habit = habit;
+        this.isFollowing = isFollowing;
+        this.user = user;
     }
 
     /**
-     * Calculates the the number of events associated with the habit by the total number of habits
+     * Calculates the the number of events associated with the habit per total number of habits
      * that were supposed to be done
      * @return score
      */
     public double getScore() {
+
         // Create a start date and use it to instantiate calender object (which we will be using more)
         Date start_date = new Date(this.habit.getDateToStart());
         Calendar c = Calendar.getInstance();
@@ -75,21 +84,41 @@ public class VisualIndicator {
             if (c.get(Calendar.DAY_OF_WEEK) == 1) {
                 if (this.habit.getDateSelected(6)) {
                     totalNumHabits += 1;
+                    for (int i = 0; i < recordedEventDates.size(); i++) {
+                        Date eventDate = new Date(recordedEventDates.get(i));
+                        if (start_date.getDate() == eventDate.getDate()) {
+                            eventListSize += 1;
+                        }
+                        if (current_date.getDate() == start_date.getDate() && eventDate.getDate() == current_date.getDate()) {
+                            this.getIsTodayEventDone = true;
+                        }
+                    }
                 }
               // Checks if habit falls under all other days of the week
             } else if (this.habit.getDateSelected(c.get(Calendar.DAY_OF_WEEK) - 2)) {
                 totalNumHabits += 1;
+                for (int i = 0; i < recordedEventDates.size(); i++) {
+                    Date eventDate = new Date(recordedEventDates.get(i));
+                    if (start_date.getDate() == eventDate.getDate()) {
+                        eventListSize += 1;
+                    }
+                    if (current_date.getDate() == start_date.getDate() && eventDate.getDate() == current_date.getDate()) {
+                        this.getIsTodayEventDone = true;
+                    }
+                }
             }
+
             c.add(Calendar.DATE, 1); // Increment the start date to one day forward
             start_date = c.getTime();
         }
+
 
         // Checks if there is no habits that need to be done yet
         if (totalNumHabits == 0) {
             this.score = 100;
             return this.score;
         }
-        this.score = (((float) getEventListSize() * 1/totalNumHabits) * 100);
+        this.score = (((float) eventListSize * 1/totalNumHabits) * 100);
         return this.score;
     }
 
@@ -106,51 +135,58 @@ public class VisualIndicator {
      */
     public void populateEventList() {
         auth = FirebaseAuth.getInstance();
-        CollectionReference eventCollectionReference = FirebaseFirestore.getInstance()
-                .collection("Users")
-                .document(auth.getCurrentUser().getEmail())
-                .collection("Habits")
-                .document(String.valueOf(this.habit.getId()))
-                .collection("Event Collection");
-        //System.out.println("First");
+        if (isFollowing) {
+            CollectionReference eventCollectionReference = FirebaseFirestore.getInstance()
+                    .collection("Users")
+                    .document(this.user)
+                    .collection("Habits")
+                    .document(String.valueOf(this.habit.getId()))
+                    .collection("Event Collection");
 
-        eventCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    InitializeEventListSize();
-                    int size;
-                    size = task.getResult().size(); // gets the number of events in the collection
-                    setEventListSize(size);
+            eventCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d("info", document.getId() + " => " + document.getData());
+                            Long eventDate = (Long) document.getData().get("eventDate");
+                            recordedEventDates.add(eventDate);
+                        }
+                    } else {
+                        Log.d("TAG", "Error getting documents: ", task.getException());
 
-                } else {
-                    Log.d("TAG", "Error getting documents: ", task.getException());
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            CollectionReference eventCollectionReference = FirebaseFirestore.getInstance()
+                    .collection("Users")
+                    .document(auth.getCurrentUser().getEmail())
+                    .collection("Habits")
+                    .document(String.valueOf(this.habit.getId()))
+                    .collection("Event Collection");
+
+            eventCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d("info", document.getId() + " => " + document.getData());
+                            Long eventDate = (Long) document.getData().get("eventDate");
+                            recordedEventDates.add(eventDate);
+                        }
+                    } else {
+                        Log.d("TAG", "Error getting documents: ", task.getException());
+
+                    }
+                }
+            });
+        }
+
 
     }
 
-    /**
-     * Initializes eventListSize to be 0
-     */
-    public void InitializeEventListSize() {
-        this.eventListSize = 0;
-    }
-
-    /**
-     * Sets the eventListSize to the given parameter
-     * @param size
-     */
-    public void setEventListSize(long size) {
-        this.eventListSize = size;
-    }
-
-    /**
-     * Returns the size of the eventListSize
-     * @return eventListSize
-     */
-    public long getEventListSize() {
-        return this.eventListSize;
+    public boolean GetIsTodayEventDone() {
+        return getIsTodayEventDone;
     }
 }
