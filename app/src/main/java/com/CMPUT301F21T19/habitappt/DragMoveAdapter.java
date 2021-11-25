@@ -1,6 +1,7 @@
 package com.CMPUT301F21T19.habitappt;
 
 import android.graphics.Color;
+import android.os.Handler;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,6 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
     private DragListener dragListener;
     private VisualIndicator visualIndicator;
 
-
     public interface DragListener {
         void onHabitClick(int position);}
 
@@ -46,13 +46,15 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
     public class DragViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView habitTitle;
         private TextView habitReason;
-        private ImageView visual_indicator;
+        private ImageView scoreImg;
+        private ImageView checkMark;
         DragListener dragListener;
         public DragViewHolder(View view, DragListener dragListener){
             super(view);
             habitTitle = view.findViewById(R.id.habit_name);
             habitReason = view.findViewById(R.id.habit_reason_list_text);
-            visual_indicator = view.findViewById(R.id.score_image);
+            scoreImg = view.findViewById(R.id.score_image);
+            checkMark = view.findViewById(R.id.check_mark);
             this.dragListener = dragListener;
             view.setOnClickListener(this);
         }
@@ -73,24 +75,36 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
     public void onBindViewHolder(@NonNull DragViewHolder holder, int position) {
         String title = habitList.get(position).getTitle();
         String reason = habitList.get(position).getReason();
-        //double score = habitList.get(position).getScore();
         holder.habitTitle.setText(title);
         holder.habitReason.setText(reason);
-        holder.visual_indicator.setImageResource(R.drawable.ic_bright_green_emoji);
 
-//        if (score < 20) {
-//            holder.visual_indicator.setImageResource(R.drawable.ic_disappointed_emoji);
-//        } else if (score < 40) {
-//            holder.visual_indicator.setImageResource(R.drawable.ic_orange_emoji);
-//        } else if (score < 60) {
-//            holder.visual_indicator.setImageResource(R.drawable.ic_yellow_emoji);
-//        } else if (score < 80) {
-//            holder.visual_indicator.setImageResource(R.drawable.ic_light_green_emoji);
-//        } else {
-//            holder.visual_indicator.setImageResource(R.drawable.ic_bright_green_emoji);
-//        }
+        VisualIndicator visualIndicator = new VisualIndicator(habitList.get(position), false, null);
+        visualIndicator.populateEventList();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                double score = visualIndicator.getScore();
+                boolean checkToday = visualIndicator.GetIsTodayEventDone();
+                if (score < 20) {
+                    holder.scoreImg.setImageResource(R.drawable.ic_disappointed_emoji);
+                } else if (score < 40) {
+                    holder.scoreImg.setImageResource(R.drawable.ic_orange_emoji);
+                } else if (score < 60) {
+                    holder.scoreImg.setImageResource(R.drawable.ic_yellow_emoji);
+                } else if (score < 80) {
+                    holder.scoreImg.setImageResource(R.drawable.ic_light_green_emoji);
+                } else {
+                    holder.scoreImg.setImageResource(R.drawable.ic_bright_green_emoji);
+                }
 
-
+                if (checkToday) {
+                    holder.checkMark.setImageResource(R.drawable.ic_green_checkmark);
+                } else {
+                    holder.checkMark.setImageResource(R.drawable.ic_empty);
+                }
+            }
+        }, 200);
 
     }
 
