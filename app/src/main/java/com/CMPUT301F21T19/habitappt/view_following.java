@@ -120,30 +120,26 @@ public class view_following extends Fragment {
         removeFollowerButton.setEnabled(false);
         followButton.setEnabled(false);
 
-        db.collection("Users")
-                .document(auth.getCurrentUser().getEmail())
-                .collection("Followers")
-                .document(user).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        User viewedUser = new User(user);
+        User currentUser = new User(auth.getCurrentUser().getEmail());
+
+        // if viewed user is following current user, enable remove follower button
+        viewedUser.following(currentUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
+                if (documentSnapshot.exists()) {
                     removeFollowerButton.setEnabled(true);
                 }
             }
         });
 
-        //change follow button functionality if you are following the user or not.
-        db.collection("Users")
-                .document(auth.getCurrentUser().getEmail())
-                .collection("Followings")
-                .document(user).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        // if current user is following viewed user, enable remove follower button
+        currentUser.following(viewedUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                if(documentSnapshot.exists()){
+                if (documentSnapshot.exists()) {
                     followButton.setText("UNFOLLOW");
-                }
-                else{
+                } else {
                     followButton.setText("FOLLOW");
                 }
                 followButton.setEnabled(true);
@@ -153,43 +149,9 @@ public class view_following extends Fragment {
         removeFollowerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast toast = Toast.makeText(THIS,user + " removed as a follower.",Toast.LENGTH_SHORT);
-                toast.show();
-
+                viewedUser.unfollow(currentUser, THIS);
                 removeFollowerButton.setEnabled(false);
-
-                db.collection("Users")
-                        .document(auth.getCurrentUser().getEmail())
-                        .collection("Followers").document(user).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast toast = Toast.makeText(THIS,user + " removed as a follower.",Toast.LENGTH_SHORT);
-                        toast.show();
-
-                        db.collection("Users")
-                                .document(user)
-                                .collection("Followings")
-                                .document(auth.getCurrentUser().getEmail()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Log.d("success","removed from following");
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("error",e.toString());
-                            }
-                        });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("error",e.toString());
-                    }
-                });
-
             }
-
         });
 
         allHabitsButton.setOnClickListener(new View.OnClickListener() {
@@ -215,79 +177,16 @@ public class view_following extends Fragment {
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(followButton.getText().toString().equals("UNFOLLOW")){
-                    //remove user from following, and remove current user from users follower list
-                    db.collection("Users")
-                            .document(auth.getCurrentUser().getEmail())
-                            .collection("Followings").document(user).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Toast toast = Toast.makeText(THIS,user + " unfollowed.",Toast.LENGTH_SHORT);
-                            toast.show();
-
-                            db.collection("Users")
-                                    .document(user)
-                                    .collection("Followers")
-                                    .document(auth.getCurrentUser().getEmail()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Log.d("success","removed from following");
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d("error",e.toString());
-                                }
-                            });
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("error",e.toString());
-                        }
-                    });
-                    main.getSupportFragmentManager().popBackStackImmediate();
+                if (followButton.getText().toString().equals("UNFOLLOW")) {
+                    currentUser.unfollow(viewedUser, THIS);
+                    followButton.setText("FOLLOW");
+                    habitDataList.clear();
+                    dailyHabitDataList.clear();
+                    habitAdapter.notifyDataSetChanged();
+                    dailyHabitAdapter.notifyDataSetChanged();
+                } else {
+                    currentUser.request(viewedUser, THIS);
                 }
-                else{
-                    auth.fetchSignInMethodsForEmail(user).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                            if (task.getResult().getSignInMethods().isEmpty()) {
-                                // user does not exist
-                                Toast.makeText(THIS, "Failure: user does not exist", Toast.LENGTH_LONG).show();
-                            } else {
-                                DocumentReference doc = db
-                                        .collection("Users")
-                                        .document(user)
-                                        .collection("Requests")
-                                        .document(auth.getCurrentUser().getEmail());
-
-                                HashMap<String, Object> data = new HashMap<>();
-                                data.put("Requester", auth.getCurrentUser().getEmail());
-                                data.put("Requested", user);
-                                data.put("Time", GregorianCalendar.getInstance().getTimeInMillis());
-
-                                doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.i("data", "success");
-                                        // request success
-                                        Toast.makeText(THIS, "Success: requested to follow user " + user, Toast.LENGTH_LONG).show();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.i("data", e.toString());
-                                        // request failure
-                                        Toast.makeText(THIS, "Failure: request incomplete", Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                            }
-                        }
-                    });
-                }
-
             }
         });
 
