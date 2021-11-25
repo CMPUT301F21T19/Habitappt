@@ -14,21 +14,28 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/profile_icon_follower_following"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
+                app:srcCompat="@drawable/ic_baseline_adb_24" >
+            </ImageView>
 
             <TextView
                 android:id="@+id/following_email_text_view"
-                android:layout_width="358dp"
-                android:layout_height="wrap_content"
-                android:text="followingEmail"
-                android:textSize="30sp"></TextView>
-
-            <ImageView
-                android:id="@+id/imageView6"
                 android:layout_width="match_parent"
-                android:layout_height="41dp"
-                app:srcCompat="@drawable/ic_baseline_more_vert_24" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="followerEmail"
+                android:textSize="25sp"
+                android:textStyle="bold">
+            </TextView>
+
         </LinearLayout>
 
     </LinearLayout>
