@@ -117,8 +117,8 @@ public class view_following extends Fragment {
         allHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
         dailyHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
 
-        removeFollowerButton.setVisibility(View.GONE);
-        followButton.setVisibility(View.GONE);
+        removeFollowerButton.setEnabled(false);
+        followButton.setEnabled(false);
 
         db.collection("Users")
                 .document(auth.getCurrentUser().getEmail())
@@ -127,7 +127,7 @@ public class view_following extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()){
-                    removeFollowerButton.setVisibility(View.VISIBLE);
+                    removeFollowerButton.setEnabled(true);
                 }
             }
         });
@@ -146,7 +146,7 @@ public class view_following extends Fragment {
                 else{
                     followButton.setText("FOLLOW");
                 }
-                followButton.setVisibility(View.VISIBLE);
+                followButton.setEnabled(true);
             }
         });
 
@@ -156,7 +156,7 @@ public class view_following extends Fragment {
                 Toast toast = Toast.makeText(THIS,user + " removed as a follower.",Toast.LENGTH_SHORT);
                 toast.show();
 
-                removeFollowerButton.setVisibility(View.GONE);
+                removeFollowerButton.setEnabled(false);
 
                 db.collection("Users")
                         .document(auth.getCurrentUser().getEmail())
