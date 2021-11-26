@@ -2,6 +2,7 @@ package com.CMPUT301F21T19.habitappt;
 
 import android.graphics.Color;
 import android.os.Handler;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +56,7 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
             habitReason = view.findViewById(R.id.habit_reason_list_text);
             scoreImg = view.findViewById(R.id.score_image);
             checkMark = view.findViewById(R.id.check_mark);
+
             this.dragListener = dragListener;
             view.setOnClickListener(this);
         }
@@ -79,34 +81,34 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
         holder.habitReason.setText(reason);
 
         VisualIndicator visualIndicator = new VisualIndicator(habitList.get(position), false, null);
+
         visualIndicator.populateEventList();
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                double score = visualIndicator.getScore();
-                boolean checkToday = visualIndicator.GetIsTodayEventDone();
-                if (score < 20) {
-                    holder.scoreImg.setImageResource(R.drawable.ic_disappointed_emoji);
-                } else if (score < 40) {
-                    holder.scoreImg.setImageResource(R.drawable.ic_orange_emoji);
-                } else if (score < 60) {
-                    holder.scoreImg.setImageResource(R.drawable.ic_yellow_emoji);
-                } else if (score < 80) {
-                    holder.scoreImg.setImageResource(R.drawable.ic_light_green_emoji);
-                } else {
-                    holder.scoreImg.setImageResource(R.drawable.ic_bright_green_emoji);
-                }
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    final double score = visualIndicator.getScore();
+                    final boolean checkToday = visualIndicator.GetIsTodayEventDone();
+                    if (score < 20) {
+                        holder.scoreImg.setImageResource(R.drawable.ic_disappointed_emoji);
+                    } else if (score < 40) {
+                        holder.scoreImg.setImageResource(R.drawable.ic_orange_emoji);
+                    } else if (score < 60) {
+                        holder.scoreImg.setImageResource(R.drawable.ic_yellow_emoji);
+                    } else if (score < 80) {
+                        holder.scoreImg.setImageResource(R.drawable.ic_light_green_emoji);
+                    } else {
+                        holder.scoreImg.setImageResource(R.drawable.ic_bright_green_emoji);
+                    }
 
-                if (checkToday) {
-                    holder.checkMark.setImageResource(R.drawable.ic_green_checkmark);
-                } else {
-                    holder.checkMark.setImageResource(R.drawable.ic_empty);
+                    if (checkToday) {
+                        holder.checkMark.setImageResource(R.drawable.ic_green_checkmark);
+                    } else {
+                        holder.checkMark.setImageResource(R.drawable.ic_empty);
+                    }
                 }
-            }
-        }, 200);
-
-    }
+            }, 500);
+        }
 
     @Override
     public int getItemCount() {
@@ -147,36 +149,39 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
                 .collection("Habits");
         int length = habitList.size();
 
-//        for (int i = 0; i < length; i++) {
-//            //String habitTitle = habitList.get(i).getTitle();
-//            //int finalIndex = i;
-//            int finalI = i;
-//            collectionReference
-//                    .document(habitList.get(i).id)
-//                    .update("index",finalI);
+        for (int i = 0; i < length; i++) {
+//            String habitTitle = habitList.get(i).getTitle();
+//            int finalIndex = i;
+            int finalI = i;
+            collectionReference
+                    .document(habitList.get(i).id)
+                    .update("index", finalI);
+
+        }
 
 
-            for (int i = 0; i < length; i++) {
-                int finalI = i;
-                String id = habitList.get(i).getId();
-                String habitTitle = habitList.get(i).getTitle();
 
-                collectionReference
-                        .whereEqualTo("id",id)
-                        .get()
-                        //.update("Index",i);
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        collectionReference.document(document.getId())
-                                                .update("Index", finalI);
-                                    }
-                                }
-                            }
-                        });
-            }
+//            for (int i = 0; i < length; i++) {
+//                int finalI = i;
+//                String id = habitList.get(i).getId();
+//                String habitTitle = habitList.get(i).getTitle();
+//
+//                collectionReference
+//                        .whereEqualTo("id",id)
+//                        .get()
+//                        //.update("Index",i);
+//                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                if (task.isSuccessful()) {
+//                                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                                        collectionReference.document(id)
+//                                                .update("Index", finalI);
+//                                    }
+//                                }
+//                            }
+//                        });
+//            }
 
 
         }

@@ -75,5 +75,6 @@ public class DragHabits extends ItemTouchHelper.Callback{
         void onRowSelected(DragMoveAdapter.DragViewHolder myViewHolder);
 
         void onRowClear(DragMoveAdapter.DragViewHolder myViewHolder);
+
     }
 }

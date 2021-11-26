@@ -31,6 +31,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
@@ -42,25 +43,28 @@ public class all_habits extends recycler_view_fragment {
 
     /**
      * This method returns all of the habits in the users collection
-     * @param queryDocumentSnapshots
-     * @param error
+     * @param
+     * @param
      */
     @Override
-    public void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-        habitDataList.clear();
-
-        for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
-            String id = doc.getId();
-            boolean isPrivate = (boolean) doc.getData().get("isPrivate");
-            String title = (String) doc.getData().get("title");
-            String reason = (String) doc.getData().get("reason");
-            long dateToStart = (long) doc.getData().get("dateToStart");
-            ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
-
-            habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate));
-        }
-
-        habitAdapter.notifyDataSetChanged();
+    public void parseDataBaseUpdate(){
+        Query currentUserCol = currentUserHabits.orderBy("index", Query.Direction.ASCENDING);
+        currentUserCol.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                habitDataList.clear();
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String id = doc.getId();
+                    boolean isPrivate = (boolean) doc.getData().get("isPrivate");
+                    String title = (String) doc.getData().get("title");
+                    String reason = (String) doc.getData().get("reason");
+                    long dateToStart = (long) doc.getData().get("dateToStart");
+                    ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
+                    habitDataList.add(new Habit(title, reason, dateToStart, datesToDo,id, isPrivate));
+                }
+                habitAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
 }

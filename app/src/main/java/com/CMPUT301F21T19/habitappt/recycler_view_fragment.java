@@ -3,6 +3,7 @@ package com.CMPUT301F21T19.habitappt;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 
 public abstract class recycler_view_fragment extends Fragment implements DragMoveAdapter.DragListener {
@@ -40,7 +42,6 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
 
     DragMoveAdapter habitAdapter;
     ArrayList<Habit> habitDataList;
-    ArrayList<String> habitIdList;
 
     RecyclerView habitView;
     View addHabitButton;
@@ -60,21 +61,23 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
      * @param queryDocumentSnapshots
      * @param error
      */
-    public void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error){
-        habitDataList.clear();
-        for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
-            String id = doc.getId();
-            boolean isPrivate = (boolean) doc.getData().get("isPrivate");
-            String title = (String) doc.getData().get("title");
-            String reason = (String) doc.getData().get("reason");
-            long dateToStart = (long) doc.getData().get("dateToStart");
-            ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
 
-            habitDataList.add(new Habit(title, reason, dateToStart, datesToDo,id, isPrivate));
-        }
-
-        habitAdapter.notifyDataSetChanged();
-    }
+//    public void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error){
+//        habitDataList.clear();
+//
+//        for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+//            String id = doc.getId();
+//            boolean isPrivate = (boolean) doc.getData().get("isPrivate");
+//            String title = (String) doc.getData().get("title");
+//            String reason = (String) doc.getData().get("reason");
+//            long dateToStart = (long) doc.getData().get("dateToStart");
+//            ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
+//
+//            habitDataList.add(new Habit(title, reason, dateToStart, datesToDo,id, isPrivate));
+//        }
+//
+//        habitAdapter.notifyDataSetChanged();
+//    }
 
     /**
      * Called on creation of the fragment.
@@ -94,6 +97,8 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
         view = inflater.inflate(R.layout.recycler_view, container, false);
 
         db = FirebaseFirestore.getInstance();
@@ -101,7 +106,7 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
         FirebaseUser user = auth.getCurrentUser();
         emailID = user.getEmail();
 
-        habitCollection = db.collection("Habits");
+        habitCollection = db.collection("Users");
         userDocument = habitCollection.document(emailID);
         currentUserHabits = userDocument.collection("Habits");
 
@@ -120,7 +125,7 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         habitView.setLayoutManager(layoutManager);
         initHabitOrder();
-        updateList();
+        parseDataBaseUpdate();
         habitView.setAdapter(habitAdapter);
 
         //listener for pressing the button to add habits.
@@ -130,14 +135,14 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
                 new edit_habit().show(getActivity().getSupportFragmentManager(), "ADD");
             }
         });
-
-        //listener for database updates. uses the abstract method defined in this class.
-        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                parseDataBaseUpdate(queryDocumentSnapshots,error);
-            }
-        });
+//
+//        //listener for database updates. uses the abstract method defined in this class.
+//        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+//                parseDataBaseUpdate(queryDocumentSnapshots,error);
+//            }
+//        });
         
         return view;
     }
@@ -154,28 +159,29 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
         ItemTouchHelper.Callback callback = new DragHabits(habitAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(habitView);
-        updateList();
+        parseDataBaseUpdate();
     }
 
 
-
-    public void updateList(){
-        Query currentUserCol = currentUserHabits.orderBy("Index", Query.Direction.ASCENDING);
+    public void parseDataBaseUpdate(){
+        Query currentUserCol = currentUserHabits.orderBy("index", Query.Direction.ASCENDING);
         currentUserCol.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                for (QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                habitDataList.clear();
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String id = doc.getId();
+                    boolean isPrivate = (boolean) doc.getData().get("isPrivate");
                     String title = (String) doc.getData().get("title");
                     String reason = (String) doc.getData().get("reason");
                     long dateToStart = (long) doc.getData().get("dateToStart");
                     ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
-                    boolean isPrivate = (boolean) doc.getData().get("isPrivate");
-                    String id = doc.getId();
-                    habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id,isPrivate));
-                    habitAdapter.notifyDataSetChanged();
+                    habitDataList.add(new Habit(title, reason, dateToStart, datesToDo,id, isPrivate));
                 }
+                habitAdapter.notifyDataSetChanged();
             }
         });
-    }
+
+        }
 
 }
