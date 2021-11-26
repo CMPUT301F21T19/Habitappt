@@ -88,7 +88,6 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
 
         addHabitButton = view.findViewById(R.id.add_habit_button);
 
-
         final CollectionReference collectionReference = db
                 .collection("Users")
                 .document(auth.getCurrentUser().getEmail())
@@ -98,9 +97,7 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
         addHabitButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new edit_habit().show(getActivity().getSupportFragmentManager(), "ADD");
-
-            }
+                new edit_habit().show(getActivity().getSupportFragmentManager(), "ADD"); }
         });
 
 
@@ -136,8 +133,8 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
      *
      */
     public void parseDataBaseUpdate(){
-        Query currentUserCol = currentUserHabits.orderBy("index", Query.Direction.ASCENDING);
-        currentUserCol.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        Query currentUser = currentUserHabits.orderBy("index", Query.Direction.ASCENDING);
+        currentUser.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
                 habitDataList.clear();

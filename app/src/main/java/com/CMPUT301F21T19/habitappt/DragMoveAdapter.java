@@ -152,23 +152,20 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
         
         int length = habitList.size();
 
-            for (int i = 0; i < length; i++) {
-                int finalI = i;
-                String id = habitList.get(i).getId();
-                collectionReference
-                        .whereEqualTo("id",id)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        collectionReference.document(id).update("index", finalI); }
-
-                                });
-
-            }
-
+        for (int i = 0; i < length; i++) {
+            int finalI = i;
+            String id = habitList.get(i).getId();
+            collectionReference
+                    .whereEqualTo("id",id)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            collectionReference.document(id).update("index", finalI); }
+                    });
         }
-
     }
+
+}
 
 

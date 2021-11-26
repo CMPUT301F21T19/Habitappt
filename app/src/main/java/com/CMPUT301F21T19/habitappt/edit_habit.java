@@ -87,7 +87,6 @@ public class edit_habit extends DialogFragment {
     private FirebaseStorage storage;
     private FirebaseAuth auth;
 
-
     protected edit_habit THIS;
 
     @Override
