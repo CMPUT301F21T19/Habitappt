@@ -62,22 +62,22 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
      * @param error
      */
 
-//    public void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error){
-//        habitDataList.clear();
-//
-//        for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
-//            String id = doc.getId();
-//            boolean isPrivate = (boolean) doc.getData().get("isPrivate");
-//            String title = (String) doc.getData().get("title");
-//            String reason = (String) doc.getData().get("reason");
-//            long dateToStart = (long) doc.getData().get("dateToStart");
-//            ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
-//
-//            habitDataList.add(new Habit(title, reason, dateToStart, datesToDo,id, isPrivate));
-//        }
-//
-//        habitAdapter.notifyDataSetChanged();
-//    }
+    public void DataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error){
+        habitDataList.clear();
+
+        for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+            String id = doc.getId();
+            boolean isPrivate = (boolean) doc.getData().get("isPrivate");
+            String title = (String) doc.getData().get("title");
+            String reason = (String) doc.getData().get("reason");
+            long dateToStart = (long) doc.getData().get("dateToStart");
+            ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
+
+            habitDataList.add(new Habit(title, reason, dateToStart, datesToDo,id, isPrivate));
+        }
+
+        habitAdapter.notifyDataSetChanged();
+    }
 
     /**
      * Called on creation of the fragment.
@@ -118,6 +118,23 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
                 .document(auth.getCurrentUser().getEmail())
                 .collection("Habits");
 
+        //listener for pressing the button to add habits.
+        addHabitButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new edit_habit().show(getActivity().getSupportFragmentManager(), "ADD");
+
+            }
+        });
+//
+//        //listener for database updates. uses the abstract method defined in this class.
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                DataBaseUpdate(queryDocumentSnapshots,error);
+                //parseDataBaseUpdate();
+            }
+        });
 
         habitView = view.findViewById(R.id.recycler_habitList);
         habitDataList = new ArrayList<>();
@@ -127,22 +144,6 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
         initHabitOrder();
         parseDataBaseUpdate();
         habitView.setAdapter(habitAdapter);
-
-        //listener for pressing the button to add habits.
-        addHabitButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new edit_habit().show(getActivity().getSupportFragmentManager(), "ADD");
-            }
-        });
-//
-//        //listener for database updates. uses the abstract method defined in this class.
-//        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-//                parseDataBaseUpdate(queryDocumentSnapshots,error);
-//            }
-//        });
         
         return view;
     }
@@ -159,7 +160,6 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
         ItemTouchHelper.Callback callback = new DragHabits(habitAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(habitView);
-        parseDataBaseUpdate();
     }
 
 

@@ -1,5 +1,9 @@
 package com.CMPUT301F21T19.habitappt;
 
+import static android.provider.SyncStateContract.Helpers.update;
+
+import static io.grpc.okhttp.internal.Platform.get;
+
 import android.graphics.Color;
 import android.os.Handler;
 import android.util.Log;
@@ -19,7 +23,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -132,14 +139,10 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
     }
 
     @Override
-    public void onRowSelected(DragViewHolder myViewHolder) {
-        //myViewHolder.itemView.setBackgroundColor(Color.LTGRAY);
-    }
+    public void onRowSelected(DragViewHolder myViewHolder) { }
 
     @Override
-    public void onRowClear(DragViewHolder myViewHolder) {
-        //myViewHolder.itemView.setBackgroundColor(Color.WHITE);
-    }
+    public void onRowClear(DragViewHolder myViewHolder) { }
 
     public void updateDocIndex() {
         String emailID = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -147,44 +150,42 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
                 .collection("Users")
                 .document(emailID)
                 .collection("Habits");
+        
         int length = habitList.size();
 
-        for (int i = 0; i < length; i++) {
-//            String habitTitle = habitList.get(i).getTitle();
-//            int finalIndex = i;
-            int finalI = i;
-            collectionReference
-                    .document(habitList.get(i).id)
-                    .update("index", finalI);
-
-        }
-
-
-
-//            for (int i = 0; i < length; i++) {
-//                int finalI = i;
-//                String id = habitList.get(i).getId();
-//                String habitTitle = habitList.get(i).getTitle();
+//        for (int i = 0; i < length; i++) {
+////            String habitTitle = habitList.get(i).getTitle();
+////            int finalIndex = i;
+//            int finalI = i;
+//            collectionReference
+//                    .document(habitList.get(i).id)
 //
-//                collectionReference
-//                        .whereEqualTo("id",id)
-//                        .get()
-//                        //.update("Index",i);
-//                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                if (task.isSuccessful()) {
-//                                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                                        collectionReference.document(id)
-//                                                .update("Index", finalI);
-//                                    }
-//                                }
-//                            }
-//                        });
-//            }
+//                    .update("index", finalI);
+//
+//        }
+
+
+
+            for (int i = 0; i < length; i++) {
+                int finalI = i;
+                String id = habitList.get(i).getId();
+
+                collectionReference
+                        .whereEqualTo("title",habitList.get(i).getTitle())
+                        .get()
+                        //.update("Index",i);
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        collectionReference.document(id).update("index", finalI); }
+
+                                });
+
+            }
 
 
         }
+
     }
 
 
