@@ -55,30 +55,6 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
 
     private View view;
 
-
-    /**
-     * This method must be implemented by any classes that extend this class. It tells the class how to process the habits in the users collection.
-     * @param queryDocumentSnapshots
-     * @param error
-     */
-
-    public void DataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error){
-        habitDataList.clear();
-
-        for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
-            String id = doc.getId();
-            boolean isPrivate = (boolean) doc.getData().get("isPrivate");
-            String title = (String) doc.getData().get("title");
-            String reason = (String) doc.getData().get("reason");
-            long dateToStart = (long) doc.getData().get("dateToStart");
-            ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
-
-            habitDataList.add(new Habit(title, reason, dateToStart, datesToDo,id, isPrivate));
-        }
-
-        habitAdapter.notifyDataSetChanged();
-    }
-
     /**
      * Called on creation of the fragment.
      * @param savedInstanceState
@@ -126,15 +102,7 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
 
             }
         });
-//
-//        //listener for database updates. uses the abstract method defined in this class.
-        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                DataBaseUpdate(queryDocumentSnapshots,error);
-                //parseDataBaseUpdate();
-            }
-        });
+
 
         habitView = view.findViewById(R.id.recycler_habitList);
         habitDataList = new ArrayList<>();
@@ -163,6 +131,10 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
     }
 
 
+    /**
+     * This method must be implemented by any classes that extend this class. It tells the class how to process the habits in the users collection.
+     *
+     */
     public void parseDataBaseUpdate(){
         Query currentUserCol = currentUserHabits.orderBy("index", Query.Direction.ASCENDING);
         currentUserCol.addSnapshotListener(new EventListener<QuerySnapshot>() {

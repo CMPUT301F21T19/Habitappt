@@ -278,6 +278,7 @@ public class edit_habit extends DialogFragment {
                         data.put("reason",THIS.habitReason.getText().toString());
                         data.put("dateToStart",THIS.date_selected);
                         data.put("daysToDo",THIS.habit.getWeekly());
+                        data.put("index",10000);
 
                         habit.setDateToStart(THIS.date_selected);
                         habit.setTitle(THIS.habitTitle.getText().toString());

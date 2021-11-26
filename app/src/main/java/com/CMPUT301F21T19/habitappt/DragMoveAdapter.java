@@ -40,7 +40,6 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
 
     private ArrayList<Habit> habitList;
     private DragListener dragListener;
-    private VisualIndicator visualIndicator;
 
     public interface DragListener {
         void onHabitClick(int position);}
@@ -123,7 +122,7 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
     }
 
     @Override
-    public void onRowMoved(int fromPosition, int toPosition) {
+    public void OnItemMoved(int fromPosition, int toPosition) {
         if(fromPosition < toPosition){
             for(int i = fromPosition; i < toPosition; i++){
                 Collections.swap(habitList, i, i+1);
@@ -139,10 +138,10 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
     }
 
     @Override
-    public void onRowSelected(DragViewHolder myViewHolder) { }
+    public void onItemSelected(DragViewHolder myViewHolder) { }
 
     @Override
-    public void onRowClear(DragViewHolder myViewHolder) { }
+    public void onItemCLear(DragViewHolder myViewHolder) { }
 
     public void updateDocIndex() {
         String emailID = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -152,19 +151,6 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
                 .collection("Habits");
         
         int length = habitList.size();
-
-//        for (int i = 0; i < length; i++) {
-////            String habitTitle = habitList.get(i).getTitle();
-////            int finalIndex = i;
-//            int finalI = i;
-//            collectionReference
-//                    .document(habitList.get(i).id)
-//
-//                    .update("index", finalI);
-//
-//        }
-
-
 
             for (int i = 0; i < length; i++) {
                 int finalI = i;
@@ -182,7 +168,6 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
                                 });
 
             }
-
 
         }
 
