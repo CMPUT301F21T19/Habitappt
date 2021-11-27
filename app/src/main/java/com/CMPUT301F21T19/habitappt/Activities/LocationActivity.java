@@ -57,10 +57,10 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
     private static final String TAG = LocationActivity.class.getSimpleName();
 
     public static  final String MAPS_API_KEY="AIzaSyBsJjMX7Al622N4TNpGIqO_uCew_yTZz9s";
-    String latitude, longitude;
-    TextView latTextView, lonTextView;
+    private String latitude, longitude;
+    private TextView latTextView, lonTextView;
 
-    Button saveButton;
+    private Button saveButton;
     double currLat, currLong;
 
 

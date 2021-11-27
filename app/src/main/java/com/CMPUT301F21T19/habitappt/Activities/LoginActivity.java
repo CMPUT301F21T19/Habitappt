@@ -30,11 +30,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
-    Button login_button;
-    Button signup_button;
-    EditText usernameField;
-    EditText passwordField;
-    FirebaseAuth auth;
+    private Button login_button;
+    private Button signup_button;
+    private EditText usernameField;
+    private EditText passwordField;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

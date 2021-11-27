@@ -18,11 +18,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    EditText usernameField;
-    EditText passwordField;
-    Button confirmButton;
+    private EditText usernameField;
+    private EditText passwordField;
+    private Button confirmButton;
 
-    FirebaseAuth auth;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
