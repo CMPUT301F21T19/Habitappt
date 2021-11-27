@@ -43,10 +43,18 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
+/**
+ * This fragment is used to make follow requests.
+ */
 public class RequestMake extends DialogFragment {
 
     private User currentUser;
 
+    /**
+     * Gets the view for the fragment
+     * @param savedInstanceState
+     * @return
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

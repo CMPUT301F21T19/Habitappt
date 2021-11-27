@@ -57,10 +57,10 @@ public class SharedHelper {
     }
 
     /**
-     * deletes event from db given the habit, event, and db instance
+     * deletes event from db given the habit, event, and user to remove event from
      * @param event
      * @param habit
-     * @param db
+     * @param user
      */
     public static void removeEvent(HabitEvent event, Habit habit, User user){
 
@@ -82,9 +82,9 @@ public class SharedHelper {
     }
 
     /**
-     * removes habit given firestore db instance and habit
+     * removes habit given user and habit
      * @param habit
-     * @param db
+     * @param user
      */
     public static void removeHabit(Habit habit, User user){
 

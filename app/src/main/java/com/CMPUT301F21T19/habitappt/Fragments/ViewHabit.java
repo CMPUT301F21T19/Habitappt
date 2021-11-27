@@ -80,6 +80,9 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+/**
+ * This fragment is used to view a habit and its associated habit events.
+ */
 public class ViewHabit extends Fragment {
 
     private View view;
@@ -118,13 +121,20 @@ public class ViewHabit extends Fragment {
 
     }
 
+    /**
+     * Method called when fragment is created
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
 
-
+    /**
+     * When the fragment gets attached to its container, get a reference to MainActivity
+     * @param context
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -132,8 +142,14 @@ public class ViewHabit extends Fragment {
             main = (MainActivity) context;
         }
     }
-    
 
+    /**
+     * Create the view for the fragment.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -231,8 +247,10 @@ public class ViewHabit extends Fragment {
             }
         };
 
+        //set the menu creator to created config
         eventSwipeListView.setMenuCreator(creator);
 
+        //set listener for swiped item menu
         eventSwipeListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
@@ -260,7 +278,7 @@ public class ViewHabit extends Fragment {
             }
         });
 
-
+        //button logic for creating a new event
         addEventButton = view.findViewById(R.id.add_event_button);
         addEventButton.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -271,6 +289,7 @@ public class ViewHabit extends Fragment {
         });
 
 
+        //logic for getting db updates
         DocumentReference docReference = currentUser.getHabitReference()
                 .document(String.valueOf(habit.getId()));
 
@@ -278,6 +297,7 @@ public class ViewHabit extends Fragment {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 
+                //habit has been deleted if title is null. back out of view habit fragment
                 if(value.get("title") == null){
                     FragmentTransaction trans = main.getSupportFragmentManager().beginTransaction();
                     trans.replace(R.id.main_container,new AllHabits());

@@ -82,11 +82,6 @@ public class Profile extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-    }
 
     /**
      * Inflates layout for Profile fragment
@@ -98,8 +93,6 @@ public class Profile extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-
-
 
         //get current user object
         currentUser = new User();

@@ -34,9 +34,8 @@ import androidx.fragment.app.Fragment;
 import com.CMPUT301F21T19.habitappt.R;
 
 /**
- * initialize navigation bar object with the specifed values
+ * Navigation bar for switching between main fragments (Profile, All Habits, and Daily Habits)
  */
-
 public class NavBar extends Fragment {
     private View profile_button;
     private View all_habits_button;
@@ -53,7 +52,7 @@ public class NavBar extends Fragment {
     }
 
     /**
-     * Attaches fragment to UI
+     * Called when fragment gets attached to main container
      * @param context
      */
     @Override
@@ -63,7 +62,7 @@ public class NavBar extends Fragment {
     }
 
     /**
-     * creates custom array adapter view for events
+     * Creates view for the navigation bar.
      * @param inflater inflates the layout to match view
      * @param container ViewGroup
      * @param savedInstanceState Bundle
@@ -81,6 +80,7 @@ public class NavBar extends Fragment {
         all_habits_button.setBackgroundColor(Color.WHITE);
         daily_habits_button.setBackgroundColor(Color.WHITE);
 
+        //profile button logic
         profile_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,6 +90,7 @@ public class NavBar extends Fragment {
                 listener.switchFragment(new Profile());
             }
         });
+        //all habits button logic
         all_habits_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +100,8 @@ public class NavBar extends Fragment {
                 listener.switchFragment(new AllHabits());
             }
         });
+
+        //daily habits button logic
         daily_habits_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

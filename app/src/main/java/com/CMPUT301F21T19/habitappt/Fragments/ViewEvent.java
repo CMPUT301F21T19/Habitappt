@@ -32,9 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link ViewEvent#newInstance} factory method to
- * create an instance of this fragment.
+ * This fragment is used to view a habit event and its associated details.
  */
 public class ViewEvent extends Fragment {
 
@@ -54,13 +52,23 @@ public class ViewEvent extends Fragment {
         this.event = event;
     }
 
-
+    /**
+     * Called when fragment is created.
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
 
+    /**
+     * Create fragment view
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,6 +92,7 @@ public class ViewEvent extends Fragment {
         //locationTextView stuff here when location is done
         commentTextView.setText(event.getComment());
 
+        //if location is specified, update field
         if(event.getLocationLat() != -1 || event.getLocationLon() != -1){
             locationTextView.setText("Location: " + Long.toString(Math.round(event.getLocationLat()) ) + ", " + Long.toString(Math.round(event.getLocationLon())));
         }
@@ -95,6 +104,7 @@ public class ViewEvent extends Fragment {
             }
         });
 
+        //get db updates
         DocumentReference eventInfo = currentUser.getHabitEventReference(event.getParentHabit())
                 .document(event.getId());
 
@@ -133,7 +143,7 @@ public class ViewEvent extends Fragment {
                 dateTextView.setText(eventDate);
                 commentTextView.setText(eventComment);
 
-                //add all the location updating stuff
+
             }
         });
 

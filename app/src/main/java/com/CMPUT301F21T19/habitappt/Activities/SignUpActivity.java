@@ -16,6 +16,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * This activity is used for signing up to habitappt. Allows a user to create an account.
+ */
 public class SignUpActivity extends AppCompatActivity {
 
     private EditText usernameField;
@@ -24,6 +27,10 @@ public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
 
+    /**
+     * Get activity view.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +43,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
+        //confirm button logic. creates the new account, returns an error toast if something goes wrong.
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

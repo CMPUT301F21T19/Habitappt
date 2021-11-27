@@ -16,25 +16,40 @@ public class Request {
 
     private long time;
 
+    /**
+     * Constructor for a request
+     * @param requesterEmail
+     * @param requestedEmail
+     * @param time
+     */
     public Request(String requesterEmail, String requestedEmail, long time) {
         this.requesterEmail = requesterEmail;
         this.requestedEmail = requestedEmail;
         this.time = time;
     }
 
+    /**
+     * Get requester email
+     * @return
+     */
     public String getRequesterEmail() {
         return requesterEmail;
     }
 
+    /**
+     * Get requested email
+     * @return
+     */
     public String getRequestedEmail() {
         return requestedEmail;
     }
 
+    /**
+     * Get time the request was made at
+     * @return
+     */
     public long getTime() {
         return time;
     }
 
-    public void setTime(long time) {
-        this.time = time;
-    }
 }

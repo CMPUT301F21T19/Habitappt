@@ -77,11 +77,9 @@ package Entities #DDDDFF{
 
         +Request(String requesterEmail, String requestedEmail, long time)
         +String getRequesterEmail()
-        +void setRequesterEmail(String requesterEmail)
         +String getRequestedEmail()
-        +void setRequestedEmail(String requestedEmail)
         +long getTime()
-        +void setTime(long time)
+
     }
 
     class User {

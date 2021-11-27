@@ -67,6 +67,9 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.TimeZone;
 
+/**
+ * This fragment is used to edit a habit and its associated details.
+ */
 public class EditHabit extends DialogFragment {
 
     private MainActivity main;
@@ -234,7 +237,7 @@ public class EditHabit extends DialogFragment {
             .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-
+                    //logic for when a habit was getting edited and needs to be updated to the db.
                     if(getTag() == "EDIT"){
                         DocumentReference doc = currentUser.getHabitReference()
                                 .document(String.valueOf(habit.getId()));
@@ -260,6 +263,7 @@ public class EditHabit extends DialogFragment {
                         });
                     }
                     else if(getTag() == "ADD"){
+                        //logic for adding a habit and storing it in the db.
 
                         String id = String.valueOf(GregorianCalendar.getInstance().getTimeInMillis());
                         DocumentReference doc = currentUser.getHabitReference()

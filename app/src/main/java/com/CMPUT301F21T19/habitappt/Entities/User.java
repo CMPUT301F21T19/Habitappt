@@ -35,34 +35,60 @@ public class User {
     private DocumentReference userReference;
 
 
-    //get user object for desired user
+    /**
+     * Constructor for getting a specified users User object.
+     * @param userEmail
+     */
     public User(String userEmail) {
         this.userEmail = userEmail;
         this.userReference = FirebaseFirestore.getInstance().collection("Users").document(this.userEmail);
     }
 
-    //if no email is provided, get current users user object
+    /**
+     * Default constructor. Gets user object for current user.
+     */
     public User(){
         this(FirebaseAuth.getInstance().getCurrentUser().getEmail());
     }
 
+    /**
+     * Get user email
+     * @return
+     */
     public String getUserEmail() {
         return userEmail;
     }
 
-
+    /**
+     * Get reference to the users document in firestore db
+     * @return
+     */
     public DocumentReference getUserReference(){
         return userReference;
     }
 
+    /**
+     * Get reference to the users habit list in firestore db
+     * @return
+     */
     public CollectionReference getHabitReference(){
         return userReference.collection("Habits");
     }
 
+    /**
+     * Get reference to a users habits events in firestore db.
+     * @param habit
+     * @return
+     */
     public CollectionReference getHabitEventReference(Habit habit){
         return getHabitReference().document(habit.getId()).collection("Event Collection");
     }
 
+    /**
+     * Check if this user is following the specified user
+     * @param userToQuery
+     * @return
+     */
     public Task<DocumentSnapshot> queryFollowing(User userToQuery) {
         return FirebaseFirestore.getInstance()
                 .collection("Users")
@@ -72,10 +98,13 @@ public class User {
                 .get();
     }
 
+    /**
+     * Unfollow the specified user
+     * @param userToUnfollow
+     * @param currentActivity (used for making toasts)
+     */
     public void unfollow(User userToUnfollow, Activity currentActivity) {
-        FirebaseFirestore.getInstance()
-                .collection("Users")
-                .document(userEmail)
+        userReference
                 .collection("Followings")
                 .document(userToUnfollow.getUserEmail())
                 .delete()
@@ -93,9 +122,7 @@ public class User {
                         Log.d("remove follower",e.toString());
                     }
                 });
-        FirebaseFirestore.getInstance()
-                .collection("Users")
-                .document(userToUnfollow.getUserEmail())
+        userReference
                 .collection("Followers")
                 .document(userEmail)
                 .delete()
@@ -112,6 +139,12 @@ public class User {
                 });
     }
 
+
+    /**
+     * Request to follow a specified user
+     * @param userToRequest
+     * @param currentActivity (used for making toasts)
+     */
     public void request(User userToRequest, Activity currentActivity) {
         FirebaseAuth.getInstance().fetchSignInMethodsForEmail(userToRequest.getUserEmail()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
             @Override
@@ -151,6 +184,11 @@ public class User {
         });
     }
 
+    /**
+     * Accept a follow request.
+     * @param request
+     * @param currentActivity (used for making toasts)
+     */
     public void acceptRequest(Request request,Activity currentActivity){
         String requestedEmail = request.getRequestedEmail();
         String requesterEmail = request.getRequesterEmail();
@@ -218,6 +256,11 @@ public class User {
         });
     }
 
+    /**
+     * Deny a follow request.
+     * @param request
+     * @param currentActivity (used for making toasts)
+     */
     public void denyRequest(Request request,Activity currentActivity){
                 userReference
                 .collection("Requests")

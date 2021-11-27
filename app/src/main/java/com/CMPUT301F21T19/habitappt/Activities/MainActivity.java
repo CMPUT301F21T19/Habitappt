@@ -24,6 +24,9 @@ import com.CMPUT301F21T19.habitappt.Fragments.Profile;
 import com.CMPUT301F21T19.habitappt.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+ * MainActivity for habitappt. contains logic for switching the main fragments (Profile, All Habits, Daily Habits)
+ */
 public class MainActivity extends AppCompatActivity implements NavBar.nav_bar_switch {
 
     @NonNull

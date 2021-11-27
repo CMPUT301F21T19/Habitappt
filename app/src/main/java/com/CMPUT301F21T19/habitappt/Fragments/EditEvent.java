@@ -78,6 +78,9 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.TimeZone;
 
+/**
+ * This fragment is used to edit an event and its associated details.
+ */
 public class EditEvent extends DialogFragment {
 
     private EditText eventComments;
@@ -107,6 +110,7 @@ public class EditEvent extends DialogFragment {
 
     private double oldLat, oldLon;
     private TextView latTextView, lonTextView;
+
     /**
      * create a EditEvent object with the specified values
      * @param event habit event object
@@ -129,7 +133,7 @@ public class EditEvent extends DialogFragment {
 
 
     /**
-     * Checks to see if event comment input length is less than twenty
+     * Checks to see if event comment input length is valid
      */
     public void checkInput(){
         if(eventComments.getText().length() == 0){
@@ -141,11 +145,14 @@ public class EditEvent extends DialogFragment {
         }
     }
 
+    /**
+     * Gets the view for the fragment
+     * @param savedInstanceState
+     * @return
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-
-
 
         currentUser = new User();
 
@@ -183,6 +190,7 @@ public class EditEvent extends DialogFragment {
         eventComments.setText(event.getComment());
         eventDate.setDate(event.getEventDate());
 
+        //logic for setting a new image for the habit event
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -191,6 +199,7 @@ public class EditEvent extends DialogFragment {
             }
         });
 
+        //button for setting the location for an event
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -201,7 +210,7 @@ public class EditEvent extends DialogFragment {
         });
 
 
-
+        //button logic for setting event date
         eventDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
@@ -214,6 +223,8 @@ public class EditEvent extends DialogFragment {
                 dateSelected = cal.getTimeInMillis();
             }
         });
+
+        //below is the logic for updating the db with the new habit event details
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 

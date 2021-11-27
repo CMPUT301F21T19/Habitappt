@@ -74,6 +74,10 @@ public class ViewFollowing extends Fragment {
         this.currentUser = new User();
     }
 
+    /**
+     * Called when fragment is attached to main container. Gets reference to MainActivity
+     * @param context
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -81,7 +85,13 @@ public class ViewFollowing extends Fragment {
         main = (MainActivity) context;
     }
 
-
+    /**
+     * Create fragment view
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -141,6 +151,7 @@ public class ViewFollowing extends Fragment {
             }
         });
 
+        //button logic for removing a follower
         removeFollowerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,6 +160,7 @@ public class ViewFollowing extends Fragment {
             }
         });
 
+        //button logic for switching to all habits list
         allHabitsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -159,6 +171,7 @@ public class ViewFollowing extends Fragment {
             }
         });
 
+        //button logic for switching to daily habits list
         dailyHabitsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,6 +182,7 @@ public class ViewFollowing extends Fragment {
             }
         });
 
+        //button for sending user a follow request, or unfollowing the user based on your current following status
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -187,13 +201,7 @@ public class ViewFollowing extends Fragment {
 
 
 
-        habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //go to view user habit activity?
-            }
-        });
-
+        //logic for displaying all habits and daily habits list.
         CollectionReference all_habits = viewedUser.getHabitReference();
 
         all_habits.addSnapshotListener(new EventListener<QuerySnapshot>() {
