@@ -1,4 +1,4 @@
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Fragments;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -9,12 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.CMPUT301F21T19.habitappt.Entities.Habit;
+import com.CMPUT301F21T19.habitappt.Lists.HabitList;
+import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
@@ -29,7 +32,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 
-public abstract class abstract_habit_list_fragment extends Fragment {
+public abstract class HabitListFragment extends Fragment {
 
     /**
      * Abstract class for whenever we want to display a list of habits from the database.
@@ -96,8 +99,8 @@ public abstract class abstract_habit_list_fragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
-                trans.replace(R.id.main_container,new view_habit(habitDataList.get(position)));
-                trans.addToBackStack("view_habit");
+                trans.replace(R.id.main_container,new ViewHabit(habitDataList.get(position)));
+                trans.addToBackStack("ViewHabit");
                 trans.commit();
             }
         });
@@ -106,7 +109,7 @@ public abstract class abstract_habit_list_fragment extends Fragment {
         addHabitButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new edit_habit().show(getActivity().getSupportFragmentManager(), "ADD");
+                new EditHabit().show(getActivity().getSupportFragmentManager(), "ADD");
             }
         });
 
@@ -167,7 +170,7 @@ public abstract class abstract_habit_list_fragment extends Fragment {
                         //get event
                         Habit editHabit = (Habit) habitListView.getItemAtPosition(position);
                         //create fragement
-                        new edit_habit(editHabit).show(getActivity().getSupportFragmentManager(), "EDIT");
+                        new EditHabit(editHabit).show(getActivity().getSupportFragmentManager(), "EDIT");
                         break;
                     //delete selected
                     case 1:

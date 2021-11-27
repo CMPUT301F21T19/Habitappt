@@ -13,7 +13,7 @@
  *
  *
  */
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Lists;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -25,6 +25,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
+import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
 
 import java.util.ArrayList;
 

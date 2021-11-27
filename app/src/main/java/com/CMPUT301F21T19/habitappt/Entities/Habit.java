@@ -22,11 +22,9 @@
  * =|=======|=|======|===|====|========|===========|================================================
  */
 
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Entities;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class Habit {
@@ -36,7 +34,7 @@ public class Habit {
     private long dateToStart;
     private ArrayList<Boolean> datesToDo;
     private ArrayList<HabitEvent> habitEvents;
-    String id;
+    public String id;
 
     /**
      * Create a habit object and assign parameters

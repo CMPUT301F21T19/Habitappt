@@ -4,39 +4,26 @@
  * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
  * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
  *
- * Class: daily_habits
+ * Class: DailyHabits
  *
  * Description: Populates a list with habits that need to be completed in the current day
  */
 
-package com.CMPUT301F21T19.habitappt;
-
-import android.os.Bundle;
+package com.CMPUT301F21T19.habitappt.Fragments;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.CMPUT301F21T19.habitappt.Entities.Habit;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class daily_habits extends  abstract_habit_list_fragment {
+public class DailyHabits extends HabitListFragment {
     /**
      * This class defines a fragment that shows all of the habits a user must complete today.
      */

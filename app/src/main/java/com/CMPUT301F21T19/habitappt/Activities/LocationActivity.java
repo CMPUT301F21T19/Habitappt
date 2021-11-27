@@ -1,4 +1,4 @@
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.CMPUT301F21T19.habitappt.Fragments.EditEvent;
+import com.CMPUT301F21T19.habitappt.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -104,8 +106,8 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //pass lat/lon back to edit_event
-                Intent returnToEditEvent = new Intent(getApplicationContext(), edit_event.class);
+                //pass lat/lon back to EditEvent
+                Intent returnToEditEvent = new Intent(getApplicationContext(), EditEvent.class);
                 returnToEditEvent.putExtra("latitude", currLat);
                 returnToEditEvent.putExtra("longitude", currLong);
                 setResult(Activity.RESULT_OK, returnToEditEvent);

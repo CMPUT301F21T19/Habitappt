@@ -1,21 +1,14 @@
 package com.CMPUT301F21T19.habitappt;
 
-import android.app.Activity;
-
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import android.app.Fragment;
-import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.CMPUT301F21T19.habitappt.LoginActivity;
+import com.CMPUT301F21T19.habitappt.Activities.LoginActivity;
+import com.CMPUT301F21T19.habitappt.Activities.MainActivity;
 import com.robotium.solo.Solo;
-import org.junit.After;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

@@ -9,35 +9,25 @@
  * Description: Creates a score denoting the progress of a given habit
  */
 
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Utils;
 
-
-import static io.grpc.okhttp.internal.Platform.logger;
 
 import android.util.Log;
-import android.widget.ListAdapter;
 
 import androidx.annotation.NonNull;
 
+import com.CMPUT301F21T19.habitappt.Entities.Habit;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Semaphore;
 
 public class VisualIndicator {
     private Habit habit;

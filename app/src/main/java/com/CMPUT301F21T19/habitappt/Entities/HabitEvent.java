@@ -14,7 +14,7 @@
  *
  *
  */
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Entities;
 
 import android.graphics.Bitmap;
 

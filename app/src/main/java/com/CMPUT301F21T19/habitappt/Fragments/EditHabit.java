@@ -4,7 +4,7 @@
  * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
  * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
  *
- * Class: edit_habit
+ * Class: EditHabit
  *
  * Description: Lets users to add & edit a habit
  *
@@ -23,14 +23,13 @@
  *   1.10      Andrew    Oct-27-2021   Added image activity and uploading images with events to firestorage
  *   1.11      Hamzah    Oct-31-2021   Refactored removing habit, moved functionality to SharedHelper.java class
  *   1.12      Logan     Nov-01-2021   isPrivate UI and database implementation
- *   1.13      Logan     Nov-01-2021   Added isPrivate indicator in view_habit
+ *   1.13      Logan     Nov-01-2021   Added isPrivate indicator in ViewHabit
  *   1.14      Logan     Nov-01-2021   Adjusted edit/add habit UI
  * =|=======|=|======|===|====|========|===========|================================================
  */
 
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -49,10 +48,14 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.CMPUT301F21T19.habitappt.Activities.MainActivity;
+import com.CMPUT301F21T19.habitappt.Entities.Habit;
+import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
+import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,7 +68,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.TimeZone;
 
-public class edit_habit extends DialogFragment {
+public class EditHabit extends DialogFragment {
 
     private MainActivity main;
 
@@ -88,7 +91,7 @@ public class edit_habit extends DialogFragment {
     private FirebaseAuth auth;
 
 
-    protected edit_habit THIS;
+    protected EditHabit THIS;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -98,19 +101,19 @@ public class edit_habit extends DialogFragment {
     }
 
     /**
-     * Instantiate habit edit_habit object (habit already exists) with specified values
+     * Instantiate habit EditHabit object (habit already exists) with specified values
      * @param habit existing habit
      */
-    public edit_habit(Habit habit){
+    public EditHabit(Habit habit){
         this.habit = habit;
         this.dialogTitle = "Edit Habit";
         this.removeTextTitle = "Remove Habit";
         this.date_selected = habit.getDateToStart();
     }
     /**
-     * Instantiates new edit_habit object for new habit
+     * Instantiates new EditHabit object for new habit
      */
-    public edit_habit(){
+    public EditHabit(){
         this.habit = new Habit();
         this.dialogTitle = "Add Habit";
         this.removeTextTitle = "Cancel";
@@ -291,7 +294,7 @@ public class edit_habit extends DialogFragment {
                                 Log.i("data","Data has been added succesfully!");
 
                                 FragmentTransaction trans = main.getSupportFragmentManager().beginTransaction();
-                                trans.replace(R.id.main_container,new view_habit(THIS.habit));
+                                trans.replace(R.id.main_container,new ViewHabit(THIS.habit));
                                 trans.addToBackStack(null);
                                 trans.commit();
 

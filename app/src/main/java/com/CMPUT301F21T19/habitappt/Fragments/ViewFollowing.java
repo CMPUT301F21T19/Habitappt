@@ -1,10 +1,8 @@
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,21 +11,18 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
+import com.CMPUT301F21T19.habitappt.Activities.MainActivity;
+import com.CMPUT301F21T19.habitappt.Entities.Habit;
+import com.CMPUT301F21T19.habitappt.Lists.HabitList;
+import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,16 +32,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 
 /**
  * This class is the fragment used for viewing followed users profiles. Shows their public habits and visual indicators,
  * aswell as the habits they have to complete today.
  */
-public class view_following extends Fragment {
+public class ViewFollowing extends Fragment {
     MainActivity main;
 
     ListView habitListView;
@@ -71,10 +64,10 @@ public class view_following extends Fragment {
     Activity THIS;
 
     /**
-     * Constructor that takes in the user whos profile is being viewed.
+     * Constructor that takes in the user whos Profile is being viewed.
      * @param user
      */
-    public view_following(String user){
+    public ViewFollowing(String user){
         this.user = user;
     }
 

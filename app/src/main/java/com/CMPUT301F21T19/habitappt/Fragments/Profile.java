@@ -4,23 +4,20 @@
  * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
  * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
  *
- * Class : profile
+ * Class : Profile
  *
  * Description: creates and displays view for Profile screen
  *
  *  @version "%1%,%5%"
  *
  * **/
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Fragments;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -34,6 +31,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.CMPUT301F21T19.habitappt.Entities.Follower;
+import com.CMPUT301F21T19.habitappt.Lists.FollowerList;
+import com.CMPUT301F21T19.habitappt.Entities.Following;
+import com.CMPUT301F21T19.habitappt.Lists.FollowingList;
+import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Entities.Request;
+import com.CMPUT301F21T19.habitappt.Lists.RequestList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -46,10 +50,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 /**
- * This class is the fragment for viewing ones own profile. Displays followers, following, and follow requests
+ * This class is the fragment for viewing ones own Profile. Displays followers, following, and follow requests
  * and allows a user to send follow requests to others.
  */
-public class profile extends Fragment {
+public class Profile extends Fragment {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
 
@@ -68,7 +72,7 @@ public class profile extends Fragment {
     private ArrayList<Following> followingDataList;
 
     /**
-     * Creates profile fragment from saved state
+     * Creates Profile fragment from saved state
      * @param savedInstanceState Bundle
      */
     @Override
@@ -83,7 +87,7 @@ public class profile extends Fragment {
     }
 
     /**
-     * Inflates layout for profile fragment
+     * Inflates layout for Profile fragment
      * @param inflater LayoutInflater
      * @param container ViewGroup
      * @param savedInstanceState Bundle
@@ -226,15 +230,15 @@ public class profile extends Fragment {
                 } else if (adapterView.getItemAtPosition(i).getClass().getSimpleName().equals("Follower")) {
                     Follower clickFollower = (Follower) adapterView.getItemAtPosition(i);
                     FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
-                    trans.replace(R.id.main_container, new view_following(clickFollower.getUserEmail()));
-                    trans.addToBackStack("view_following");
+                    trans.replace(R.id.main_container, new ViewFollowing(clickFollower.getUserEmail()));
+                    trans.addToBackStack("ViewFollowing");
                     trans.commit();
                 } else if (adapterView.getItemAtPosition(i).getClass().getSimpleName().equals("Following")) {
                     // clicked on following
                     Following clickFollowing = (Following) adapterView.getItemAtPosition(i);
                     FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
-                    trans.replace(R.id.main_container, new view_following(clickFollowing.getUserEmail()));
-                    trans.addToBackStack("view_following");
+                    trans.replace(R.id.main_container, new ViewFollowing(clickFollowing.getUserEmail()));
+                    trans.addToBackStack("ViewFollowing");
                     trans.commit();
                 } else {
                     Toast.makeText(getActivity(), "Error: " + adapterView.getItemAtPosition(i).getClass().getSimpleName(), Toast.LENGTH_LONG).show();

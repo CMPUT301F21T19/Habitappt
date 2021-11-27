@@ -9,7 +9,7 @@
  * Description: Sends follow requests
  */
 
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,6 +31,7 @@ import android.widget.Toast;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
+import com.CMPUT301F21T19.habitappt.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

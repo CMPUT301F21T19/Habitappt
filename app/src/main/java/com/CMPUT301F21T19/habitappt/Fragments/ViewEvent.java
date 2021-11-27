@@ -1,4 +1,4 @@
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Fragments;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +16,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
+import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,14 +30,12 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.w3c.dom.Text;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link view_event#newInstance} factory method to
+ * Use the {@link ViewEvent#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class view_event extends Fragment {
+public class ViewEvent extends Fragment {
 
     HabitEvent event;
 
@@ -48,7 +49,7 @@ public class view_event extends Fragment {
     FirebaseAuth auth;
     FirebaseStorage storage;
 
-    public view_event(HabitEvent event) {
+    public ViewEvent(HabitEvent event) {
         this.event = event;
     }
 
@@ -87,7 +88,7 @@ public class view_event extends Fragment {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new edit_event(event,event.getParentHabit(),"EDIT").show(getActivity().getSupportFragmentManager(), "EDIT");
+                new EditEvent(event,event.getParentHabit(),"EDIT").show(getActivity().getSupportFragmentManager(), "EDIT");
             }
         });
 

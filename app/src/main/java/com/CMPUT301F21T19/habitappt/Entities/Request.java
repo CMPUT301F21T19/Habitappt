@@ -1,4 +1,4 @@
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Entities;
 
 /**
  * Contains information about a follow request

@@ -4,15 +4,15 @@
  * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
  * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
  *
- * Class : nav_bar
+ * Class : NavBar
  *
  * Description: Implements the navigation bar at the bottom of the screen to allow users to navigate between
- profile,all habits, and daily habits pages.
+ Profile,all habits, and daily habits pages.
  *
  * Changelog:
  * =|Version|=|User(s)|==|Date|========|Description|================================================
  * 1.0          Andrew   Oct 21,2021    Implemented nav bar and fragment switching in main container
- * 1.1          Andrew   Oct 21,2021    Start on profile by default + fixing some code
+ * 1.1          Andrew   Oct 21,2021    Start on Profile by default + fixing some code
  * 1.2          Andrew   Oct 21,2021    Refactoring nav bar
  * 1.3          Logan    Nov 1,2021     Navigation bar indicates which tab is currently being viewed
  * 1.4          Andrew   Nov 2,2021     Fixed nav bar UI
@@ -20,7 +20,7 @@
  * =|=======|=|======|===|====|========|===========|================================================
 **/
 
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -28,18 +28,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import java.io.Console;
+import com.CMPUT301F21T19.habitappt.R;
 
 /**
  * initialize navigation bar object with the specifed values
  */
 
-public class nav_bar extends Fragment {
+public class NavBar extends Fragment {
     View profile_button;
     View all_habits_button;
     View daily_habits_button;
@@ -89,7 +87,7 @@ public class nav_bar extends Fragment {
                 profile_button.setBackgroundColor(Color.LTGRAY);
                 all_habits_button.setBackgroundColor(Color.WHITE);
                 daily_habits_button.setBackgroundColor(Color.WHITE);
-                listener.switchFragment(new profile());
+                listener.switchFragment(new Profile());
             }
         });
         all_habits_button.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +96,7 @@ public class nav_bar extends Fragment {
                 profile_button.setBackgroundColor(Color.WHITE);
                 all_habits_button.setBackgroundColor(Color.LTGRAY);
                 daily_habits_button.setBackgroundColor(Color.WHITE);
-                listener.switchFragment(new all_habits());
+                listener.switchFragment(new AllHabits());
             }
         });
         daily_habits_button.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +105,7 @@ public class nav_bar extends Fragment {
                 profile_button.setBackgroundColor(Color.WHITE);
                 all_habits_button.setBackgroundColor(Color.WHITE);
                 daily_habits_button.setBackgroundColor(Color.LTGRAY);
-                listener.switchFragment(new daily_habits());
+                listener.switchFragment(new DailyHabits());
             }
         });
 

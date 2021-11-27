@@ -4,7 +4,7 @@
  * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
  * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
  *
- * Class: view_habit
+ * Class: ViewHabit
  *
  * Description: Displays habit info as well as event associated with the habit. Handles user
  *              interaction to edit habit and add habit events
@@ -21,16 +21,16 @@
  *   1.7       Andrew    Oct-28-2021   fixed images not updating after editing habit event
  *   1.8       Hamzah    Oct-31-2021   Added getters and setters in habit class for habiteventslist,
  *                                     also modified view habit to use habiteventslist list instead
- *                                     of list created locally, refactored delete image in edit_event
+ *                                     of list created locally, refactored delete image in EditEvent
  *
- *   1.9       Logan     Nov-01-2021   Added isPrivate indicator in view_habit
+ *   1.9       Logan     Nov-01-2021   Added isPrivate indicator in ViewHabit
  *   1.10      Logan     Nov-01-2021   Reorganized the view habit fragment
  *   1.11      Andrew    Oct-03-2021   Added shared method to sharedHelper class
  *   1.12      Logan     Nov-04-2021   Fixed catastrophic fragment blunder
  * =|=======|=|======|===|====|========|===========|================================================
  */
 
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -53,6 +53,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.CMPUT301F21T19.habitappt.Activities.MainActivity;
+import com.CMPUT301F21T19.habitappt.Lists.EventList;
+import com.CMPUT301F21T19.habitappt.Entities.Habit;
+import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
+import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
@@ -73,7 +79,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-public class view_habit extends Fragment {
+public class ViewHabit extends Fragment {
 
     private View view;
 
@@ -85,7 +91,7 @@ public class view_habit extends Fragment {
     private TextView habitDateToStart;
     private ImageButton editButton;
 
-    private view_habit THIS = this;
+    private ViewHabit THIS = this;
 
     View addEventButton;
 
@@ -105,9 +111,9 @@ public class view_habit extends Fragment {
 
     /**
      * @param habit Habit object in which to display in view
-     * Instantiates new view_habit object
+     * Instantiates new ViewHabit object
      */
-    public view_habit(Habit habit){
+    public ViewHabit(Habit habit){
         this.habit = habit;
 
     }
@@ -167,7 +173,7 @@ public class view_habit extends Fragment {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new edit_habit(habit).show(getActivity().getSupportFragmentManager(), "EDIT");
+                new EditHabit(habit).show(getActivity().getSupportFragmentManager(), "EDIT");
             }
         });
 
@@ -187,8 +193,8 @@ public class view_habit extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 FragmentTransaction trans = main.getSupportFragmentManager().beginTransaction();
-                trans.replace(R.id.main_container,new view_event(habit.getHabitEvents().get(i)));
-                trans.addToBackStack("view_event");
+                trans.replace(R.id.main_container,new ViewEvent(habit.getHabitEvents().get(i)));
+                trans.addToBackStack("ViewEvent");
                 trans.commit();
 
             }
@@ -242,7 +248,7 @@ public class view_habit extends Fragment {
                         //get event
                         HabitEvent editEvent = (HabitEvent) eventSwipeListView.getItemAtPosition(position);
                         //create fragement
-                        new edit_event(editEvent, habit,"EDIT").show(getActivity().getSupportFragmentManager(), "EDIT");
+                        new EditEvent(editEvent, habit,"EDIT").show(getActivity().getSupportFragmentManager(), "EDIT");
                         break;
                     //delete selected
                     case 1:
@@ -265,7 +271,7 @@ public class view_habit extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d("Info", "Clicked add event");
-                new edit_event(new HabitEvent(habit), habit,"ADD").show(getActivity().getSupportFragmentManager(), "ADD");
+                new EditEvent(new HabitEvent(habit), habit,"ADD").show(getActivity().getSupportFragmentManager(), "ADD");
             }
         });
 
@@ -274,7 +280,7 @@ public class view_habit extends Fragment {
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                Log.d("Info", "Clicked an event");
 //                FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
-//                trans.replace(R.id.main_container,new edit_event(eventDataList.get(position)));
+//                trans.replace(R.id.main_container,new EditEvent(eventDataList.get(position)));
 //                trans.commit();
 //            }
 //        });
@@ -293,7 +299,7 @@ public class view_habit extends Fragment {
 
                 if(value.get("title") == null){
                     FragmentTransaction trans = main.getSupportFragmentManager().beginTransaction();
-                    trans.replace(R.id.main_container,new all_habits());
+                    trans.replace(R.id.main_container,new AllHabits());
                     trans.commit();
                     return;
                 }

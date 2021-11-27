@@ -16,12 +16,14 @@
  * =|=======|=|======|===|====|========|===========|================================================
  */
 
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Utils;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.CMPUT301F21T19.habitappt.Entities.Habit;
+import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,7 +34,7 @@ import com.google.firebase.storage.StorageReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-class SharedHelper {
+public class SharedHelper {
     /**
      * deletes image given storage instance (after deleting event)
      * @param id

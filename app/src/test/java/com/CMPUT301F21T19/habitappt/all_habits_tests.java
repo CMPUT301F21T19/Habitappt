@@ -24,7 +24,7 @@ import java.util.List;
 //but that doesn't seem arbitrary. uh oh.
 public class all_habits_tests {
 //
-//    all_habits AllHabits;
+//    AllHabits AllHabits;
 //
 //    FirebaseFirestore db;
 //
@@ -35,7 +35,7 @@ public class all_habits_tests {
 //
 //    @Before
 //    public void setup(){
-//        AllHabits = new all_habits();
+//        AllHabits = new AllHabits();
 //        db = FirebaseFirestore.getInstance();
 //    }
 //

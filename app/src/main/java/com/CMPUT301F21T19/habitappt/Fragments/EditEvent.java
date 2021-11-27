@@ -4,7 +4,7 @@
  * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
  * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
  *
- * Class: edit_event
+ * Class: EditEvent
  *
  * Description: Lets users add, edit, delete on the habit event page
  * @version
@@ -22,7 +22,7 @@
  *
  *   1.8       Hamzah    Oct-31-2021   Added Getters/setters in habit class for habiteventlist also
  *                                     modified view habit to use habiteventslist list instead of
- *                                     list created locally, refactored delete image in edit_event
+ *                                     list created locally, refactored delete image in EditEvent
  *
  *   1.9       Hamzah    Oct-31-2021   Refactored removing habit, moved functionality to
  *                                     SharedHelper.java class
@@ -33,7 +33,7 @@
  * =|=======|=|======|===|====|========|===========|================================================
  */
 
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -60,6 +60,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.CMPUT301F21T19.habitappt.Activities.LocationActivity;
+import com.CMPUT301F21T19.habitappt.Entities.Habit;
+import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
+import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -74,7 +79,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.TimeZone;
 
-public class edit_event extends DialogFragment {
+public class EditEvent extends DialogFragment {
 
     private EditText eventComments;
     //image
@@ -100,7 +105,7 @@ public class edit_event extends DialogFragment {
     private FirebaseStorage storage;
     private Habit habit;
 
-    protected edit_event THIS;
+    protected EditEvent THIS;
 
     final int LAUNCH_MAP_ACTIVITY = 1;
 
@@ -108,13 +113,13 @@ public class edit_event extends DialogFragment {
     private double oldLat, oldLon;
     TextView latTextView, lonTextView;
     /**
-     * create a edit_event object with the specified values
+     * create a EditEvent object with the specified values
      * @param event habit event object
      * @param habit the habit object in which the event will be under
      * @param tag string which contain either the sting "ADD", "EDIT", or "REMOVE" to denote
      *            whether the event already exists or not
      */
-    public edit_event(HabitEvent event, Habit habit, String tag){
+    public EditEvent(HabitEvent event, Habit habit, String tag){
         this.event = event;
         if(tag == "ADD" || tag == "EDIT"){
             this.removeTextTitle = "Cancel";
@@ -127,7 +132,7 @@ public class edit_event extends DialogFragment {
 
     }
 
-//    public edit_event(){
+//    public EditEvent(){
 //        this.event = new HabitEvent();
 //        this.dialogTitle = "Add Habit";
 //        this.removeTextTitle = "Cancel";
