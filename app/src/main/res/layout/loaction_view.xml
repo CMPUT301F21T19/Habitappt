@@ -6,7 +6,7 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LocationActivity">
+    tools:context=".Activities.LocationActivity">
 
         <RelativeLayout
             android:layout_width="wrap_content"

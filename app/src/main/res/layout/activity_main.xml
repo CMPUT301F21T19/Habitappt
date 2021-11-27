@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view_habit">
+    tools:context=".Fragments.ViewHabit">
 
     <FrameLayout
         android:id="@+id/main_container"
@@ -18,7 +18,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/bottom_nav_bar"
-        android:name="com.CMPUT301F21T19.habitappt.nav_bar"
+        android:name="com.CMPUT301F21T19.habitappt.Fragments.NavBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"

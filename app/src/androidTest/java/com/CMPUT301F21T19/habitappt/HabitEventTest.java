@@ -10,6 +10,8 @@ import android.widget.EditText;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.CMPUT301F21T19.habitappt.Activities.LoginActivity;
+import com.CMPUT301F21T19.habitappt.Activities.MainActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -41,7 +43,7 @@ public class HabitEventTest {
 
         @Test
         public void addHabitEvent() {
-            solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
+            solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
             solo.clickOnView(solo.getView(R.id.all_habit_button));
 
             solo.clickOnView(solo.getView(R.id.habit_list));

@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/all_habits"
-        android:name="com.CMPUT301F21T19.habitappt.all_habits"
+        android:name="com.CMPUT301F21T19.habitappt.Fragments.AllHabits"
         android:label="fragment_all_habits"
         tools:layout="@layout/fragment_habits_list" />
     <fragment
         android:id="@+id/daily_habits"
-        android:name="com.CMPUT301F21T19.habitappt.daily_habits"
+        android:name="com.CMPUT301F21T19.habitappt.Fragments.DailyHabits"
         android:label="fragment_daily_habits"
         tools:layout="@layout/fragment_habits_list" />
     <fragment
         android:id="@+id/profile"
-        android:name="com.CMPUT301F21T19.habitappt.profile"
+        android:name="com.CMPUT301F21T19.habitappt.Fragments.Profile"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>
