@@ -1,0 +1,508 @@
+@startuml part4
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+class FirebaseAuth {}
+class FirebaseFirestore {}
+class FirebaseStorage {}
+class Fragment {}
+class "ArrayAdapter<>" {}
+class DialogFragment {}
+class Follower {}
+class Following {}
+
+class VisualIndicator {
+    -Habit habit
+    -double score
+    -long eventListSize
+    -Boolean isFollowing
+    -String user
+    -ArrayList<Long> recordedEventDates
+    -long eventDate
+    -boolean getIsTodayEventDone
+    -User currentUser
+
+    +VisualIndicator(Habit habit, Boolean isFollowing, String user)
+    +double getScore()
+    +void setScore(long score)
+    +void populateEventList()
+    +boolean GetIsTodayEventDone()
+}
+
+class ViewHabit {
+    -View view
+    +MainActivity main
+    -TextView habitIsPrivate
+    -TextView habitTitle
+    -TextView habitReason
+    -TextView habitDateToStart
+    -ImageButton editButton
+    -view_habit THIS = this
+    #View addEventButton
+    -ArrayList<TextView> daysToDo = new ArrayList<>()
+    -Habit habit
+    #SwipeMenuListView eventSwipeListView
+    #ArrayAdapter<HabitEvent> eventAdapter
+    #SwipeMenuItem deleteItem
+    #SwipeMenuItem editItem
+    -FirebaseStorage storage
+    -User currentUser
+
+    +ViewHabit(Habit habit)
+    +void onCreate(Bundle savedInstanceState)
+    +void onAttach(Context context)
+    +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+}
+
+class ViewFollowing {
+    #MainActivity main
+    #ListView habitListView
+    #ArrayAdapter<Habit> habitAdapter
+    #ArrayList<Habit> habitDataList
+    #ArrayAdapter<Habit> dailyHabitAdapter
+    #ArrayList<Habit> dailyHabitDataList
+    #Button allHabitsButton
+    #Button dailyHabitsButton
+    #Button followButton
+    #Button removeFollowerButton
+    #TextView userProfileName
+    #String user
+    #Activity THIS
+    -User currentUser
+
+    +ViewFollowing(String user)
+    +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+}
+
+class ViewEvent {
+    #HabitEvent event
+    #ImageButton editButton
+    #ImageView eventImageView
+    #TextView dateTextView
+    #TextView locationTextView
+    #TextView commentTextView
+    #FirebaseStorage storage
+    -User currentUser
+
+    +ViewEvent(HabitEvent event)
+    +void onCreate(Bundle savedInstanceState)
+    +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+}
+
+class SignUpActivity {
+    #EditText usernameField
+    #EditText passwordField
+    #Button confirmButton
+    #FirebaseAuth auth
+
+    #void onCreate(Bundle savedInstanceState)
+}
+
+class SharedHelper {
+    +<u>void deleteImage(String id, FirebaseStorage storage)</u>
+    +<u>void removeEvent(HabitEvent event, Habit habit, FirebaseFirestore db)</u>
+    +<u>void removeHabit(Habit habit, FirebaseFirestore db)</u>
+    +<u>String getStringDateFromLong(long l)</u>
+}
+
+class RequestMake {
+    #Activity THIS
+    -User currentUser
+
+    +Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
+}
+
+class RequestRespond {
+    -Activity THIS
+    -Request request
+    -User currentUser
+
+    +RequestRespond(Request request)
+    +Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
+}
+
+class Profile {
+    -ListView profileListView
+    -Button followingButton
+    -Button followerButton
+    -Button requestButton
+    -FloatingActionButton makeRequestButton
+    -TextView usernameLabel
+
+    -ArrayAdapter<Request> requestAdapter
+    -ArrayList<Request> requestDataList
+    -ArrayAdapter<Follower> followerAdapter
+    -ArrayList<Follower> followerDataList
+    -ArrayAdapter<Following> followingAdapter
+    -ArrayList<Following> followingDataList
+
+    -User currentUser
+
+    +void onCreate(Bundle savedInstanceState)
+    +void onAttach(@NonNull Context context)
+    +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+}
+
+class NavBar {
+    #View profile_button
+    #View all_habits_button
+    #View daily_habits_button
+    -private navBarSwitch listener
+
+    +void onAttach(Context context)
+    +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+}
+
+interface NavBar.NavBarSwitch {
+    #void switchFragment(Fragment navTo)
+}
+
+class LoginActivity {
+    #Button loginButton
+    #Button signupButton
+    #EditText usernameField
+    #EditText passwordField
+    #FirebaseAuth auth
+
+    #void onCreate(Bundle savedInstanceState)
+}
+
+class MainActivity {
+    +FragmentManager getSupportFragmentManager()
+    #void onCreate(Bundle savedInstanceState)
+    +void switchFragment(Fragment frag)
+    +void onBackPressed()
+}
+
+class LocationActivity {
+    -Marker marker
+    -GoogleMap map
+    -FusedLocationProviderClient fusedLocationClient
+    -final LatLng defaultLocation
+    -static final int DEFAULT_ZOOM
+    -static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+    -boolean locationPermissionGranted
+    -Location lastKnownLocation
+    -CameraPosition cameraPosition
+    -static final String KEY_CAMERA_POSITION
+    -static final String KEY_LOCATION
+    -static final String TAG
+    +static final String MAPS_API_KEY
+    #String latitude
+    #String longitude
+    #TextView latTextView
+    #TextView lonTextView
+    #Button saveButton
+    #double currLat
+    #double currLong
+
+    #void onCreate(Bundle savedInstanceState)
+    #void onSaveInstanceState(Bundle outState)
+    +void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    +void onMapReady(GoogleMap googleMap)
+    -void getLocationPermission()
+    -void updateLocationUI()
+    -void getDeviceLocation()
+    +void onMapClick(LatLng latLng)
+}
+
+class FollowerList {
+    -ArrayList<Follower> followers
+    -Context context
+
+    +FollowerList(Context context, ArrayList<Follower> followers)
+    +View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
+}
+
+class FollowingList {
+    -ArrayList<Following> followings
+    -Context context
+
+    +FollowingList(Context context, ArrayList<Following> followings)
+    +View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
+}
+
+class HabitList {
+    -ArrayList<Habit> habits
+    -Context context
+    -boolean isFollowing
+    -String user
+
+    +HabitList(Context context, ArrayList<Habit> habits, boolean isFollowing, String user)
+    +View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
+}
+
+class RequestList {
+    -ArrayList<Request> requests;
+    -Context context;
+
+    +RequestList(Context context, ArrayList<Request> requests)
+    +View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
+}
+
+abstract class HabitListFragment {
+    -SwipeMenuListView habitListView
+    -ArrayAdapter<Habit> habitAdapter
+    -ArrayList<Habit> habitDataList
+
+    -View addHabitButton
+    -View view
+
+    -SwipeMenuItem deleteItem
+    -SwipeMenuItem editItem
+
+    -User currentUser
+
+    +void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error)
+    +void onCreate(Bundle savedInstanceState)
+    +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+}
+
+class AllHabits {
+    +void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error)
+}
+
+class DailyHabits {
+    +void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error)
+}
+
+class Request {
+    -String requesterEmail
+    -String requestedEmail
+    -long time
+
+    +Request(String requesterEmail, String requestedEmail, long time)
+    +String getRequesterEmail()
+    +void setRequesterEmail(String requesterEmail)
+    +String getRequestedEmail()
+    +void setRequestedEmail(String requestedEmail)
+    +long getTime()
+    +void setTime(long time)
+}
+
+class Habit {
+    -boolean isPrivate
+    -String title
+    -String reason
+    -long dateToStart
+    -ArrayList<Boolean> datesToDo
+    -ArrayList<HabitEvent> habitEvents
+    -String id
+
+    +Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate)
+    +Habit()
+    +String getId()
+    +ArrayList<Boolean> getWeekly()
+    +Boolean getDateSelected(int i)
+    +Boolean setDateSelected(int i, Boolean b)
+    +String getTitle()
+    +void setTitle(String title)
+    +String getReason()
+    +long getDateToStart()
+    +void setDateToStart(long dateToStart)
+    +void setHabitEvents(ArrayList<HabitEvent> habitEvents)
+    +ArrayList<HabitEvent> getHabitEvents()
+    +boolean getIsPrivate()
+    +void setIsPrivate(boolean isPrivate)
+}
+
+class HabitEvent {
+    -String comment
+    -long eventDate
+    -Bitmap img
+    -String id
+    -Habit parentHabit
+
+    -double locationLat
+    -double locationLon
+
+    +Bitmap getImg()
+    +void setImg(Bitmap img)
+    +HabitEvent(String comment, long eventDate,Habit parentHabit, String id, double locationLat, double locationLon)
+    +HabitEvent(String comment, long eventDate,Habit parentHabit, String id)
+    +HabitEvent(String comment, long eventDate,Habit parentHabit, String id, Bitmap img)
+    +HabitEvent(Habit parentHabit)
+    +String getId()
+    +void setId(String id)
+    +String getComment()
+    +void setComment(String comment)
+    +long getEventDate()
+    +void setEventDate(long eventDate)
+    +Habit getParentHabit()
+    +void setParentHabit(Habit parentHabit)
+    +double getLocationLat()
+    +void setLocationLat(double locationLat)
+    +double getLocationLon()
+    +void setLocationLon(double locationLon)
+}
+
+class EditEvent {
+    -EditText eventComments
+    -CalendarView eventDate
+    -ImageButton imgButton
+    -Button locationButton
+    -HabitEvent event
+
+    -String dialogTitle
+    -String removeTextTitle
+    -long dateSelected
+
+    -FirebaseStorage storage
+
+    -Habit habit
+    #EditEvent THIS
+    -final int LAUNCH_MAP_ACTIVITY
+
+    -double oldLat
+    -double oldLon
+    -TextView latTextView
+    -TextView lonTextView
+
+    -User currentUser
+
+    +void checkInput()
+    +Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
+    +void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+}
+
+class EditHabit {
+    -MainActivity main
+
+    -Button isPrivateButton
+    -EditText habitTitle
+    -EditText habitReason
+    -CalendarView habitDateToStart
+    -ArrayList<Button> daysOfWeek
+    -Habit habit
+
+    -String dialogTitle
+    -String removeTextTitle
+    -long dateSelected
+
+    -FirebaseStorage storage
+    #EditHabit THIS
+
+    -User currentUser
+
+    +void onAttach(@NonNull Context context)
+    +EditHabit(Habit habit)
+    +EditHabit()
+    +Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
+    +void checkInput()
+}
+
+class EventList {
+    -ArrayList<HabitEvent> events
+    -Context context
+
+    +EventList(@NonNull Context context, ArrayList<HabitEvent> events)
+    +View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
+}
+
+class User {
+    -String userEmail
+    -DocumentReference userReference
+
+    +User()
+    +User(String userEmail)
+
+    +String getUserEmail()
+    +DocumentReference getUserReference()
+    +CollectionReference getHabitReference()
+    +CollectionReference getHabitEventReference(Habit habit)
+    
+    +Task<DocumentSnapshot> queryFollowing(User userToQuery)
+    +void unfollow(User userToUnfollow)
+    +void request(User userToRequest)
+    +void acceptRequest(Request request)
+    +void denyRequest(Request request)
+}
+
+Profile "0..*" o-- "0..*" Follower
+Profile "0..*" o-- "0..*" Following
+Profile "0..*" o-- "0..*" Request
+EventList "0..*" o-- "0..*" HabitEvent
+FollowingList "0..*" o-- "0..*" Following
+FollowerList "0..*" o-- "0..*" Follower
+HabitList "0..*" o-- "0..*" Habit
+RequestList "0..*" o-- "0..*" Request
+
+ViewFollowing "1" *-- "0..*" Habit
+
+HabitListFragment "1" *-- "1" User
+EditEvent "1" *-- "1" User
+EditHabit "1" *-- "1" User
+Profile "1" *-- "1" User
+RequestMake "1" *-- "1" User
+RequestRespond "1" *-- "1" User
+ViewEvent "1" *-- "1" User
+ViewFollowing "1" *-- "1" User
+ViewHabit "1" *-- "1" User
+VisualIndicator "1" *-- "1" User
+
+SharedHelper <-- FirebaseFirestore
+SharedHelper <-- FirebaseStorage
+SharedHelper <-- HabitEvent
+SharedHelper <-- Habit
+
+SignUpActivity "0..*" <-- "1" FirebaseAuth
+LoginActivity "0..*" <-- "1" FirebaseAuth
+User "0..*" <-- "1" FirebaseAuth
+User "0..*" <-- "1" FirebaseFirestore
+ViewEvent "0..*" <-- "1" FirebaseFirestore
+
+Habit "1" *-- "1" HabitEvent
+
+HabitListFragment "1" *-- "0..*" Habit
+
+ViewEvent "1" o-- "1" HabitEvent
+RequestRespond "1" o-- "1" Request
+EditHabit "1" o-- "1" MainActivity
+ViewHabit "1" o-- "1" MainActivity
+ViewFollowing "1" o-- "1" MainActivity
+VisualIndicator "1" o-- "1" Habit
+EditEvent "1" o-- "1" Habit
+EditEvent "1" o-- "1" HabitEvent
+EditHabit "1" o-- "1" Habit
+EditEvent "0..*" o-- "1" FirebaseStorage
+EditHabit "0..*" o-- "1" FirebaseStorage
+ViewHabit "0..*" o-- "1" FirebaseStorage
+ViewHabit "1" o-- "1" Habit
+ViewHabit "0..*" o-- "1" HabitEvent
+
+HabitEvent <-- Habit
+
+MainActivity <-- Fragment
+
+NavBar +-- NavBar.NavBarSwitch
+Fragment <|-- ViewHabit
+Fragment <|-- ViewFollowing
+Fragment <|-- NavBar
+Fragment <|-- ViewEvent
+Fragment <|-- Profile
+Fragment <|-- HabitListFragment
+HabitListFragment <|-- AllHabits
+HabitListFragment <|-- DailyHabits
+
+"ArrayAdapter<>" <|-- RequestList
+"ArrayAdapter<>" <|-- EventList
+"ArrayAdapter<>" <|-- FollowingList
+"ArrayAdapter<>" <|-- FollowerList
+"ArrayAdapter<>" <|-- HabitList
+
+AppCompatActivity <|-- SignUpActivity
+AppCompatActivity <|-- MainActivity
+AppCompatActivity <|-- LoginActivity
+AppCompatActivity <|-- LocationActivity
+
+NavBar.NavBarSwitch <|.. MainActivity
+OnMapReadyCallback <|.. LocationActivity
+GoogleMap.OnMapClickListener <|.. LocationActivity
+
+DialogFragment <|-- RequestRespond
+DialogFragment <|-- RequestMake
+DialogFragment <|-- EditHabit
+DialogFragment <|-- EditEvent
+User <|-- Following
+User <|-- Follower
+@enduml
