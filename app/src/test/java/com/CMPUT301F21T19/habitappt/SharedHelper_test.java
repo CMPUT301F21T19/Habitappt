@@ -1,16 +1,16 @@
 package com.CMPUT301F21T19.habitappt;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 
 import static org.junit.Assert.assertTrue;
 
+import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class SharedHelper_test {
 

@@ -9,7 +9,7 @@
     android:foregroundGravity="top"
     android:background="@drawable/main_background"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".Activities.MainActivity">
 
 
         <com.baoyz.swipemenulistview.SwipeMenuListView

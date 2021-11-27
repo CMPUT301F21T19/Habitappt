@@ -1,12 +1,14 @@
 package com.CMPUT301F21T19.habitappt;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import com.CMPUT301F21T19.habitappt.Entities.Habit;
+import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
 
 import java.util.ArrayList;
 
