@@ -36,10 +36,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 
+/**
+ * This class defines a fragment that shows all of a users habits.
+ */
+
 public class all_habits extends recycler_view_fragment {
-    /**
-     * This class defines a fragment that shows all of a users habits.
-     */
+
 
     /**
      * This method returns all of the habits in the users collection

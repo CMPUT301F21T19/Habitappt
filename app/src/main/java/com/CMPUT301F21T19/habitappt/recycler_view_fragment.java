@@ -1,3 +1,17 @@
+/**
+ *  Copyright 2021 - 2021 CMPUT301F21T19 (Habitappt). All rights reserved. This document nor any
+ *  part of it may be reproduced, stored in a retrieval system or transmitted in any for or by any
+ *  means without prior permission of the members of CMPUT301F21T19 or by the professor and any
+ *  authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
+ *
+ *  Class : recycler_view_fragment
+ *
+ *  Description : This is an abstract class for the Recycler View to display the habits on the view
+ *  and order them by their index.
+ *
+ * @version "%1 %5"
+ *
+ */
 package com.CMPUT301F21T19.habitappt;
 
 
@@ -113,6 +127,10 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
         return view;
     }
 
+    /**
+     * This overrides the onHabitClick method to display the view habit fragment when a habit is clicked on.
+     * @param position
+     */
     @Override
     public void onHabitClick(int position) {
         FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
@@ -120,6 +138,10 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
         trans.addToBackStack("view_habit");
         trans.commit();
     };
+
+    /**
+     * This method attaches the DragHabits subclass to the RecyclerView.
+     */
 
     public void initHabitOrder(){
         ItemTouchHelper.Callback callback = new DragHabits(habitAdapter);
@@ -129,8 +151,8 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
 
 
     /**
-     * This method must be implemented by any classes that extend this class. It tells the class how to process the habits in the users collection.
-     *
+     * This method must be implemented by any classes that extend this class.
+     * It tells the class how to process the habits in the users collection and order them by their index.
      */
     public void parseDataBaseUpdate(){
         Query currentUser = currentUserHabits.orderBy("index", Query.Direction.ASCENDING);

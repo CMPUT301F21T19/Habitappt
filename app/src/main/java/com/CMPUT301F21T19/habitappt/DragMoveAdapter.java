@@ -1,3 +1,13 @@
+/**
+ *  Copyright 2021 - 2021 CMPUT301F21T19 (Habitappt). All rights reserved. This document nor any
+ *  part of it may be reproduced, stored in a retrieval system or transmitted in any for or by any
+ *  means without prior permission of the members of CMPUT301F21T19 or by the professor and any
+ *  authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
+ *
+ *  Class : DragMoveAdapter
+ *
+ *  Description : This class extends Recycler View Adapter, and tells it what to do when moving habits.
+ */
 package com.CMPUT301F21T19.habitappt;
 
 import static android.provider.SyncStateContract.Helpers.update;
@@ -30,26 +40,37 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
+/**
+ * This extends RecyclerView.Adapter and initializes the adapter.
+ * uses DragHabits and ItemTouchHelperAdapter.
+ */
 public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragViewHolder> implements DragHabits.ItemTouchHelperAdapter {
 
     private ArrayList<Habit> habitList;
     private DragListener dragListener;
 
+    /**
+     * Interface: used when a Habit is clicked within the recycler view.
+     */
     public interface DragListener {
         void onHabitClick(int position);}
 
-
+    /**
+     * Constructor for the class.
+     * @param habitList
+     * @param dragListener : used when clicking or dragging is started.
+     */
     public DragMoveAdapter(ArrayList<Habit> habitList, DragListener dragListener) {
         this.habitList = habitList;
         this.dragListener = dragListener;
     }
 
+    /**
+     * This view holder sets the attributes that display on the Recycler view.
+     */
     public class DragViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView habitTitle;
         private TextView habitReason;
@@ -72,6 +93,13 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
             dragListener.onHabitClick(getAdapterPosition());
         }
     }
+
+    /**
+     * This method sets the view holder for the Recycler View.
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public DragViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -79,6 +107,11 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
         return new DragViewHolder(habitView, dragListener);
     }
 
+    /**
+     * This method binds the attributes to the view holder by getting and setting attributes.
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull DragViewHolder holder, int position) {
         String title = habitList.get(position).getTitle();
@@ -116,11 +149,21 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
             }, 500);
         }
 
+    /**
+     * This method returns the size of the habit List.
+     * @return int
+     */
     @Override
     public int getItemCount() {
         return habitList.size();
     }
 
+
+    /**
+     * This method is used to swap habits in the collections when they are being moved.
+     * @param fromPosition
+     * @param toPosition
+     */
     @Override
     public void OnItemMoved(int fromPosition, int toPosition) {
         if(fromPosition < toPosition){
@@ -143,6 +186,9 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
     @Override
     public void onItemCLear(DragViewHolder myViewHolder) { }
 
+    /**
+     * This method updates the index field in the document when a habit is moved.
+     */
     public void updateDocIndex() {
         String emailID = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         CollectionReference collectionReference = FirebaseFirestore.getInstance()
@@ -153,7 +199,7 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
         int length = habitList.size();
 
         for (int i = 0; i < length; i++) {
-            int finalI = i;
+            int finalIndex = i;
             String id = habitList.get(i).getId();
             collectionReference
                     .whereEqualTo("id",id)
@@ -161,7 +207,7 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            collectionReference.document(id).update("index", finalI); }
+                            collectionReference.document(id).update("index", finalIndex); }
                     });
         }
     }
