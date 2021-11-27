@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
+import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.CMPUT301F21T19.habitappt.R;
 import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,17 +38,17 @@ import com.google.firebase.storage.StorageReference;
  */
 public class ViewEvent extends Fragment {
 
-    HabitEvent event;
+    private HabitEvent event;
 
-    ImageButton editButton;
-    ImageView eventImageView;
-    TextView dateTextView;
-    TextView locationTextView;
-    TextView commentTextView;
+    private ImageButton editButton;
+    private ImageView eventImageView;
+    private TextView dateTextView;
+    private TextView locationTextView;
+    private TextView commentTextView;
 
-    FirebaseFirestore db;
-    FirebaseAuth auth;
-    FirebaseStorage storage;
+    private FirebaseStorage storage;
+
+    private User currentUser;
 
     public ViewEvent(HabitEvent event) {
         this.event = event;
@@ -66,8 +67,10 @@ public class ViewEvent extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_event, container, false);
 
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
+        //get current user object
+        currentUser = new User();
+
+
         storage = FirebaseStorage.getInstance();
 
         editButton = view.findViewById(R.id.edit_button);
@@ -92,10 +95,7 @@ public class ViewEvent extends Fragment {
             }
         });
 
-        DocumentReference eventInfo = db.collection("Users")
-                .document(auth.getCurrentUser().getEmail())
-                .collection("Habits").document(event.getParentHabit().getId())
-                .collection("Event Collection")
+        DocumentReference eventInfo = currentUser.getHabitEventReference(event.getParentHabit())
                 .document(event.getId());
 
         eventInfo.addSnapshotListener(new EventListener<DocumentSnapshot>() {

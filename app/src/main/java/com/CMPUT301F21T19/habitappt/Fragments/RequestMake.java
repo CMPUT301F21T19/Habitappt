@@ -31,6 +31,7 @@ import android.widget.Toast;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
+import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.CMPUT301F21T19.habitappt.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -43,20 +44,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 public class RequestMake extends DialogFragment {
-    protected Activity THIS;
-    private String tag;
-    private FirebaseFirestore db;
-    private FirebaseStorage storage;
-    private FirebaseAuth auth;
+
+    private User currentUser;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        THIS = this.getActivity();
-        tag = getTag();
-        db = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance();
-        auth = FirebaseAuth.getInstance();
+
+        //get current user object
+        currentUser = new User();
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.request_make,null);
         EditText requestedUserEditText = view.findViewById(R.id.requested_user);
@@ -74,50 +70,7 @@ public class RequestMake extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String requestedEmail = requestedUserEditText.getText().toString();
-                        if (requestedEmail.equals(auth.getCurrentUser().getEmail())) {
-                            // user requested self
-                            Toast.makeText(THIS, "Failure: cannot request self", Toast.LENGTH_LONG).show();
-                        } else if (Patterns.EMAIL_ADDRESS.matcher(requestedEmail).matches()) {
-                            auth.fetchSignInMethodsForEmail(requestedEmail).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                                    if (task.getResult().getSignInMethods().isEmpty()) {
-                                        // user does not exist
-                                        Toast.makeText(THIS, "Failure: user does not exist", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        DocumentReference doc = db
-                                                .collection("Users")
-                                                .document(requestedEmail)
-                                                .collection("Requests")
-                                                .document(auth.getCurrentUser().getEmail());
-
-                                        HashMap<String,Object> data = new HashMap<>();
-                                        data.put("Requester", auth.getCurrentUser().getEmail());
-                                        data.put("Requested", requestedEmail);
-                                        data.put("Time", GregorianCalendar.getInstance().getTimeInMillis());
-
-                                        doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                Log.i("data","success");
-                                                // request success
-                                                Toast.makeText(THIS, "Success: requested to follow user " + requestedEmail, Toast.LENGTH_LONG).show();
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.i("data", e.toString());
-                                                // request failure
-                                                Toast.makeText(THIS, "Failure: request incomplete", Toast.LENGTH_LONG).show();
-                                            }
-                                        });
-                                    }
-                                }
-                            });
-                        } else {
-                            // incorrect email format
-                            Toast.makeText(THIS, "Failure: requests must be made to an email", Toast.LENGTH_LONG).show();
-                        }
+                        currentUser.request(new User(requestedEmail),getActivity());
                     }
                 });
 

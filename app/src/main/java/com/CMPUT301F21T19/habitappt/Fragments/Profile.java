@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.CMPUT301F21T19.habitappt.Entities.Follower;
+import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.CMPUT301F21T19.habitappt.Lists.FollowerList;
 import com.CMPUT301F21T19.habitappt.Entities.Following;
 import com.CMPUT301F21T19.habitappt.Lists.FollowingList;
@@ -54,8 +55,9 @@ import java.util.ArrayList;
  * and allows a user to send follow requests to others.
  */
 public class Profile extends Fragment {
-    private FirebaseFirestore db;
-    private FirebaseAuth auth;
+
+
+    private User currentUser;
 
     private ListView profileListView;
     private Button followingButton;
@@ -97,8 +99,10 @@ public class Profile extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
+
+
+        //get current user object
+        currentUser = new User();
 
         profileListView = view.findViewById(R.id.profile_list);
         followingButton = view.findViewById(R.id.following_button);
@@ -112,19 +116,13 @@ public class Profile extends Fragment {
         followerButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
         requestButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
 
-        usernameLabel.setText(auth.getCurrentUser().getEmail());
+        usernameLabel.setText(currentUser.getUserEmail());
 
-        final CollectionReference requestReference = db
-                .collection("Users")
-                .document(auth.getCurrentUser().getEmail())
+        final CollectionReference requestReference = currentUser.getUserReference()
                 .collection("Requests");
-        final CollectionReference followerReference = db
-                .collection("Users")
-                .document(auth.getCurrentUser().getEmail())
+        final CollectionReference followerReference = currentUser.getUserReference()
                 .collection("Followers");
-        final CollectionReference followingReference = db
-                .collection("Users")
-                .document(auth.getCurrentUser().getEmail())
+        final CollectionReference followingReference = currentUser.getUserReference()
                 .collection("Followings");
 
         requestDataList = new ArrayList<>();

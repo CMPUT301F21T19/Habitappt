@@ -38,17 +38,17 @@ import com.CMPUT301F21T19.habitappt.R;
  */
 
 public class NavBar extends Fragment {
-    View profile_button;
-    View all_habits_button;
-    View daily_habits_button;
+    private View profile_button;
+    private View all_habits_button;
+    private View daily_habits_button;
     private nav_bar_switch listener;
 
-    /**
-     * Interface for the navigation bar.
-     * Calls switchFragment
-     * @param nav_to Fragment
-     */
+
     public interface nav_bar_switch{
+        /**
+         * Interface method for switching fragments in main container.
+         * @param nav_to Fragment
+         */
         void switchFragment(Fragment nav_to);
     }
 

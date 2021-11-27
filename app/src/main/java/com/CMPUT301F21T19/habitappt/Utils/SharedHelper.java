@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 
 import com.CMPUT301F21T19.habitappt.Entities.Habit;
 import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
+import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,13 +62,9 @@ public class SharedHelper {
      * @param habit
      * @param db
      */
-    public static void removeEvent(HabitEvent event, Habit habit, FirebaseFirestore db){
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        db.collection("Users")
-                .document(auth.getCurrentUser().getEmail())
-                .collection("Habits")
-                .document(String.valueOf(habit.getId()))
-                .collection("Event Collection")
+    public static void removeEvent(HabitEvent event, Habit habit, User user){
+
+        user.getHabitEventReference(habit)
                 .document(String.valueOf(event.getId()))
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -89,11 +86,9 @@ public class SharedHelper {
      * @param habit
      * @param db
      */
-    public static void removeHabit(Habit habit, FirebaseFirestore db){
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        db.collection("Users")
-                .document(auth.getCurrentUser().getEmail())
-                .collection("Habits")
+    public static void removeHabit(Habit habit, User user){
+
+        user.getHabitReference()
                 .document(String.valueOf(habit.getId()))
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

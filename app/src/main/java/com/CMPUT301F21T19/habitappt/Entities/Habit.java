@@ -34,7 +34,7 @@ public class Habit {
     private long dateToStart;
     private ArrayList<Boolean> datesToDo;
     private ArrayList<HabitEvent> habitEvents;
-    public String id;
+    private String id;
 
     /**
      * Create a habit object and assign parameters
@@ -76,6 +76,8 @@ public class Habit {
     public String getId() {
         return id;
     }
+
+    public void setId(String id){this.id = id; }
 
     /**
      * @return An arraylist which contains the days of the week which the habit should occur

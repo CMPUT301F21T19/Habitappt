@@ -14,7 +14,7 @@ public class Request {
      */
     private String requestedEmail;
 
-    long time;
+    private long time;
 
     public Request(String requesterEmail, String requestedEmail, long time) {
         this.requesterEmail = requesterEmail;
@@ -26,16 +26,8 @@ public class Request {
         return requesterEmail;
     }
 
-    public void setRequesterEmail(String requesterEmail) {
-        this.requesterEmail = requesterEmail;
-    }
-
     public String getRequestedEmail() {
         return requestedEmail;
-    }
-
-    public void setRequestedEmail(String requestedEmail) {
-        this.requestedEmail = requestedEmail;
     }
 
     public long getTime() {

@@ -26,8 +26,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity implements NavBar.nav_bar_switch {
 
-    public FirebaseFirestore db;
-
     @NonNull
     @Override
     public FragmentManager getSupportFragmentManager() {
@@ -38,9 +36,6 @@ public class MainActivity extends AppCompatActivity implements NavBar.nav_bar_sw
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //get base firestore instance
-        db = FirebaseFirestore.getInstance();
 
 
 
@@ -84,4 +79,6 @@ public class MainActivity extends AppCompatActivity implements NavBar.nav_bar_sw
         }
 
     }
+
+
 }
