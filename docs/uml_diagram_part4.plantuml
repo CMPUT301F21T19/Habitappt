@@ -2,6 +2,8 @@
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
 
+class GoogleMap {}
+class Activity {}
 class FirebaseAuth {}
 class FirebaseFirestore {}
 class FirebaseStorage {}
@@ -26,6 +28,7 @@ package Entities #DDDDFF{
         +Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate)
         +Habit()
         +String getId()
+        +void setId(String id)
         +ArrayList<Boolean> getWeekly()
         +Boolean getDateSelected(int i)
         +Boolean setDateSelected(int i, Boolean b)
@@ -46,7 +49,6 @@ package Entities #DDDDFF{
         -Bitmap img
         -String id
         -Habit parentHabit
-
         -double locationLat
         -double locationLon
 
@@ -88,17 +90,15 @@ package Entities #DDDDFF{
 
         +User()
         +User(String userEmail)
-
         +String getUserEmail()
         +DocumentReference getUserReference()
         +CollectionReference getHabitReference()
         +CollectionReference getHabitEventReference(Habit habit)
-        
         +Task<DocumentSnapshot> queryFollowing(User userToQuery)
-        +void unfollow(User userToUnfollow)
-        +void request(User userToRequest)
-        +void acceptRequest(Request request)
-        +void denyRequest(Request request)
+        +void unfollow(User userToUnfollow, Activity currentActivity)
+        +void request(User userToRequest, Activity currentActivity)
+        +void acceptRequest(Request request, Activity currentActivity)
+        +void denyRequest(Request request, Activity currentActivity)
     }
 }
 
@@ -116,14 +116,14 @@ package Activities #DDFFDD {
         -static final String KEY_CAMERA_POSITION
         -static final String KEY_LOCATION
         -static final String TAG
-        +static final String MAPS_API_KEY
-        #String latitude
-        #String longitude
-        #TextView latTextView
-        #TextView lonTextView
-        #Button saveButton
-        #double currLat
-        #double currLong
+        -static final String MAPS_API_KEY
+        -String latitude
+        -String longitude
+        -TextView latTextView
+        -TextView lonTextView
+        -Button saveButton
+        -double currLat
+        -double currLong
 
         #void onCreate(Bundle savedInstanceState)
         #void onSaveInstanceState(Bundle outState)
@@ -136,11 +136,11 @@ package Activities #DDFFDD {
     }
 
     class LoginActivity {
-        #Button loginButton
-        #Button signupButton
-        #EditText usernameField
-        #EditText passwordField
-        #FirebaseAuth auth
+        -Button loginButton
+        -Button signupButton
+        -EditText usernameField
+        -EditText passwordField
+        -FirebaseAuth auth
 
         #void onCreate(Bundle savedInstanceState)
     }
@@ -153,10 +153,10 @@ package Activities #DDFFDD {
     }
 
     class SignUpActivity {
-        #EditText usernameField
-        #EditText passwordField
-        #Button confirmButton
-        #FirebaseAuth auth
+        -EditText usernameField
+        -EditText passwordField
+        -Button confirmButton
+        -FirebaseAuth auth
 
         #void onCreate(Bundle savedInstanceState)
     }
@@ -177,22 +177,16 @@ package Fragments #FFDDDD {
         -ImageButton imgButton
         -Button locationButton
         -HabitEvent event
-
         -String dialogTitle
         -String removeTextTitle
         -long dateSelected
-
         -FirebaseStorage storage
-
         -Habit habit
-        #EditEvent THIS
         -final int LAUNCH_MAP_ACTIVITY
-
         -double oldLat
         -double oldLon
         -TextView latTextView
         -TextView lonTextView
-
         -User currentUser
 
         +void checkInput()
@@ -202,21 +196,16 @@ package Fragments #FFDDDD {
 
     class EditHabit {
         -MainActivity main
-
         -Button isPrivateButton
         -EditText habitTitle
         -EditText habitReason
         -CalendarView habitDateToStart
         -ArrayList<Button> daysOfWeek
         -Habit habit
-
         -String dialogTitle
         -String removeTextTitle
         -long dateSelected
-
         -FirebaseStorage storage
-        #EditHabit THIS
-
         -User currentUser
 
         +void onAttach(@NonNull Context context)
@@ -228,15 +217,12 @@ package Fragments #FFDDDD {
 
     abstract class HabitListFragment {
         -SwipeMenuListView habitListView
-        -ArrayAdapter<Habit> habitAdapter
-        -ArrayList<Habit> habitDataList
-
+        #ArrayAdapter<Habit> habitAdapter
+        #ArrayList<Habit> habitDataList
         -View addHabitButton
         -View view
-
         -SwipeMenuItem deleteItem
         -SwipeMenuItem editItem
-
         -User currentUser
 
         +void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error)
@@ -245,17 +231,17 @@ package Fragments #FFDDDD {
     }
 
     class NavBar {
-        #View profile_button
-        #View all_habits_button
-        #View daily_habits_button
-        -private navBarSwitch listener
+        -View profile_button
+        -View all_habits_button
+        -View daily_habits_button
+        -navBarSwitch listener
 
         +void onAttach(Context context)
         +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     }
 
     interface NavBar.NavBarSwitch {
-        #void switchFragment(Fragment navTo)
+        +void switchFragment(Fragment navTo)
     }
 
     class Profile {
@@ -265,14 +251,12 @@ package Fragments #FFDDDD {
         -Button requestButton
         -FloatingActionButton makeRequestButton
         -TextView usernameLabel
-
         -ArrayAdapter<Request> requestAdapter
         -ArrayList<Request> requestDataList
         -ArrayAdapter<Follower> followerAdapter
         -ArrayList<Follower> followerDataList
         -ArrayAdapter<Following> followingAdapter
         -ArrayList<Following> followingDataList
-
         -User currentUser
 
         +void onCreate(Bundle savedInstanceState)
@@ -281,7 +265,7 @@ package Fragments #FFDDDD {
     }
 
     class RequestMake {
-        #Activity THIS
+        -Activity THIS
         -User currentUser
 
         +Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
@@ -297,13 +281,13 @@ package Fragments #FFDDDD {
     }
 
     class ViewEvent {
-        #HabitEvent event
-        #ImageButton editButton
-        #ImageView eventImageView
-        #TextView dateTextView
-        #TextView locationTextView
-        #TextView commentTextView
-        #FirebaseStorage storage
+        -HabitEvent event
+        -ImageButton editButton
+        -ImageView eventImageView
+        -TextView dateTextView
+        -TextView locationTextView
+        -TextView commentTextView
+        -FirebaseStorage storage
         -User currentUser
 
         +ViewEvent(HabitEvent event)
@@ -312,20 +296,21 @@ package Fragments #FFDDDD {
     }
 
     class ViewFollowing {
-        #MainActivity main
-        #ListView habitListView
-        #ArrayAdapter<Habit> habitAdapter
-        #ArrayList<Habit> habitDataList
-        #ArrayAdapter<Habit> dailyHabitAdapter
-        #ArrayList<Habit> dailyHabitDataList
-        #Button allHabitsButton
-        #Button dailyHabitsButton
-        #Button followButton
-        #Button removeFollowerButton
-        #TextView userProfileName
-        #String user
-        #Activity THIS
+        -MainActivity main
+        -ListView habitListView
+        -ArrayAdapter<Habit> habitAdapter
+        -ArrayList<Habit> habitDataList
+        -ArrayAdapter<Habit> dailyHabitAdapter
+        -ArrayList<Habit> dailyHabitDataList
+        -Button allHabitsButton
+        -Button dailyHabitsButton
+        -Button followButton
+        -Button removeFollowerButton
+        -TextView userProfileName
+        -String user
+        -Activity THIS
         -User currentUser
+        -User viewedUser
 
         +ViewFollowing(String user)
         +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -333,20 +318,20 @@ package Fragments #FFDDDD {
 
     class ViewHabit {
         -View view
-        +MainActivity main
+        -MainActivity main
         -TextView habitIsPrivate
         -TextView habitTitle
         -TextView habitReason
         -TextView habitDateToStart
         -ImageButton editButton
         -view_habit THIS = this
-        #View addEventButton
+        -View addEventButton
         -ArrayList<TextView> daysToDo = new ArrayList<>()
         -Habit habit
-        #SwipeMenuListView eventSwipeListView
-        #ArrayAdapter<HabitEvent> eventAdapter
-        #SwipeMenuItem deleteItem
-        #SwipeMenuItem editItem
+        -SwipeMenuListView eventSwipeListView
+        -ArrayAdapter<HabitEvent> eventAdapter
+        -SwipeMenuItem deleteItem
+        -SwipeMenuItem editItem
         -FirebaseStorage storage
         -User currentUser
 
@@ -393,8 +378,8 @@ package Lists #DDFFFF {
     }
 
     class RequestList {
-        -ArrayList<Request> requests;
-        -Context context;
+        -ArrayList<Request> requests
+        -Context context
 
         +RequestList(Context context, ArrayList<Request> requests)
         +View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
@@ -404,8 +389,8 @@ package Lists #DDFFFF {
 package Utils #FFDDFF {
     class SharedHelper {
         +<u>void deleteImage(String id, FirebaseStorage storage)</u>
-        +<u>void removeEvent(HabitEvent event, Habit habit, FirebaseFirestore db)</u>
-        +<u>void removeHabit(Habit habit, FirebaseFirestore db)</u>
+        +<u>void removeEvent(HabitEvent event, Habit habit, User user)</u>
+        +<u>void removeHabit(Habit habit, User user)</u>
         +<u>String getStringDateFromLong(long l)</u>
     }
 
@@ -428,17 +413,9 @@ package Utils #FFDDFF {
     }
 }
 
-Profile "0..*" o-- "0..*" Follower
-Profile "0..*" o-- "0..*" Following
-Profile "0..*" o-- "0..*" Request
-EventList "0..*" o-- "0..*" HabitEvent
-FollowingList "0..*" o-- "0..*" Following
-FollowerList "0..*" o-- "0..*" Follower
-HabitList "0..*" o-- "0..*" Habit
-RequestList "0..*" o-- "0..*" Request
+
 
 ViewFollowing "1" *-- "0..*" Habit
-
 HabitListFragment "1" *-- "1" User
 EditEvent "1" *-- "1" User
 EditHabit "1" *-- "1" User
@@ -446,14 +423,50 @@ Profile "1" *-- "1" User
 RequestMake "1" *-- "1" User
 RequestRespond "1" *-- "1" User
 ViewEvent "1" *-- "1" User
-ViewFollowing "1" *-- "1" User
+ViewFollowing "1" *-- "2" User
 ViewHabit "1" *-- "1" User
 VisualIndicator "1" *-- "1" User
+HabitListFragment "1" *-- "0..*" Habit
 
-SharedHelper <-- FirebaseFirestore
+ViewHabit "0..*" o-- "1" Activity
+ViewFollowing "0..*" o-- "1" Activity
+RequestMake "0..*" o-- "1" Activity
+RequestRespond "0..*" o-- "1" Activity
+ViewEvent "1" o-- "1" HabitEvent
+RequestRespond "1" o-- "1" Request
+EditHabit "0..*" o-- "1" MainActivity
+ViewHabit "0..*" o-- "1" MainActivity
+ViewFollowing "0..*" o-- "1" MainActivity
+VisualIndicator "0..*" o-- "1" Habit
+EditEvent "0..*" o-- "1" Habit
+EditEvent "0..*" o-- "1" HabitEvent
+EditHabit "0..*" o-- "1" Habit
+EditEvent "0..*" o-- "1" FirebaseStorage
+EditHabit "0..*" o-- "1" FirebaseStorage
+ViewHabit "0..*" o-- "1" FirebaseStorage
+ViewHabit "0..*" o-- "1" Habit
+ViewHabit "0..*" o-- "0..*" HabitEvent
+LocationActivity "0..*" o-- "1" GoogleMap
+MainActivity "0..*" o-- FragmentManager
+Profile "0..*" o-- "0..*" Follower
+Profile "0..*" o-- "0..*" Following
+Profile "0..*" o-- "0..*" Request
+Habit "0..*" o-- "0..*" HabitEvent
+EventList "0..*" o-- "0..*" HabitEvent
+FollowingList "0..*" o-- "0..*" Following
+FollowerList "0..*" o-- "0..*" Follower
+HabitList "0..*" o-- "0..*" Habit
+RequestList "0..*" o-- "0..*" Request
+
+HabitEvent <-- Habit
+MainActivity <-- Fragment
+SharedHelper <-- User
 SharedHelper <-- FirebaseStorage
 SharedHelper <-- HabitEvent
 SharedHelper <-- Habit
+User <-- User
+User <-- Habit
+User <-- Activity
 
 SignUpActivity "0..*" <-- "1" FirebaseAuth
 LoginActivity "0..*" <-- "1" FirebaseAuth
@@ -461,28 +474,7 @@ User "0..*" <-- "1" FirebaseAuth
 User "0..*" <-- "1" FirebaseFirestore
 ViewEvent "0..*" <-- "1" FirebaseFirestore
 
-Habit "1" *-- "1" HabitEvent
 
-HabitListFragment "1" *-- "0..*" Habit
-
-ViewEvent "1" o-- "1" HabitEvent
-RequestRespond "1" o-- "1" Request
-EditHabit "1" o-- "1" MainActivity
-ViewHabit "1" o-- "1" MainActivity
-ViewFollowing "1" o-- "1" MainActivity
-VisualIndicator "1" o-- "1" Habit
-EditEvent "1" o-- "1" Habit
-EditEvent "1" o-- "1" HabitEvent
-EditHabit "1" o-- "1" Habit
-EditEvent "0..*" o-- "1" FirebaseStorage
-EditHabit "0..*" o-- "1" FirebaseStorage
-ViewHabit "0..*" o-- "1" FirebaseStorage
-ViewHabit "1" o-- "1" Habit
-ViewHabit "0..*" o-- "1" HabitEvent
-
-HabitEvent <-- Habit
-
-MainActivity <-- Fragment
 
 NavBar +-- NavBar.NavBarSwitch
 Fragment <|-- ViewHabit
@@ -500,6 +492,7 @@ HabitListFragment <|-- DailyHabits
 "ArrayAdapter<>" <|-- FollowerList
 "ArrayAdapter<>" <|-- HabitList
 
+Activity <|-- AppCompatActivity
 AppCompatActivity <|-- SignUpActivity
 AppCompatActivity <|-- MainActivity
 AppCompatActivity <|-- LoginActivity
