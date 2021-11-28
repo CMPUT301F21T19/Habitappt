@@ -35,10 +35,10 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * xml attribute ref
      */
-    Button login_button;
-    Button signup_button;
-    EditText usernameField;
-    EditText passwordField;
+    private Button login_button;
+    private Button signup_button;
+    private EditText usernameField;
+    private EditText passwordField;
 
     /**
      * firebase auth instance
