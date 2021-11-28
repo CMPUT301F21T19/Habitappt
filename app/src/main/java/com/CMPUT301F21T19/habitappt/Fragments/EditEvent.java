@@ -447,7 +447,7 @@ public class EditEvent extends DialogFragment {
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
         }
 
-        CustomTextWatcher textWatcher = new CustomTextWatcher(THIS.eventComments, alertDialog.getButton(AlertDialog.BUTTON_POSITIVE), 0, 20);
+        CustomTextWatcher textWatcher = new CustomTextWatcher(eventComments, alertDialog.getButton(AlertDialog.BUTTON_POSITIVE), 0, 20);
         eventComments.addTextChangedListener(textWatcher);
         
 
@@ -462,8 +462,6 @@ public class EditEvent extends DialogFragment {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imgButton.setImageBitmap(imageBitmap);
             event.setImg(imageBitmap);
-
-
         }
 
         //if returning from map activity

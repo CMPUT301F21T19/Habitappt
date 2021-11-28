@@ -131,8 +131,6 @@ public class EditHabit extends DialogFragment {
 
         storage = FirebaseStorage.getInstance();
 
-
-
         //get current user
         currentUser = new User();
 
@@ -215,7 +213,13 @@ public class EditHabit extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(view)
             .setTitle(dialogTitle)
-            .setNegativeButton(removeTextTitle, new DialogInterface.OnClickListener() {
+            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            })
+            .setNeutralButton(removeTextTitle, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     getChildFragmentManager().popBackStack("viewhabit", FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -312,6 +316,7 @@ public class EditHabit extends DialogFragment {
         //create the alertdialog object
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
+        alertDialog.getButton(alertDialog.BUTTON_NEUTRAL).setTextColor(Color.RED);
 
         //disable confirm button until fields are correctly filled (if empty)
         if(habitTitle.length() == 0 && habitReason.length() == 0) {
@@ -319,11 +324,11 @@ public class EditHabit extends DialogFragment {
         }
 
         //custom text watcher that will check the given inputs before enabling
-        DualCustomTextWatcher dualTextWatcher = new DualCustomTextWatcher(THIS.habitTitle, THIS.habitReason, alertDialog.getButton(AlertDialog.BUTTON_POSITIVE), 0, 20, 0, 30);
+        DualCustomTextWatcher dualTextWatcher = new DualCustomTextWatcher(habitTitle, habitReason, alertDialog.getButton(AlertDialog.BUTTON_POSITIVE), 0, 20, 0, 30);
 
         //set both edit text watchers
-        THIS.habitTitle.addTextChangedListener(dualTextWatcher);
-        THIS.habitReason.addTextChangedListener(dualTextWatcher);
+        habitTitle.addTextChangedListener(dualTextWatcher);
+        habitReason.addTextChangedListener(dualTextWatcher);
 
         return alertDialog;
     }

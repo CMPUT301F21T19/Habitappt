@@ -48,7 +48,7 @@ public class Habit {
      * @param id          A unique identifier for the habit object
      * @param isPrivate   Denotes whether this habit is private or not
      */
-    public Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate) throws IllegalArgumentException{
+    public Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate, long index) throws IllegalArgumentException{
         this.isPrivate = isPrivate;
         if(title.length() > 20) {
             throw new IllegalArgumentException("Invalid Title");

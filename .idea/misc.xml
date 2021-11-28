@@ -59,11 +59,15 @@
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/edit_event.xml" value="0.33" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/edit_habit.xml" value="0.33" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/event_list_item.xml" value="0.5" />
+        <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/follower_list_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/following_list_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/fragment_all_habits.xml" value="0.33" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/fragment_daily_habits.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/fragment_events_list.xml" value="0.26856884057971014" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/fragment_habits_list.xml" value="0.20739968733715478" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/fragment_view_event.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/fragment_view_following.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/fragment_view_habit.xml" value="0.33" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/layout/profile_fragment_layout.xml" value="0.1" />
         <entry key="..\:/Users/sohai/Github/Habitappt/app/src/main/res/menu/bottom_nav_bar.xml" value="0.5" />
