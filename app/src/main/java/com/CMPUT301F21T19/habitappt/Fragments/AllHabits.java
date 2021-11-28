@@ -16,11 +16,12 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 import com.CMPUT301F21T19.habitappt.Entities.Habit;
+import com.CMPUT301F21T19.habitappt.recycler_view_fragment;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class AllHabits extends HabitListFragment {
+public class AllHabits extends recycler_view_fragment {
     /**
      * This class defines a fragment that shows all of a users habits.
      */
