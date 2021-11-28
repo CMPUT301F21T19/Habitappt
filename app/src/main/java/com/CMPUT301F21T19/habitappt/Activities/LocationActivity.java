@@ -30,6 +30,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+/**
+ * Activity for getting the location of a habit event.
+ */
 public class LocationActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private Marker marker;
@@ -57,13 +60,16 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
     private static final String TAG = LocationActivity.class.getSimpleName();
 
     public static  final String MAPS_API_KEY="AIzaSyBsJjMX7Al622N4TNpGIqO_uCew_yTZz9s";
-    String latitude, longitude;
-    TextView latTextView, lonTextView;
+    private String latitude, longitude;
+    private TextView latTextView, lonTextView;
 
-    Button saveButton;
+    private Button saveButton;
     double currLat, currLong;
 
-
+    /**
+     * Get activity view
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +124,10 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
 
     }
 
+    /**
+     * If the instance is saved, update the camera position and selected location in the map.
+     * @param outState
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (map != null) {
@@ -147,6 +157,10 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         updateLocationUI();
     }
 
+    /**
+     * Called when map fragment is ready.
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -253,6 +267,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
 
     /**
      * When map is clicked, move marker/save context, also update textview
+     * @param latLng
      */
     @Override
     public void onMapClick(LatLng latLng) {

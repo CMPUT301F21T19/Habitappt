@@ -30,6 +30,7 @@ import android.widget.Toast;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
+import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.CMPUT301F21T19.habitappt.R;
 import com.CMPUT301F21T19.habitappt.Entities.Request;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,26 +43,34 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
+/**
+ * This fragment is used to respond to a follow request.
+ */
 public class RequestRespond extends DialogFragment {
     private Activity THIS;
-    private String tag;
-    private FirebaseFirestore db;
-    private FirebaseStorage storage;
-    private FirebaseAuth auth;
-    private Request request;
 
+    private Request request;
+    private User currentUser;
+
+    /**
+     * Constructor for the fragment for responding to a request. Takes in a request object
+     * @param request
+     */
     public RequestRespond(Request request) {
         this.request = request;
     }
 
+    /**
+     * Gets the dialog view
+     * @param savedInstanceState
+     * @return
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         THIS = this.getActivity();
-        tag = getTag();
-        db = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance();
-        auth = FirebaseAuth.getInstance();
+
+        currentUser = new User();
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.request_respond,null);
         TextView requestTextView = view.findViewById(R.id.request_test_view);
@@ -79,93 +88,13 @@ public class RequestRespond extends DialogFragment {
                 .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        db.collection("Users")
-                                .document(request.getRequestedEmail())
-                                .collection("Requests")
-                                .document(request.getRequesterEmail())
-                                .delete()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Toast.makeText(THIS, "Success: follow request denied", Toast.LENGTH_LONG).show();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(THIS, "Failure: internal error", Toast.LENGTH_LONG).show();
-                                    }
-                                });
+                        currentUser.denyRequest(request,THIS);
                     }
                 })
                 .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String requestedEmail = request.getRequestedEmail();
-                        String requesterEmail = request.getRequesterEmail();
-                        auth.fetchSignInMethodsForEmail(requesterEmail).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                                if (task.getResult().getSignInMethods().isEmpty()) {
-                                    // user does not exist
-                                    Toast.makeText(THIS, "Failure: user does not exist", Toast.LENGTH_LONG).show();
-                                } else {
-                                    DocumentReference followersDoc = db
-                                            .collection("Users")
-                                            .document(requesterEmail)
-                                            .collection("Followings")
-                                            .document(requestedEmail);
-                                    DocumentReference followingsDoc = db
-                                            .collection("Users")
-                                            .document(requestedEmail)
-                                            .collection("Followers")
-                                            .document(requesterEmail);
-
-                                    HashMap<String,Object> data = new HashMap<>();
-                                    data.put("Time", GregorianCalendar.getInstance().getTimeInMillis());
-
-                                    followersDoc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            Log.i("followersDoc","success");
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.i("followersDoc","failure");
-                                        }
-                                    });
-                                    followingsDoc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            Log.i("followingsDoc","success");
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.i("followingsDoc","failure");
-                                        }
-                                    });
-                                }
-                                db.collection("Users")
-                                        .document(request.getRequestedEmail())
-                                        .collection("Requests")
-                                        .document(request.getRequesterEmail())
-                                        .delete()
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                Toast.makeText(THIS, "Success: now followed by " + request.getRequesterEmail(), Toast.LENGTH_LONG).show();
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(THIS, "Failure: internal error", Toast.LENGTH_LONG).show();
-                                            }
-                                        });
-                            }
-                        });
+                        currentUser.acceptRequest(request,THIS);
                     }
                 });
 

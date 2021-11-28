@@ -40,37 +40,44 @@ import java.util.GregorianCalendar;
  * aswell as the habits they have to complete today.
  */
 public class ViewFollowing extends Fragment {
-    MainActivity main;
+    private MainActivity main;
 
-    ListView habitListView;
-    ArrayAdapter<Habit> habitAdapter;
-    ArrayList<Habit> habitDataList;
+    private ListView habitListView;
+    private ArrayAdapter<Habit> habitAdapter;
+    private ArrayList<Habit> habitDataList;
 
-    ArrayAdapter<Habit> dailyHabitAdapter;
-    ArrayList<Habit> dailyHabitDataList;
+    private ArrayAdapter<Habit> dailyHabitAdapter;
+    private ArrayList<Habit> dailyHabitDataList;
 
-    Button allHabitsButton;
-    Button dailyHabitsButton;
-    Button followButton;
-    Button removeFollowerButton;
+    private Button allHabitsButton;
+    private Button dailyHabitsButton;
+    private Button followButton;
+    private Button removeFollowerButton;
 
-    TextView userProfileName;
+    private TextView userProfileName;
 
-    FirebaseFirestore db;
-    FirebaseAuth auth;
+    private User currentUser;
 
-    String user;
+    private User viewedUser;
 
-    Activity THIS;
+    private Activity THIS;
 
     /**
      * Constructor that takes in the user whos Profile is being viewed.
      * @param user
      */
     public ViewFollowing(String user){
-        this.user = user;
+
+        this.viewedUser = new User(user);
+
+        //get current user
+        this.currentUser = new User();
     }
 
+    /**
+     * Called when fragment is attached to main container. Gets reference to MainActivity
+     * @param context
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -78,24 +85,31 @@ public class ViewFollowing extends Fragment {
         main = (MainActivity) context;
     }
 
-
+    /**
+     * Create fragment view
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_following,container,false);
 
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
+
         THIS = getActivity();
+
+
 
         habitListView = view.findViewById(R.id.profile_list);
 
         habitDataList = new ArrayList<>();
-        habitAdapter = new HabitList(getContext(), habitDataList, true, this.user);
+        habitAdapter = new HabitList(getContext(), habitDataList, true, viewedUser.getUserEmail());
         habitListView.setAdapter(habitAdapter);
 
         dailyHabitDataList = new ArrayList<>();
-        dailyHabitAdapter = new HabitList(getContext(),dailyHabitDataList, true, this.user);
+        dailyHabitAdapter = new HabitList(getContext(),dailyHabitDataList, true, viewedUser.getUserEmail());
 
         allHabitsButton = view.findViewById(R.id.all_habits_following);
         dailyHabitsButton = view.findViewById(R.id.daily_habits_following);
@@ -104,7 +118,7 @@ public class ViewFollowing extends Fragment {
 
         userProfileName = view.findViewById(R.id.username_field);
 
-        userProfileName.setText(user);
+        userProfileName.setText(viewedUser.getUserEmail());
 
         //button highlight changes when pressed
         allHabitsButton.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
@@ -113,11 +127,9 @@ public class ViewFollowing extends Fragment {
         removeFollowerButton.setEnabled(false);
         followButton.setEnabled(false);
 
-        User viewedUser = new User(user);
-        User currentUser = new User(auth.getCurrentUser().getEmail());
 
         // if viewed user is following current user, enable remove follower button
-        viewedUser.following(currentUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        viewedUser.queryFollowing(currentUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
@@ -127,7 +139,7 @@ public class ViewFollowing extends Fragment {
         });
 
         // if current user is following viewed user, enable remove follower button
-        currentUser.following(viewedUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        currentUser.queryFollowing(viewedUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
@@ -139,6 +151,7 @@ public class ViewFollowing extends Fragment {
             }
         });
 
+        //button logic for removing a follower
         removeFollowerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,6 +160,7 @@ public class ViewFollowing extends Fragment {
             }
         });
 
+        //button logic for switching to all habits list
         allHabitsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -157,6 +171,7 @@ public class ViewFollowing extends Fragment {
             }
         });
 
+        //button logic for switching to daily habits list
         dailyHabitsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,6 +182,7 @@ public class ViewFollowing extends Fragment {
             }
         });
 
+        //button for sending user a follow request, or unfollowing the user based on your current following status
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,16 +201,8 @@ public class ViewFollowing extends Fragment {
 
 
 
-        habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //go to view user habit activity?
-            }
-        });
-
-        CollectionReference all_habits = db.collection("Users")
-                                            .document(user)
-                                            .collection("Habits");
+        //logic for displaying all habits and daily habits list.
+        CollectionReference all_habits = viewedUser.getHabitReference();
 
         all_habits.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -204,10 +212,9 @@ public class ViewFollowing extends Fragment {
 
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
 
-                    db.collection("Users")
-                            .document(auth.getCurrentUser().getEmail())
+                    currentUser.getUserReference()
                             .collection("Followings")
-                            .document(user).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            .document(viewedUser.getUserEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
 
@@ -244,10 +251,9 @@ public class ViewFollowing extends Fragment {
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String id = doc.getId();
 
-                    db.collection("Users")
-                            .document(auth.getCurrentUser().getEmail())
+                    currentUser.getUserReference()
                             .collection("Followings")
-                            .document(user).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            .document(viewedUser.getUserEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
 

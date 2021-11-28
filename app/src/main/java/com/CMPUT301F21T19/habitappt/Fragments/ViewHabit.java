@@ -54,6 +54,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.CMPUT301F21T19.habitappt.Activities.MainActivity;
+import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.CMPUT301F21T19.habitappt.Lists.EventList;
 import com.CMPUT301F21T19.habitappt.Entities.Habit;
 import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
@@ -79,11 +80,14 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+/**
+ * This fragment is used to view a habit and its associated habit events.
+ */
 public class ViewHabit extends Fragment {
 
     private View view;
 
-    public MainActivity main;
+    private MainActivity main;
 
     private TextView habitIsPrivate;
     private TextView habitTitle;
@@ -91,23 +95,22 @@ public class ViewHabit extends Fragment {
     private TextView habitDateToStart;
     private ImageButton editButton;
 
-    private ViewHabit THIS = this;
 
-    View addEventButton;
+    private View addEventButton;
 
     private ArrayList<TextView> daysToDo = new ArrayList<>();
 
     private Habit habit;
 
-    SwipeMenuListView eventSwipeListView;
-    ArrayAdapter<HabitEvent> eventAdapter;
+    private SwipeMenuListView eventSwipeListView;
+    private ArrayAdapter<HabitEvent> eventAdapter;
 
-    SwipeMenuItem deleteItem;
-    SwipeMenuItem editItem;
+    private SwipeMenuItem deleteItem;
+    private SwipeMenuItem editItem;
 
     private FirebaseStorage storage;
-    private FirebaseAuth auth;
-    private FirebaseFirestore db;
+
+    private User currentUser;
 
     /**
      * @param habit Habit object in which to display in view
@@ -118,13 +121,20 @@ public class ViewHabit extends Fragment {
 
     }
 
+    /**
+     * Method called when fragment is created
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
 
-
+    /**
+     * When the fragment gets attached to its container, get a reference to MainActivity
+     * @param context
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -132,16 +142,23 @@ public class ViewHabit extends Fragment {
             main = (MainActivity) context;
         }
     }
-    
 
+    /**
+     * Create the view for the fragment.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_view_habit, container, false);
 
-        auth = FirebaseAuth.getInstance();
 
-        db = FirebaseFirestore.getInstance();
+
+        //get current user object
+        currentUser = new User();
 
         habitIsPrivate = view.findViewById(R.id.isPrivate_text_view);
         habitTitle = view.findViewById(R.id.habit_title_display);
@@ -177,13 +194,7 @@ public class ViewHabit extends Fragment {
             }
         });
 
-//        eventListView = view.findViewById(R.id.event_list);
-//        eventDataList = new ArrayList<>();
-//        eventAdapter = new EventList(getContext(), eventDataList);
-//        eventListView.setAdapter(eventAdapter);
 
-
-        //new
         eventSwipeListView = view.findViewById(R.id.event_list);
         habit.setHabitEvents(new ArrayList<>());
         eventAdapter = new EventList(getContext(), habit.getHabitEvents());
@@ -240,8 +251,10 @@ public class ViewHabit extends Fragment {
             }
         };
 
+        //set the menu creator to created config
         eventSwipeListView.setMenuCreator(creator);
 
+        //set listener for swiped item menu
         eventSwipeListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
@@ -262,14 +275,14 @@ public class ViewHabit extends Fragment {
                         HabitEvent delEvent = (HabitEvent) eventSwipeListView.getItemAtPosition(position);
                         //NEED TO DO
                         SharedHelper.deleteImage(delEvent.getId(), storage);
-                        SharedHelper.removeEvent(delEvent, habit, db);
+                        SharedHelper.removeEvent(delEvent, habit, currentUser);
                         break;
                 }
                 return false;
             }
         });
 
-
+        //button logic for creating a new event
         addEventButton = view.findViewById(R.id.add_event_button);
         addEventButton.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -279,28 +292,16 @@ public class ViewHabit extends Fragment {
             }
         });
 
-//        eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Log.d("Info", "Clicked an event");
-//                FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
-//                trans.replace(R.id.main_container,new EditEvent(eventDataList.get(position)));
-//                trans.commit();
-//            }
-//        });
 
-
-
-        DocumentReference docReference = FirebaseFirestore.getInstance()
-                .collection("Users")
-                .document(auth.getCurrentUser().getEmail())
-                .collection("Habits")
+        //logic for getting db updates
+        DocumentReference docReference = currentUser.getHabitReference()
                 .document(String.valueOf(habit.getId()));
 
         docReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 
+                //habit has been deleted if title is null. back out of view habit fragment
                 if(value.get("title") == null){
                     FragmentTransaction trans = main.getSupportFragmentManager().beginTransaction();
                     trans.replace(R.id.main_container,new AllHabits());
@@ -337,12 +338,7 @@ public class ViewHabit extends Fragment {
             }
         });
 
-        CollectionReference eventCollectionReference = FirebaseFirestore.getInstance()
-                .collection("Users")
-                .document(auth.getCurrentUser().getEmail())
-                .collection("Habits")
-                .document(String.valueOf(habit.getId()))
-                .collection("Event Collection");
+        CollectionReference eventCollectionReference = currentUser.getHabitEventReference(habit);
 
         eventCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override

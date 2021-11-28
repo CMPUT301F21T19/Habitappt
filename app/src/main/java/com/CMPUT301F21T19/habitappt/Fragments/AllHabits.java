@@ -20,10 +20,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+/**
+ * This class defines a fragment that shows all of a users habits.
+ */
 public class AllHabits extends HabitListFragment {
-    /**
-     * This class defines a fragment that shows all of a users habits.
-     */
+
 
     /**
      * This method returns all of the habits in the users collection

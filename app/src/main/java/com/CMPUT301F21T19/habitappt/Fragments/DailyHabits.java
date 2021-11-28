@@ -23,10 +23,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+/**
+ * This class defines a fragment that shows all of the habits a user must complete today.
+ */
 public class DailyHabits extends HabitListFragment {
-    /**
-     * This class defines a fragment that shows all of the habits a user must complete today.
-     */
+
 
     /**
      * This method returns all of the habits that must be completed today by the user

@@ -29,14 +29,21 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * Activity for logging in to habitappt
+ */
 public class LoginActivity extends AppCompatActivity {
 
-    Button login_button;
-    Button signup_button;
-    EditText usernameField;
-    EditText passwordField;
-    FirebaseAuth auth;
+    private Button login_button;
+    private Button signup_button;
+    private EditText usernameField;
+    private EditText passwordField;
+    private FirebaseAuth auth;
 
+    /**
+     * Create activity view
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordField.addTextChangedListener(textWatcher);
 
 
+        //login button logic. login if creds are valid, otherwise send an error toast.
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //logic for switching to signup activity
         signup_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

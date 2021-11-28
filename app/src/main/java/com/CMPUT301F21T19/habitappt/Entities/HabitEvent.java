@@ -33,7 +33,7 @@ public class HabitEvent {
     /**
      * id of habit
      */
-    String id;
+    private String id;
 
     /**
      * associated parent habit to event

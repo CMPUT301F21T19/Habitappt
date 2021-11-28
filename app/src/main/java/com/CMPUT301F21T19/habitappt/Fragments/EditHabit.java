@@ -54,15 +54,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.CMPUT301F21T19.habitappt.Activities.MainActivity;
 import com.CMPUT301F21T19.habitappt.Entities.Habit;
 import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
+import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.CMPUT301F21T19.habitappt.R;
 import com.CMPUT301F21T19.habitappt.Utils.CustomTextWatcher;
 import com.CMPUT301F21T19.habitappt.Utils.DualCustomTextWatcher;
 import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
@@ -70,6 +69,9 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.TimeZone;
 
+/**
+ * This fragment is used to edit a habit and its associated details.
+ */
 public class EditHabit extends DialogFragment {
 
     private MainActivity main;
@@ -78,7 +80,7 @@ public class EditHabit extends DialogFragment {
     private EditText habitTitle;
     private EditText habitReason;
     private CalendarView habitDateToStart;
-    private ArrayList<Button> days_of_week = new ArrayList<>();
+    private ArrayList<Button> dayOfWeek = new ArrayList<>();
 
     private Habit habit;
 
@@ -86,13 +88,11 @@ public class EditHabit extends DialogFragment {
 
     private String removeTextTitle;
 
-    long date_selected;
+    private long date_selected;
 
-    private FirebaseFirestore db;
     private FirebaseStorage storage;
-    private FirebaseAuth auth;
 
-    protected EditHabit THIS;
+    private User currentUser;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -125,15 +125,16 @@ public class EditHabit extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        THIS = this;
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.edit_habit,null);
 
-        db = FirebaseFirestore.getInstance();
 
         storage = FirebaseStorage.getInstance();
 
-        auth = FirebaseAuth.getInstance();
+
+
+        //get current user
+        currentUser = new User();
 
         isPrivateButton = view.findViewById(R.id.public_private_button);
         habitTitle = view.findViewById(R.id.habit_title);
@@ -144,13 +145,13 @@ public class EditHabit extends DialogFragment {
         habitReason.setText(habit.getReason());
         habitDateToStart.setDate(habit.getDateToStart());
 
-        days_of_week.add(view.findViewById(R.id.monday_button));
-        days_of_week.add(view.findViewById(R.id.tuesday_button));
-        days_of_week.add(view.findViewById(R.id.wednesday_button));
-        days_of_week.add(view.findViewById(R.id.thursday_button));
-        days_of_week.add(view.findViewById(R.id.friday_button));
-        days_of_week.add(view.findViewById(R.id.saturday_button));
-        days_of_week.add(view.findViewById(R.id.sunday_button));
+        dayOfWeek.add(view.findViewById(R.id.monday_button));
+        dayOfWeek.add(view.findViewById(R.id.tuesday_button));
+        dayOfWeek.add(view.findViewById(R.id.wednesday_button));
+        dayOfWeek.add(view.findViewById(R.id.thursday_button));
+        dayOfWeek.add(view.findViewById(R.id.friday_button));
+        dayOfWeek.add(view.findViewById(R.id.saturday_button));
+        dayOfWeek.add(view.findViewById(R.id.sunday_button));
 
         // click listeners for public/private button
         if (habit.getIsPrivate()) {
@@ -178,20 +179,20 @@ public class EditHabit extends DialogFragment {
         // click listeners for weekday buttons
         for(int i=0;i<7;i++){
             if(habit.getDateSelected(i)){
-                days_of_week.get(i).setBackgroundColor(Color.LTGRAY);
+                dayOfWeek.get(i).setBackgroundColor(Color.LTGRAY);
             } else {
-                days_of_week.get(i).setBackgroundColor(Color.WHITE);
+                dayOfWeek.get(i).setBackgroundColor(Color.WHITE);
             }
             final int index = new Integer(i);
-            days_of_week.get(i).setOnClickListener(new View.OnClickListener() {
+            dayOfWeek.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(habit.getDateSelected(index)){
                         habit.setDateSelected(index,false);
-                        days_of_week.get(index).setBackgroundColor(Color.WHITE);
+                        dayOfWeek.get(index).setBackgroundColor(Color.WHITE);
                     } else {
                         habit.setDateSelected(index,true);
-                        days_of_week.get(index).setBackgroundColor(Color.LTGRAY);
+                        dayOfWeek.get(index).setBackgroundColor(Color.LTGRAY);
                     }
                 }
             });
@@ -227,10 +228,10 @@ public class EditHabit extends DialogFragment {
                             //remove image from firestore storage after deleting event
                             SharedHelper.deleteImage(eachEvent.getId(), storage);
                             //remove event
-                            SharedHelper.removeEvent(eachEvent, THIS.habit, db);
+                            SharedHelper.removeEvent(eachEvent, habit, currentUser);
                         }
                         //remove habit
-                        SharedHelper.removeHabit(THIS.habit, db);
+                        SharedHelper.removeHabit(habit, currentUser);
 
                     }
                 }
@@ -238,21 +239,18 @@ public class EditHabit extends DialogFragment {
             .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-
+                    //logic for when a habit was getting edited and needs to be updated to the db.
                     if(getTag() == "EDIT"){
-                        DocumentReference doc = db
-                                .collection("Users")
-                                .document(auth.getCurrentUser().getEmail())
-                                .collection("Habits")
-                                .document(String.valueOf(THIS.habit.getId()));
+                        DocumentReference doc = currentUser.getHabitReference()
+                                .document(String.valueOf(habit.getId()));
 
                         HashMap<String,Object> data = new HashMap<>();
 
-                        data.put("isPrivate", THIS.habit.getIsPrivate());
-                        data.put("title",THIS.habitTitle.getText().toString());
-                        data.put("reason",THIS.habitReason.getText().toString());
-                        data.put("dateToStart",THIS.date_selected);
-                        data.put("daysToDo",THIS.habit.getWeekly());
+                        data.put("isPrivate", habit.getIsPrivate());
+                        data.put("title",habitTitle.getText().toString());
+                        data.put("reason",habitReason.getText().toString());
+                        data.put("dateToStart",date_selected);
+                        data.put("daysToDo",habit.getWeekly());
 
                         doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -267,26 +265,24 @@ public class EditHabit extends DialogFragment {
                         });
                     }
                     else if(getTag() == "ADD"){
+                        //logic for adding a habit and storing it in the db.
 
                         String id = String.valueOf(GregorianCalendar.getInstance().getTimeInMillis());
-                        DocumentReference doc = db
-                                .collection("Users")
-                                .document(auth.getCurrentUser().getEmail())
-                                .collection("Habits")
+                        DocumentReference doc = currentUser.getHabitReference()
                                 .document(id);
 
                         HashMap<String,Object> data = new HashMap<>();
 
-                        data.put("isPrivate", THIS.habit.getIsPrivate());
-                        data.put("title",THIS.habitTitle.getText().toString());
-                        data.put("reason",THIS.habitReason.getText().toString());
-                        data.put("dateToStart",THIS.date_selected);
-                        data.put("daysToDo",THIS.habit.getWeekly());
+                        data.put("isPrivate", habit.getIsPrivate());
+                        data.put("title",habitTitle.getText().toString());
+                        data.put("reason",habitReason.getText().toString());
+                        data.put("dateToStart",date_selected);
+                        data.put("daysToDo",habit.getWeekly());
 
-                        habit.setDateToStart(THIS.date_selected);
-                        habit.setTitle(THIS.habitTitle.getText().toString());
-                        habit.setReason(THIS.habitReason.getText().toString());
-                        habit.id = id;
+                        habit.setDateToStart(date_selected);
+                        habit.setTitle(habitTitle.getText().toString());
+                        habit.setReason(habitReason.getText().toString());
+                        habit.setId(id);
 
 
                         doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -295,7 +291,7 @@ public class EditHabit extends DialogFragment {
                                 Log.i("data","Data has been added succesfully!");
 
                                 FragmentTransaction trans = main.getSupportFragmentManager().beginTransaction();
-                                trans.replace(R.id.main_container,new ViewHabit(THIS.habit));
+                                trans.replace(R.id.main_container,new ViewHabit(habit));
                                 trans.addToBackStack(null);
                                 trans.commit();
 
@@ -323,11 +319,9 @@ public class EditHabit extends DialogFragment {
         //custom text watcher that will check the given inputs before enabling
         DualCustomTextWatcher dualTextWatcher = new DualCustomTextWatcher(THIS.habitTitle, THIS.habitReason, alertDialog.getButton(AlertDialog.BUTTON_POSITIVE), 0, 20, 0, 30);
 
-
         //set both edit text watchers
         THIS.habitTitle.addTextChangedListener(dualTextWatcher);
         THIS.habitReason.addTextChangedListener(dualTextWatcher);
-
 
         return alertDialog;
     }
