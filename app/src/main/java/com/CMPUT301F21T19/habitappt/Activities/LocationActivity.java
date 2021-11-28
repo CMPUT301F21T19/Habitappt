@@ -144,15 +144,23 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        locationPermissionGranted = false;
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    locationPermissionGranted = true;
-                }
-            }
+//        locationPermissionGranted = false;
+//        switch (requestCode) {
+//            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+//                // If request is cancelled, the result arrays are empty.
+//                if (grantResults.length > 0
+//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    locationPermissionGranted = true;
+//                }
+//            }
+//        }
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            locationPermissionGranted = true;
+        }
+        else{
+            locationPermissionGranted = false;
         }
         updateLocationUI();
     }
@@ -193,7 +201,13 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                locationPermissionGranted = true;
+            }
         }
+
     }
 
     /**
@@ -208,15 +222,8 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                 map.setMyLocationEnabled(true);
                 map.getUiSettings().setMyLocationButtonEnabled(true);
                 map.getUiSettings().setZoomControlsEnabled(true);
-
-
-            } else {
-                map.setMyLocationEnabled(false);
-                map.getUiSettings().setMyLocationButtonEnabled(false);
-                map.getUiSettings().setZoomControlsEnabled(false);
-                lastKnownLocation = null;
-                getLocationPermission();
             }
+
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
@@ -271,6 +278,8 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
      */
     @Override
     public void onMapClick(LatLng latLng) {
+
+
         if(marker != null){
             marker.remove();
         }
@@ -282,9 +291,12 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         marker = map.addMarker(new MarkerOptions().position(latLng)
                 .title("Lat: " + latLng.latitude + ", Lon: " + latLng.longitude).draggable(true));
 
-        //update last known location
-        lastKnownLocation.setLatitude(latLng.latitude);
-        lastKnownLocation.setLatitude(latLng.longitude);
+        if(lastKnownLocation != null){
+            //update last known location
+            lastKnownLocation.setLatitude(latLng.latitude);
+            lastKnownLocation.setLatitude(latLng.longitude);
+        }
+
         currLat = latLng.latitude;
         currLong = latLng.longitude;
 
