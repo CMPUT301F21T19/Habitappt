@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
+import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.CMPUT301F21T19.habitappt.R;
 import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,43 +32,53 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link ViewEvent#newInstance} factory method to
- * create an instance of this fragment.
+ * This fragment is used to view a habit event and its associated details.
  */
 public class ViewEvent extends Fragment {
 
-    HabitEvent event;
+    private HabitEvent event;
 
-    ImageButton editButton;
-    ImageView eventImageView;
-    TextView dateTextView;
-    TextView locationTextView;
-    TextView commentTextView;
+    private ImageButton editButton;
+    private ImageView eventImageView;
+    private TextView dateTextView;
+    private TextView locationTextView;
+    private TextView commentTextView;
 
-    FirebaseFirestore db;
-    FirebaseAuth auth;
-    FirebaseStorage storage;
+    private FirebaseStorage storage;
+
+    private User currentUser;
 
     public ViewEvent(HabitEvent event) {
         this.event = event;
     }
 
-
+    /**
+     * Called when fragment is created.
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
 
+    /**
+     * Create fragment view
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_event, container, false);
 
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
+        //get current user object
+        currentUser = new User();
+
+
         storage = FirebaseStorage.getInstance();
 
         editButton = view.findViewById(R.id.edit_button);
@@ -81,6 +92,7 @@ public class ViewEvent extends Fragment {
         //locationTextView stuff here when location is done
         commentTextView.setText(event.getComment());
 
+        //if location is specified, update field
         if(event.getLocationLat() != -1 || event.getLocationLon() != -1){
             locationTextView.setText("Location: " + Long.toString(Math.round(event.getLocationLat()) ) + ", " + Long.toString(Math.round(event.getLocationLon())));
         }
@@ -92,10 +104,8 @@ public class ViewEvent extends Fragment {
             }
         });
 
-        DocumentReference eventInfo = db.collection("Users")
-                .document(auth.getCurrentUser().getEmail())
-                .collection("Habits").document(event.getParentHabit().getId())
-                .collection("Event Collection")
+        //get db updates
+        DocumentReference eventInfo = currentUser.getHabitEventReference(event.getParentHabit())
                 .document(event.getId());
 
         eventInfo.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -133,7 +143,7 @@ public class ViewEvent extends Fragment {
                 dateTextView.setText(eventDate);
                 commentTextView.setText(eventComment);
 
-                //add all the location updating stuff
+
             }
         });
 

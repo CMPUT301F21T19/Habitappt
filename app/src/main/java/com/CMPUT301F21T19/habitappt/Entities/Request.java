@@ -14,35 +14,42 @@ public class Request {
      */
     private String requestedEmail;
 
-    long time;
+    private long time;
 
+    /**
+     * Constructor for a request
+     * @param requesterEmail
+     * @param requestedEmail
+     * @param time
+     */
     public Request(String requesterEmail, String requestedEmail, long time) {
         this.requesterEmail = requesterEmail;
         this.requestedEmail = requestedEmail;
         this.time = time;
     }
 
+    /**
+     * Get requester email
+     * @return
+     */
     public String getRequesterEmail() {
         return requesterEmail;
     }
 
-    public void setRequesterEmail(String requesterEmail) {
-        this.requesterEmail = requesterEmail;
-    }
-
+    /**
+     * Get requested email
+     * @return
+     */
     public String getRequestedEmail() {
         return requestedEmail;
     }
 
-    public void setRequestedEmail(String requestedEmail) {
-        this.requestedEmail = requestedEmail;
-    }
-
+    /**
+     * Get time the request was made at
+     * @return
+     */
     public long getTime() {
         return time;
     }
 
-    public void setTime(long time) {
-        this.time = time;
-    }
 }
