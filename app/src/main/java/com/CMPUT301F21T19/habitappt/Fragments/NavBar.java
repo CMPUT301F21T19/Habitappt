@@ -34,26 +34,25 @@ import androidx.fragment.app.Fragment;
 import com.CMPUT301F21T19.habitappt.R;
 
 /**
- * initialize navigation bar object with the specifed values
+ * Navigation bar for switching between main fragments (Profile, All Habits, and Daily Habits)
  */
-
 public class NavBar extends Fragment {
-    View profile_button;
-    View all_habits_button;
-    View daily_habits_button;
+    private View profile_button;
+    private View all_habits_button;
+    private View daily_habits_button;
     private nav_bar_switch listener;
 
-    /**
-     * Interface for the navigation bar.
-     * Calls switchFragment
-     * @param nav_to Fragment
-     */
+
     public interface nav_bar_switch{
+        /**
+         * Interface method for switching fragments in main container.
+         * @param nav_to Fragment
+         */
         void switchFragment(Fragment nav_to);
     }
 
     /**
-     * Attaches fragment to UI
+     * Called when fragment gets attached to main container
      * @param context
      */
     @Override
@@ -63,7 +62,7 @@ public class NavBar extends Fragment {
     }
 
     /**
-     * creates custom array adapter view for events
+     * Creates view for the navigation bar.
      * @param inflater inflates the layout to match view
      * @param container ViewGroup
      * @param savedInstanceState Bundle
@@ -81,6 +80,7 @@ public class NavBar extends Fragment {
         all_habits_button.setBackgroundColor(Color.WHITE);
         daily_habits_button.setBackgroundColor(Color.WHITE);
 
+        //profile button logic
         profile_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,6 +90,7 @@ public class NavBar extends Fragment {
                 listener.switchFragment(new Profile());
             }
         });
+        //all habits button logic
         all_habits_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +100,8 @@ public class NavBar extends Fragment {
                 listener.switchFragment(new AllHabits());
             }
         });
+
+        //daily habits button logic
         daily_habits_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

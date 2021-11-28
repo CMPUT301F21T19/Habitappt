@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.CMPUT301F21T19.habitappt.Entities.Habit;
+import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.CMPUT301F21T19.habitappt.Lists.HabitList;
 import com.CMPUT301F21T19.habitappt.R;
 import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
@@ -38,16 +39,17 @@ public abstract class HabitListFragment extends Fragment {
      * Abstract class for whenever we want to display a list of habits from the database.
      */
 
-    SwipeMenuListView habitListView;
-    ArrayAdapter<Habit> habitAdapter;
-    ArrayList<Habit> habitDataList;
+    private SwipeMenuListView habitListView;
 
-    View addHabitButton;
-    FirebaseFirestore db;
-    FirebaseAuth auth;
+    protected ArrayAdapter<Habit> habitAdapter;
+    protected ArrayList<Habit> habitDataList;
 
-    SwipeMenuItem deleteItem;
-    SwipeMenuItem editItem;
+    private View addHabitButton;
+
+    private User currentUser;
+
+    private SwipeMenuItem deleteItem;
+    private SwipeMenuItem editItem;
 
     private View view;
 
@@ -82,13 +84,12 @@ public abstract class HabitListFragment extends Fragment {
         addHabitButton = view.findViewById(R.id.add_habit_button);
         habitListView = view.findViewById(R.id.habit_list);
 
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
 
-        final CollectionReference collectionReference = db
-                .collection("Users")
-                .document(auth.getCurrentUser().getEmail())
-                .collection("Habits");
+
+        //get current user object
+        currentUser = new User();
+
+        final CollectionReference collectionReference = currentUser.getHabitReference();
 
         habitDataList = new ArrayList<>();
         habitAdapter = new HabitList(getContext(), habitDataList, false, null);
@@ -179,7 +180,7 @@ public abstract class HabitListFragment extends Fragment {
 
                         Habit delHabit = (Habit) habitListView.getItemAtPosition(position);
 
-                        SharedHelper.removeHabit(delHabit,db);
+                        SharedHelper.removeHabit(delHabit,currentUser);
                         break;
                 }
                 return false;
