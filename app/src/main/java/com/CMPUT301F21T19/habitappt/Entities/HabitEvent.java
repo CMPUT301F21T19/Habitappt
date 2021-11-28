@@ -72,6 +72,9 @@ public class HabitEvent {
      * @param id id of event in firestore
      */
     public HabitEvent(String comment, long eventDate,Habit parentHabit, String id, double locationLat, double locationLon){
+        if(comment.length() > 20) {
+            throw new IllegalArgumentException("Invalid Comment");
+        }
         this.comment = comment;
         this.eventDate = eventDate;
         this.parentHabit = parentHabit;
@@ -88,6 +91,9 @@ public class HabitEvent {
      * @param id id of event in firestore
      */
     public HabitEvent(String comment, long eventDate,Habit parentHabit, String id){
+        if(comment.length() > 20) {
+            throw new IllegalArgumentException("Invalid Comment");
+        }
         this.comment = comment;
         this.eventDate = eventDate;
         this.parentHabit = parentHabit;
@@ -106,6 +112,9 @@ public class HabitEvent {
      * @param img image of event
      */
     public HabitEvent(String comment, long eventDate,Habit parentHabit, String id, Bitmap img){
+        if(comment.length() > 20) {
+            throw new IllegalArgumentException("Invalid Comment");
+        }
         this.comment = comment;
         this.eventDate = eventDate;
         this.parentHabit = parentHabit;
@@ -157,6 +166,9 @@ public class HabitEvent {
      * @param comment comment associated to event
      */
     public void setComment(String comment) {
+        if(comment.length() > 20) {
+            throw new IllegalArgumentException("Invalid Comment");
+        }
         this.comment = comment;
     }
 

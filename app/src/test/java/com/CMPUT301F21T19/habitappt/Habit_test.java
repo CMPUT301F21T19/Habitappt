@@ -84,6 +84,18 @@ public class Habit_test {
 //        assertTrue(mockHabit.getScore() == 500);
     }
 
+    //test exception for when title is too long
+    @Test(expected = IllegalArgumentException.class)
+    public void testTitleIllegalArgumentException() {
+        mockHabit.setTitle("123456789012345678901234567890");
+    }
+
+    //test exception for when reason is too long
+    @Test(expected = IllegalArgumentException.class)
+    public void testReasonIllegalArgumentException() {
+        mockHabit.setReason("12345678901234567890123456789012345");
+    }
+
     //test functionality of setDateSelected and getDateSelected
     @Test
     public void testDateSelected(){
