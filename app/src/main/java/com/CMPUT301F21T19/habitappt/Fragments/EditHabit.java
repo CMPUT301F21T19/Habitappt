@@ -55,6 +55,8 @@ import com.CMPUT301F21T19.habitappt.Activities.MainActivity;
 import com.CMPUT301F21T19.habitappt.Entities.Habit;
 import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
 import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Utils.CustomTextWatcher;
+import com.CMPUT301F21T19.habitappt.Utils.DualCustomTextWatcher;
 import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -89,7 +91,6 @@ public class EditHabit extends DialogFragment {
     private FirebaseFirestore db;
     private FirebaseStorage storage;
     private FirebaseAuth auth;
-
 
     protected EditHabit THIS;
 
@@ -320,63 +321,15 @@ public class EditHabit extends DialogFragment {
         }
 
         //custom text watcher that will check the given inputs before enabling
-        TextWatcher watcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {
-                //if habit title changed
-                if(editable == THIS.habitTitle.getEditableText()){
-                    //if good length
-                    if(editable.length() >= 1 && editable.length() < 20 && THIS.habitReason.getText().length() >= 1 && THIS.habitReason.getText().length() < 30){
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                    }
-                    else{
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                        //if false, update error reason
-                        checkInput();
-                    }
-                }
-                if(editable == THIS.habitReason.getEditableText()){
-                    if(editable.length() >= 1 && editable.length() < 30 && THIS.habitTitle.getText().length() >=1 && THIS.habitTitle.getText().length() < 20){
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                    }
-                    else {
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                        //if false, update error reason
-                        checkInput();
-                    }
-                }
-            }
-        };
+        DualCustomTextWatcher dualTextWatcher = new DualCustomTextWatcher(THIS.habitTitle, THIS.habitReason, alertDialog.getButton(AlertDialog.BUTTON_POSITIVE), 0, 20, 0, 30);
+
+
         //set both edit text watchers
-        THIS.habitTitle.addTextChangedListener(watcher);
-        THIS.habitReason.addTextChangedListener(watcher);
+        THIS.habitTitle.addTextChangedListener(dualTextWatcher);
+        THIS.habitReason.addTextChangedListener(dualTextWatcher);
+
 
         return alertDialog;
     }
 
-    /**
-     * Displays error when habit title and reason text input is empty or greater than 20 characters
-     */
-    public void checkInput(){
-        if(THIS.habitTitle.getText().length() == 0){
-            THIS.habitTitle.setError("Title cannot be empty");
-        }
-        //too long
-        if(THIS.habitTitle.getText().length() > 19){
-            THIS.habitTitle.setError("Maximum Length 0f 20: Please reduce");
-        }
-        //empty reason
-        if(THIS.habitReason.getText().length() == 0){
-            THIS.habitReason.setError("Reason cannot be empty");
-        }
-        if(THIS.habitReason.getText().length() > 29){
-            THIS.habitReason.setError("Maximum Length 0f 30: Please reduce");
-        }
-    }
 }

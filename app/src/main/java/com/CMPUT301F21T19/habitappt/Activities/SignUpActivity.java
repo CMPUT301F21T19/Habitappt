@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Utils.CustomTextWatcher;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -33,6 +34,9 @@ public class SignUpActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.password);
 
         confirmButton = findViewById(R.id.confirm_signup);
+
+        CustomTextWatcher textWatcher = new CustomTextWatcher(passwordField, confirmButton, 6, 50);
+        passwordField.addTextChangedListener(textWatcher);
 
         auth = FirebaseAuth.getInstance();
 

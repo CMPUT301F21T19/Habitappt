@@ -64,6 +64,8 @@ import com.CMPUT301F21T19.habitappt.Activities.LocationActivity;
 import com.CMPUT301F21T19.habitappt.Entities.Habit;
 import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
 import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Utils.CustomTextWatcher;
+import com.CMPUT301F21T19.habitappt.Utils.DualCustomTextWatcher;
 import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -453,41 +455,9 @@ public class EditEvent extends DialogFragment {
         if(eventComments.getText().length() == 0) {
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
         }
-        TextWatcher watcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {
-                //if habit title changed
-                if(editable == THIS.eventComments.getEditableText()){
-                    //if good length
-                    if(editable.length() >= 1 && editable.length() < 20 && String.valueOf(THIS.eventDate.getDate()).length() >= 1 && String.valueOf(THIS.eventDate.getDate()).length() < 30){
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                    }
-                    else{
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                        checkInput();
-                    }
-                }
-                /*
-                if(editable == String.valueOf(THIS.eventDate.getDate()).getEditableText()){
-                    if(editable.length() >= 1 && editable.length() < 30 && THIS.eventComments.getText().length() >=1 && THIS.eventComments.getText().length() < 20){
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                    }
-                    else {
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                        checkInput();
-                    }
-                }
 
-                 */
-            }
-        };
-        THIS.eventComments.addTextChangedListener(watcher);
+        CustomTextWatcher textWatcher = new CustomTextWatcher(THIS.eventComments, alertDialog.getButton(AlertDialog.BUTTON_POSITIVE), 0, 20);
+        THIS.eventComments.addTextChangedListener(textWatcher);
         //THIS.eventDate.addTextChangedListener(watcher);
 
         return alertDialog;
