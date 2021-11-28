@@ -1,3 +1,18 @@
+/**
+ * Copyright 2021 - 2021 CMPUT301F21T19 (Habitappt). All rights reserved. This document nor any
+ * part of it may be reproduced, stored in a retrieval system or transmitted in any for or by any
+ * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
+ * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
+ *
+ * Class: RequestList
+ *
+ * Description:
+ * Encapsulates information regarding a users follow requests into an arrayadapter
+ *
+ * @version "%1%,%5%"
+ *
+ *
+ */
 package com.CMPUT301F21T19.habitappt.Lists;
 
 import android.content.Context;
@@ -16,6 +31,9 @@ import com.CMPUT301F21T19.habitappt.Entities.Request;
 import java.util.ArrayList;
 
 public class RequestList extends ArrayAdapter<Request> {
+    /**
+     * contains user requests
+     */
     private ArrayList<Request> requests;
     private Context context;
 
@@ -25,6 +43,13 @@ public class RequestList extends ArrayAdapter<Request> {
         this.context = context;
     }
 
+    /**
+     * displays all follower requests for a given user in a list
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -38,6 +63,7 @@ public class RequestList extends ArrayAdapter<Request> {
 
         TextView requesterEmail = view.findViewById(R.id.requester_email_text_view);
 
+        //list requesting follower by their email
         requesterEmail.setText(request.getRequesterEmail());
 
         return view;
