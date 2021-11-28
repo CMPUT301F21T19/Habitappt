@@ -107,11 +107,14 @@ public class EditEvent extends DialogFragment {
     private FirebaseStorage storage;
     private Habit habit;
 
-    private final int LAUNCH_MAP_ACTIVITY = 1;
+    private final int LAUNCH_MAP_ACTIVITY = 2;
 
 
     private double oldLat, oldLon;
     private TextView latTextView, lonTextView;
+
+    private Bundle savedState;
+    private static final String SAVED_BUNDLE_TAG = "saved_bundle";
 
     /**
      * create a EditEvent object with the specified values
@@ -457,12 +460,7 @@ public class EditEvent extends DialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == 1 && data != null){
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imgButton.setImageBitmap(imageBitmap);
-            event.setImg(imageBitmap);
-        }
+
 
         //if returning from map activity
         if(requestCode == LAUNCH_MAP_ACTIVITY){
@@ -478,6 +476,13 @@ public class EditEvent extends DialogFragment {
                 latTextView.setText("Latitude: " + (int) latitude + "\u00B0");
                 lonTextView.setText("Longitude: " + (int) longitude + "\u00B0");
             }
+        }
+
+        if(requestCode == 1 && data != null){
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imgButton.setImageBitmap(imageBitmap);
+            event.setImg(imageBitmap);
         }
     }
 }
