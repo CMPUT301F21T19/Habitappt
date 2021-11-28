@@ -27,8 +27,9 @@ package Entities #DDDDFF{
         -ArrayList<Boolean> datesToDo
         -ArrayList<HabitEvent> habitEvents
         -String id
+        -long index
 
-        +Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate)
+        +Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate,long index)
         +Habit()
         +String getId()
         +void setId(String id)
@@ -44,6 +45,8 @@ package Entities #DDDDFF{
         +ArrayList<HabitEvent> getHabitEvents()
         +boolean getIsPrivate()
         +void setIsPrivate(boolean isPrivate)
+        +long getIndex()
+        +void setIndex(long index)
     }
 
     class HabitEvent {
@@ -218,20 +221,7 @@ package Fragments #FFDDDD {
         +void checkInput()
     }
 
-    abstract class HabitListFragment {
-        -SwipeMenuListView habitListView
-        #ArrayAdapter<Habit> habitAdapter
-        #ArrayList<Habit> habitDataList
-        -View addHabitButton
-        -View view
-        -SwipeMenuItem deleteItem
-        -SwipeMenuItem editItem
-        -User currentUser
 
-        +void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error)
-        +void onCreate(Bundle savedInstanceState)
-        +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    }
 
     class NavBar {
         -View profile_button
@@ -372,6 +362,7 @@ package Lists #DDFFFF {
         +void OnItemMoved(int fromPosition, int toPosition)
         +void onItemSelected(DragViewHolder myViewHolder)
         +void onItemCLear(DragViewHolder myViewHolder)
+        +void onDoneDragging()
         +void updateDocIndex()
     }
 
@@ -451,6 +442,7 @@ package Utils #FFDDFF {
         +void OnItemMoved(int fromPosition, int toPosition)
         +void onItemSelected(DragMoveAdapter.DragViewHolder myViewHolder)
         +void onItemCLear(DragMoveAdapter.DragViewHolder myViewHolder)
+        +void onDoneDragging()
     }
 
     class SharedHelper {
@@ -482,7 +474,7 @@ package Utils #FFDDFF {
 
 
 ViewFollowing "1" *-- "0..*" Habit
-HabitListFragment "1" *-- "1" User
+
 RecyclerViewFragment "1" *-- "1" User
 EditEvent "1" *-- "1" User
 EditHabit "1" *-- "1" User
@@ -493,7 +485,7 @@ ViewEvent "1" *-- "1" User
 ViewFollowing "1" *-- "2" User
 ViewHabit "1" *-- "1" User
 VisualIndicator "1" *-- "1" User
-HabitListFragment "1" *-- "0..*" Habit
+
 RecyclerViewFragment "1" *-- "0..*" Habit
 
 ViewHabit "0..*" o-- "1" Activity
@@ -560,7 +552,6 @@ Fragment <|-- ViewFollowing
 Fragment <|-- NavBar
 Fragment <|-- ViewEvent
 Fragment <|-- Profile
-Fragment <|-- HabitListFragment
 Fragment <|-- RecyclerViewFragment
 RecyclerViewFragment <|-- AllHabits
 RecyclerViewFragment <|-- DailyHabits
