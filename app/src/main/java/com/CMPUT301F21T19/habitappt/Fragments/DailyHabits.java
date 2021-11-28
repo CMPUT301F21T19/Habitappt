@@ -19,12 +19,11 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import com.CMPUT301F21T19.habitappt.Entities.Habit;
-import com.CMPUT301F21T19.habitappt.recycler_view_fragment;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class DailyHabits extends recycler_view_fragment {
+public class DailyHabits extends RecyclerViewFragment {
     /**
      * This class defines a fragment that shows all of the habits a user must complete today.
      */

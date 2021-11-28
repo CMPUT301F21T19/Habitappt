@@ -8,16 +8,9 @@
  *
  *  Description : This class extends Recycler View Adapter, and tells it what to do when moving habits.
  */
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Lists;
 
-import static android.provider.SyncStateContract.Helpers.update;
-
-import static io.grpc.okhttp.internal.Platform.get;
-
-import android.graphics.Color;
 import android.os.Handler;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,21 +18,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.CMPUT301F21T19.habitappt.Entities.Habit;
+import com.CMPUT301F21T19.habitappt.Entities.User;
+import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Utils.DragHabits;
 import com.CMPUT301F21T19.habitappt.Utils.VisualIndicator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -192,11 +182,8 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
      * This method updates the index field in the document when a habit is moved.
      */
     public void updateDocIndex() {
-        String emailID = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        CollectionReference collectionReference = FirebaseFirestore.getInstance()
-                .collection("Users")
-                .document(emailID)
-                .collection("Habits");
+        User currentUser = new User();
+        CollectionReference collectionReference = currentUser.getHabitReference();
         
         int length = habitList.size();
 

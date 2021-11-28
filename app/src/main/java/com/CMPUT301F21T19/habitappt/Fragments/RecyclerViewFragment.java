@@ -4,7 +4,7 @@
  *  means without prior permission of the members of CMPUT301F21T19 or by the professor and any
  *  authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
  *
- *  Class : recycler_view_fragment
+ *  Class : RecyclerViewFragment
  *
  *  Description : This is an abstract class for the Recycler View to display the habits on the view
  *  and order them by their index.
@@ -12,19 +12,13 @@
  * @version "%1 %5"
  *
  */
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Fragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -33,9 +27,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.CMPUT301F21T19.habitappt.Entities.User;
+import com.CMPUT301F21T19.habitappt.Utils.DragHabits;
+import com.CMPUT301F21T19.habitappt.Lists.DragMoveAdapter;
 import com.CMPUT301F21T19.habitappt.Entities.Habit;
-import com.CMPUT301F21T19.habitappt.Fragments.EditHabit;
-import com.CMPUT301F21T19.habitappt.Fragments.ViewHabit;
+import com.CMPUT301F21T19.habitappt.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -44,32 +40,24 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 
 /**
  * Abstract class for whenever we want to display a list of habits from the database.
  */
 
-public abstract class recycler_view_fragment extends Fragment implements DragMoveAdapter.DragListener {
+public abstract class RecyclerViewFragment extends Fragment implements DragMoveAdapter.DragListener {
 
     protected DragMoveAdapter habitAdapter;
     protected ArrayList<Habit> habitDataList;
 
-    RecyclerView habitView;
-    View addHabitButton;
-    FirebaseFirestore db;
-    FirebaseAuth auth;
-    String emailID;
+    private RecyclerView habitView;
+    private View addHabitButton;
 
-    CollectionReference habitCollection;
-    DocumentReference userDocument;
-    protected CollectionReference currentUserHabits;
-
+    private User currentUser;
     private View view;
 
     /**
@@ -97,25 +85,13 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        currentUser = new User();
 
         view = inflater.inflate(R.layout.recycler_view, container, false);
 
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
-        emailID = user.getEmail();
-
-        habitCollection = db.collection("Users");
-        userDocument = habitCollection.document(emailID);
-        currentUserHabits = userDocument.collection("Habits");
+        final CollectionReference userHabitReference = currentUser.getHabitReference();
 
         addHabitButton = view.findViewById(R.id.add_habit_button);
-
-        final CollectionReference collectionReference = db
-                .collection("Users")
-                .document(auth.getCurrentUser().getEmail())
-                .collection("Habits");
 
         //listener for pressing the button to add habits.
         addHabitButton.setOnClickListener( new View.OnClickListener() {
@@ -133,8 +109,8 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
         initHabitOrder();
 
         // orders the habitList by it's index position
-        Query currentUser = currentUserHabits.orderBy("index", Query.Direction.ASCENDING);
-        currentUser.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        Query referenceQuery = userHabitReference.orderBy("index", Query.Direction.ASCENDING);
+        referenceQuery.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
                 parseDataBaseUpdate(queryDocumentSnapshots,error);

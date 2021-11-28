@@ -8,12 +8,13 @@
  *  Code taken from : https://github.com/iPaulPro/Android-ItemTouchHelper-Demo/tree/001dcdc99f75f77a431fe5c303be54ab45cd9a32/app/src/main/java/co/paulburke/android/itemtouchhelperdemo/helper
  *
  */
-package com.CMPUT301F21T19.habitappt;
+package com.CMPUT301F21T19.habitappt.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import static androidx.recyclerview.widget.ItemTouchHelper.Callback.makeMovementFlags;
+
+import com.CMPUT301F21T19.habitappt.Lists.DragMoveAdapter;
 
 import javax.annotation.Nullable;
 
