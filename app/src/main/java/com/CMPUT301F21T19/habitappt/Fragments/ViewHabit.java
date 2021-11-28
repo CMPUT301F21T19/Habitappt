@@ -266,7 +266,7 @@ public class ViewHabit extends Fragment {
                         HabitEvent editEvent = (HabitEvent) eventSwipeListView.getItemAtPosition(position);
                         //create fragement
                         new EditEvent(editEvent, habit,"EDIT").show(getActivity().getSupportFragmentManager(), "EDIT");
-                        break;
+                        return true;
                     //delete selected
                     case 1:
                         Log.d("MENUSELECT", "OnMenuItemClick: selected item" + index);
@@ -276,7 +276,7 @@ public class ViewHabit extends Fragment {
                         //NEED TO DO
                         SharedHelper.deleteImage(delEvent.getId(), storage);
                         SharedHelper.removeEvent(delEvent, habit, currentUser);
-                        break;
+                        return true;
                 }
                 return false;
             }

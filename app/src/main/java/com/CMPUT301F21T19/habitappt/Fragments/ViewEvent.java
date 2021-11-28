@@ -111,37 +111,41 @@ public class ViewEvent extends Fragment {
         eventInfo.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                String imgId = value.getId();
-                String eventComment = (String) value.get("comments");
-                String eventDate = SharedHelper.getStringDateFromLong((long) value.get("eventDate"));
 
-                StorageReference ref = storage.getReferenceFromUrl("gs://habitappt.appspot.com/default_user/" + imgId + ".jpg");
+                if(value.exists()){
+                    String imgId = value.getId();
+                    String eventComment = (String) value.get("comments");
+                    String eventDate = SharedHelper.getStringDateFromLong((long) value.get("eventDate"));
+
+                    StorageReference ref = storage.getReferenceFromUrl("gs://habitappt.appspot.com/default_user/" + imgId + ".jpg");
 
 
-                if(value.contains("latitude") && value.contains("longitude")){
-                    Double lat = (Double) value.get("latitude");
-                    Double lon = (Double) value.get("longitude");
+                    if(value.contains("latitude") && value.contains("longitude")){
+                        Double lat = (Double) value.get("latitude");
+                        Double lon = (Double) value.get("longitude");
 
-                    locationTextView.setText("Location: " + Long.toString(Math.round(lat) ) + ", " + Long.toString(Math.round(lon)));
+                        locationTextView.setText("Location: " + Long.toString(Math.round(lat) ) + ", " + Long.toString(Math.round(lon)));
+                    }
+
+
+                    ref.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            Bitmap bitMapImg = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                            eventImageView.setImageBitmap(bitMapImg);
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("image retrieval failure","image retrieval failure");
+                        }
+                    });
+
+                    dateTextView.setText(eventDate);
+                    commentTextView.setText(eventComment);
                 }
 
-
-                ref.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] bytes) {
-                        Bitmap bitMapImg = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                        eventImageView.setImageBitmap(bitMapImg);
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("image retrieval failure","image retrieval failure");
-                    }
-                });
-
-                dateTextView.setText(eventDate);
-                commentTextView.setText(eventComment);
 
 
             }
