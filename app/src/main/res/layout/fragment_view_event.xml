@@ -9,10 +9,12 @@
 
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/edit_button"
@@ -25,7 +27,8 @@
         android:id="@+id/event_img"
         android:layout_width="match_parent"
         android:layout_height="377dp"
-        android:src="@drawable/no_image_provided_event" />
+        android:src="@drawable/no_image_provided_event"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
