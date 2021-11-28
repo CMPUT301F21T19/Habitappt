@@ -469,8 +469,40 @@ package Utils #FFDDFF {
         +void populateEventList()
         +boolean GetIsTodayEventDone()
     }
-}
 
+    class CustomTextWatcher {
+        -Integer minLength
+        -Integer maxLength
+        -EditText editText
+        -Button button
+        -Boolean goodText
+
+        +CustomTextWatcher(EditText editText , Button button, Integer minLength, Integer maxLength)
+        +void checkInput()
+        +Boolean getGoodText()
+        +void void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+        +void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+        +void afterTextChanged(Editable editable)
+
+    }
+
+    class DualCustomTextWatcher {
+        -Integer minLength1
+        -Integer maxLength1
+        -EditText editText1
+        -Integer minLength2
+        -Integer maxLength2
+        -EditText editText2
+        -Button button
+        -Boolean goodInput
+
+        +DualCustomTextWatcher(EditText editText1 , EditText editText2, Button button, Integer minLength1, Integer maxLength1, Integer minLength2, Integer maxLength2)
+        +void checkInput()
+        +void void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+        +void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+        +void afterTextChanged(Editable editable)
+    }
+}
 
 
 ViewFollowing "1" *-- "0..*" Habit
@@ -531,6 +563,10 @@ User <-- Activity
 DragHabits.ItemTouchHelperAdapter <-- DragMoveAdapter.DragViewHolder
 DragHabits.ItemTouchHelperAdapter <-- RecyclerView.ViewHolder
 DragHabits.ItemTouchHelperAdapter <-- RecyclerView
+CustomTextWatcher <-- addEventButton
+DualCustomTextWatcher <-- addHabitButton
+CustomTextWatcher <-- confirmButton
+CustomTextWatcher <-- loginButton
 
 SignUpActivity "0..*" <-- "1" FirebaseAuth
 LoginActivity "0..*" <-- "1" FirebaseAuth

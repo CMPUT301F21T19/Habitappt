@@ -8,14 +8,14 @@ import android.widget.EditText;
 
 public class DualCustomTextWatcher implements TextWatcher {
 
-    Integer minLength1;
-    Integer maxLength1;
-    Integer minLength2;
-    Integer maxLength2;
+    private Integer minLength1;
+    private Integer maxLength1;
+    private Integer minLength2;
+    private Integer maxLength2;
     private EditText editText1;
     private EditText editText2;
-    Button button;
-    Boolean goodInput = false;
+    private Button button;
+
 
     public DualCustomTextWatcher(EditText editText1 , EditText editText2, Button button, Integer minLength1, Integer maxLength1, Integer minLength2, Integer maxLength2) {
 

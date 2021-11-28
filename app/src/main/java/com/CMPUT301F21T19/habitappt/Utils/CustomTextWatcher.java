@@ -8,11 +8,11 @@ import android.widget.EditText;
 
 public class CustomTextWatcher implements TextWatcher{
 
-    Integer minLength;
-    Integer maxLength;
+    private Integer minLength;
+    private Integer maxLength;
     private EditText editText;
-    Button button;
-    Boolean goodText = false;
+    private Button button;
+    private Boolean goodText = false;
 
     public CustomTextWatcher (EditText editText , Button button, Integer minLength, Integer maxLength) {
 
