@@ -158,25 +158,23 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
      */
     @Override
     public void OnItemMoved(int fromPosition, int toPosition) {
-        if(fromPosition < toPosition){
-            for(int i = fromPosition; i < toPosition; i++){
-                Collections.swap(habitList, i, i+1);
-
-            }
-        }else{
-            for(int i = fromPosition; i > toPosition; i--){
-                Collections.swap(habitList, i, i-1);
-            }
-        }
+        Collections.swap(habitList,fromPosition,toPosition);
         notifyItemMoved(fromPosition, toPosition);
-        updateDocIndex();
+    }
+
+
+
+    @Override
+    public void onItemSelected(DragViewHolder myViewHolder) {
     }
 
     @Override
-    public void onItemSelected(DragViewHolder myViewHolder) { }
+    public void onItemCLear(DragViewHolder myViewHolder) { }
 
     @Override
-    public void onItemCLear(DragViewHolder myViewHolder) { }
+    public void onDoneDragging() {
+        updateDocIndex();
+    }
 
     /**
      * This method updates the index field in the document when a habit is moved.

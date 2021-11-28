@@ -29,6 +29,9 @@ public class DragHabits extends ItemTouchHelper.Callback{
         void onItemSelected(DragMoveAdapter.DragViewHolder myViewHolder);
 
         void onItemCLear(DragMoveAdapter.DragViewHolder myViewHolder);
+
+        void onDoneDragging();
+
     }
 
     private ItemTouchHelperAdapter touchHelper;
@@ -96,6 +99,9 @@ public class DragHabits extends ItemTouchHelper.Callback{
                 DragMoveAdapter.DragViewHolder myViewHolder = (DragMoveAdapter.DragViewHolder) viewHolder;
                 touchHelper.onItemSelected(myViewHolder);
             }
+        }
+        else if(actionState == ItemTouchHelper.ACTION_STATE_IDLE){
+            touchHelper.onDoneDragging();
         }
         super.onSelectedChanged(viewHolder, actionState);
     }

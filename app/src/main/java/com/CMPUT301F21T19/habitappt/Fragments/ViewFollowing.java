@@ -230,8 +230,9 @@ public class ViewFollowing extends Fragment {
                                 String reason = (String) doc.getData().get("reason");
                                 long dateToStart = (long) doc.getData().get("dateToStart");
                                 ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
+                                int index = (int) doc.getData().get("index");
 
-                                habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate));
+                                habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate,index));
                                 habitAdapter.notifyDataSetChanged();
                             }
 
@@ -274,10 +275,12 @@ public class ViewFollowing extends Fragment {
                                 Calendar startCal = Calendar.getInstance();
                                 startCal.setTime(startDate);
 
+                                long index = (long) doc.getData().get("index");
+
                                 if (todayDate.getTime() > startDate.getTime()) {
                                     for (int i=0; i<datesToDo.size(); i++) {
                                         if (datesToDo.get(i) && todayCal.get(Calendar.DAY_OF_WEEK) == ((i+1)%7)+1) {
-                                            dailyHabitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate));
+                                            dailyHabitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate,index));
                                         }
                                     }
                                 }
