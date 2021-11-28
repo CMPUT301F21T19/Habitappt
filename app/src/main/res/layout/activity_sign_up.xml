@@ -4,76 +4,93 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_background"
-    tools:context=".Activities.SignUpActivity">
+    android:background="@drawable/login_background">
 
     <LinearLayout
-        android:layout_width="308dp"
-        android:layout_height="399dp"
-        android:background="@color/colorPrimary"
-        android:foregroundGravity="center"
-        android:gravity="center|top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/signup_label"
-            android:layout_width="match_parent"
-            android:layout_height="81dp"
-            android:layout_gravity="top"
-            android:gravity="center"
-            android:text="SIGN UP"
-            android:textColor="@color/colorWhite"
-            android:textSize="20sp" />
+        <LinearLayout
+            android:layout_width="430dp"
+            android:layout_height="168dp"
+            android:orientation="vertical"
+            android:layout_gravity="center">
 
-        <TextView
-            android:id="@+id/email_label"
-            android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="121dp"
+                android:layout_marginTop="16dp"
+                app:srcCompat="@drawable/ic_daily_habit"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:gravity="center"
-            android:text="Email"
-            android:textColor="@color/colorWhite"
-            android:textSize="20sp" />
+            android:layout_gravity="center"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical"
+            android:padding="100px">
 
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="190dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="email"
-            android:inputType="textPersonName"
-            android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite" />
+            <TextView
+                android:id="@+id/signup_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="50px"
+                android:text="SignUp"
+                android:textColor="@color/colorWhite"
+                android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/password_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:gravity="center"
-            android:text="Password"
-            android:textColor="@color/colorWhite"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/email_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Email"
+                android:textColor="@color/colorWhite" />
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="188dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="password"
-            android:inputType="textPassword"
-            android:textColorHint="@color/colorWhite" />
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Email"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite" />
 
-        <Button
-            android:id="@+id/confirm_signup"
-            android:layout_width="182dp"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:text="Confirm" />
+            <TextView
+                android:id="@+id/password_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Password"
+                android:textColor="@color/colorWhite" />
 
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="center"
+                android:inputType="textPassword"
+                android:textColor="@color/colorWhite"/>
+
+            <Button
+                android:id="@+id/confirm_signup"
+                android:layout_width="124dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/colorPrimaryDark"
+                android:text="Confirm"
+                android:textColor="@color/colorWhite"/>
+
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

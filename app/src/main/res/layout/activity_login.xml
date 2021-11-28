@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Username"
+                android:text="Email"
                 android:textColor="@color/colorWhite" />
 
             <EditText
@@ -62,7 +62,7 @@
                 android:ems="10"
                 android:gravity="center"
                 android:inputType="textPersonName"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/colorWhite"/>
 
             <TextView
                 android:id="@+id/password_label"
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="center"
-                android:inputType="textPersonName"
+                android:inputType="textPassword"
                 android:textColor="@color/colorWhite"/>
 
             <Button
@@ -92,17 +92,19 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="15dp"
                 android:orientation="vertical"></LinearLayout>
 
             <Button
                 android:id="@+id/signup"
-                android:layout_width="208dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
+                android:layout_width="124dp"
+                android:layout_height="wrap_content"
                 android:background="@color/colorPrimaryDark"
-                android:text="Sign up now"
-                android:textColor="#FFFFFF" />
+                android:layout_gravity="center"
+                android:text="Sign Up"
+                android:textColor="@color/colorWhite" />
+
+
 
         </LinearLayout>
 

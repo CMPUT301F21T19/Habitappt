@@ -16,8 +16,9 @@
         <TextView
             android:id="@+id/username_field"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:text="username"
+            android:gravity="center"
             android:textSize="25sp"
             android:textStyle="bold"
             android:padding="10dp"/>
@@ -33,7 +34,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
-                android:text="Following" />
+                android:text="Following"
+                android:textColor="@color/colorWhite"/>
 
             <Button
                 android:id="@+id/followers_button"
@@ -41,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
-                android:text="Followers" />
+                android:text="Followers"
+                android:textColor="@color/colorWhite"/>
 
             <Button
                 android:id="@+id/requests_button"
@@ -49,7 +52,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
-                android:text="Requests" />
+                android:text="Requests"
+                android:textColor="@color/colorWhite"/>
 
         </LinearLayout>
 

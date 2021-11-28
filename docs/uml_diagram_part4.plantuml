@@ -2,24 +2,25 @@
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
 
-class GoogleMap {}
-class GoogleMap.OnMapClickListener {}
-class RecyclerView {}
-class RecyclerView.ViewHolder {}
+class GoogleMap <View>{}
+class GoogleMap.OnMapClickListener <Controller>{}
+class RecyclerView <View>{}
+class RecyclerView.ViewHolder <Controller>{}
 class Activity {}
-class FirebaseAuth {}
-class FirebaseFirestore {}
-class FirebaseStorage {}
+class FirebaseAuth <Model>{}
+class FirebaseFirestore <Model>{}
+class FirebaseStorage <Model>{}
 class Fragment {}
 class "ArrayAdapter<>" {}
-class DialogFragment {}
+class DialogFragment <View,Controller>{}
+
 
 package Entities #DDDDFF{
-    class Follower {}
+    
+    class Following <Model>{}
+    class Follower <Model>{}
 
-    class Following {}
-
-    class Habit {
+    class Habit <Model> {
         -boolean isPrivate
         -String title
         -String reason
@@ -49,7 +50,7 @@ package Entities #DDDDFF{
         +void setIndex(long index)
     }
 
-    class HabitEvent {
+    class HabitEvent <Model>{
         -String comment
         -long eventDate
         -Bitmap img
@@ -78,7 +79,7 @@ package Entities #DDDDFF{
         +void setLocationLon(double locationLon)
     }
 
-    class Request {
+    class Request <Model>{
         -String requesterEmail
         -String requestedEmail
         -long time
@@ -90,7 +91,7 @@ package Entities #DDDDFF{
 
     }
 
-    class User {
+    class User <Model>{
         -String userEmail
         -DocumentReference userReference
 
@@ -109,7 +110,7 @@ package Entities #DDDDFF{
 }
 
 package Activities #DDFFDD {
-    class LocationActivity {
+    class LocationActivity <View,Controller>{
         -Marker marker
         -GoogleMap map
         -FusedLocationProviderClient fusedLocationClient
@@ -141,7 +142,7 @@ package Activities #DDFFDD {
         +void onMapClick(LatLng latLng)
     }
 
-    class LoginActivity {
+    class LoginActivity <View,Controller>{
         -Button loginButton
         -Button signupButton
         -EditText usernameField
@@ -151,14 +152,14 @@ package Activities #DDFFDD {
         #void onCreate(Bundle savedInstanceState)
     }
 
-    class MainActivity {
+    class MainActivity <View,Controller>{
         +FragmentManager getSupportFragmentManager()
         #void onCreate(Bundle savedInstanceState)
         +void switchFragment(Fragment frag)
         +void onBackPressed()
     }
 
-    class SignUpActivity {
+    class SignUpActivity <View,Controller>{
         -EditText usernameField
         -EditText passwordField
         -Button confirmButton
@@ -169,15 +170,15 @@ package Activities #DDFFDD {
 }
 
 package Fragments #FFDDDD {
-    class AllHabits {
+    class AllHabits <View,Controller>{
         +void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error)
     }
 
-    class DailyHabits {
+    class DailyHabits <View,Controller>{
         +void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error)
     }
 
-    class EditEvent {
+    class EditEvent <View,Controller>{
         -EditText eventComments
         -CalendarView eventDate
         -ImageButton imgButton
@@ -200,7 +201,7 @@ package Fragments #FFDDDD {
         +void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     }
 
-    class EditHabit {
+    class EditHabit <View,Controller>{
         -MainActivity main
         -Button isPrivateButton
         -EditText habitTitle
@@ -223,7 +224,7 @@ package Fragments #FFDDDD {
 
 
 
-    class NavBar {
+    class NavBar <View,Controller>{
         -View profile_button
         -View all_habits_button
         -View daily_habits_button
@@ -233,11 +234,11 @@ package Fragments #FFDDDD {
         +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     }
 
-    interface NavBar.NavBarSwitch {
+    interface NavBar.NavBarSwitch <Controller>{
         +void switchFragment(Fragment navTo)
     }
 
-    class Profile {
+    class Profile <View,Controller>{
         -ListView profileListView
         -Button followingButton
         -Button followerButton
@@ -257,7 +258,7 @@ package Fragments #FFDDDD {
         +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     }
 
-    class RecyclerViewFragment {
+    class RecyclerViewFragment <View,Controller>{
         #DragMoveAdapter habitAdapter
         #ArrayList<Habit> habitDataList
         -RecyclerView habitView
@@ -272,14 +273,14 @@ package Fragments #FFDDDD {
         +void initHabitOrder()
     }
 
-    class RequestMake {
+    class RequestMake <View,Controller>{
         -Activity THIS
         -User currentUser
 
         +Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
     }
 
-    class RequestRespond {
+    class RequestRespond <View,Controller>{
         -Activity THIS
         -Request request
         -User currentUser
@@ -288,7 +289,7 @@ package Fragments #FFDDDD {
         +Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
     }
 
-    class ViewEvent {
+    class ViewEvent <View,Controller>{
         -HabitEvent event
         -ImageButton editButton
         -ImageView eventImageView
@@ -303,7 +304,7 @@ package Fragments #FFDDDD {
         +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     }
 
-    class ViewFollowing {
+    class ViewFollowing <View,Controller>{
         -MainActivity main
         -ListView habitListView
         -ArrayAdapter<Habit> habitAdapter
@@ -324,7 +325,7 @@ package Fragments #FFDDDD {
         +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     }
 
-    class ViewHabit {
+    class ViewHabit <View,Controller>{
         -View view
         -MainActivity main
         -TextView habitIsPrivate
@@ -351,7 +352,7 @@ package Fragments #FFDDDD {
 }
 
 package Lists #DDFFFF {
-    class DragMoveAdapter {
+    class DragMoveAdapter <View,Controller>{
         -ArrayList<Habit> habitList
         -DragListener dragListener
 
@@ -366,11 +367,11 @@ package Lists #DDFFFF {
         +void updateDocIndex()
     }
 
-    interface DragMoveAdapter.DragListener {
+    interface DragMoveAdapter.DragListener <Controller>{
         +void onHabitClick(int position)
     }
 
-    class DragMoveAdapter.DragViewHolder {
+    class DragMoveAdapter.DragViewHolder <Controller>{
         -TextView habitTitle
         -TextView habitReason
         -ImageView scoreImg
@@ -381,7 +382,7 @@ package Lists #DDFFFF {
         +void onClick(View view)
     }
 
-    class EventList {
+    class EventList <View>{
         -ArrayList<HabitEvent> events
         -Context context
 
@@ -389,7 +390,7 @@ package Lists #DDFFFF {
         +View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
     }
 
-    class FollowerList {
+    class FollowerList <View>{
         -ArrayList<Follower> followers
         -Context context
 
@@ -397,7 +398,7 @@ package Lists #DDFFFF {
         +View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
     }
 
-    class FollowingList {
+    class FollowingList <View>{
         -ArrayList<Following> followings
         -Context context
 
@@ -405,7 +406,7 @@ package Lists #DDFFFF {
         +View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
     }
 
-    class HabitList {
+    class HabitList <View>{
         -ArrayList<Habit> habits
         -Context context
         -boolean isFollowing
@@ -415,7 +416,7 @@ package Lists #DDFFFF {
         +View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
     }
 
-    class RequestList {
+    class RequestList <View>{
         -ArrayList<Request> requests
         -Context context
 
@@ -425,7 +426,7 @@ package Lists #DDFFFF {
 }
 
 package Utils #FFDDFF {
-    class DragHabits {
+    class DragHabits <Controller>{
         -ItemTouchHelperAdapter touchHelper
 
         +DragHabits(ItemTouchHelperAdapter touchHelper)
@@ -438,21 +439,21 @@ package Utils #FFDDFF {
         +void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
     }
 
-    interface ItemTouchHelperAdapter {
+    interface ItemTouchHelperAdapter <Controller>{
         +void OnItemMoved(int fromPosition, int toPosition)
         +void onItemSelected(DragMoveAdapter.DragViewHolder myViewHolder)
         +void onItemCLear(DragMoveAdapter.DragViewHolder myViewHolder)
         +void onDoneDragging()
     }
 
-    class SharedHelper {
+    class SharedHelper <Controller>{
         +<u>void deleteImage(String id, FirebaseStorage storage)</u>
         +<u>void removeEvent(HabitEvent event, Habit habit, User user)</u>
         +<u>void removeHabit(Habit habit, User user)</u>
         +<u>String getStringDateFromLong(long l)</u>
     }
 
-    class VisualIndicator {
+    class VisualIndicator <Controller>{
         -Habit habit
         -double score
         -long eventListSize
@@ -469,8 +470,40 @@ package Utils #FFDDFF {
         +void populateEventList()
         +boolean GetIsTodayEventDone()
     }
-}
 
+    class CustomTextWatcher <View,Controller>{
+        -Integer minLength
+        -Integer maxLength
+        -EditText editText
+        -Button button
+        -Boolean goodText
+
+        +CustomTextWatcher(EditText editText , Button button, Integer minLength, Integer maxLength)
+        +void checkInput()
+        +Boolean getGoodText()
+        +void void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+        +void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+        +void afterTextChanged(Editable editable)
+
+    }
+
+    class DualCustomTextWatcher <View,Controller>{
+        -Integer minLength1
+        -Integer maxLength1
+        -EditText editText1
+        -Integer minLength2
+        -Integer maxLength2
+        -EditText editText2
+        -Button button
+        -Boolean goodInput
+
+        +DualCustomTextWatcher(EditText editText1 , EditText editText2, Button button, Integer minLength1, Integer maxLength1, Integer minLength2, Integer maxLength2)
+        +void checkInput()
+        +void void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+        +void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+        +void afterTextChanged(Editable editable)
+    }
+}
 
 
 ViewFollowing "1" *-- "0..*" Habit
@@ -531,6 +564,10 @@ User <-- Activity
 DragHabits.ItemTouchHelperAdapter <-- DragMoveAdapter.DragViewHolder
 DragHabits.ItemTouchHelperAdapter <-- RecyclerView.ViewHolder
 DragHabits.ItemTouchHelperAdapter <-- RecyclerView
+CustomTextWatcher <-- addEventButton
+DualCustomTextWatcher <-- addHabitButton
+CustomTextWatcher <-- confirmButton
+CustomTextWatcher <-- loginButton
 
 SignUpActivity "0..*" <-- "1" FirebaseAuth
 LoginActivity "0..*" <-- "1" FirebaseAuth

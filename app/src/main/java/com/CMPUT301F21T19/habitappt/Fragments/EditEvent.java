@@ -65,6 +65,8 @@ import com.CMPUT301F21T19.habitappt.Entities.Habit;
 import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
 import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Utils.CustomTextWatcher;
+import com.CMPUT301F21T19.habitappt.Utils.DualCustomTextWatcher;
 import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -105,11 +107,14 @@ public class EditEvent extends DialogFragment {
     private FirebaseStorage storage;
     private Habit habit;
 
-    private final int LAUNCH_MAP_ACTIVITY = 1;
+    private final int LAUNCH_MAP_ACTIVITY = 2;
 
 
     private double oldLat, oldLon;
     private TextView latTextView, lonTextView;
+
+    private Bundle savedState;
+    private static final String SAVED_BUNDLE_TAG = "saved_bundle";
 
     /**
      * create a EditEvent object with the specified values
@@ -444,42 +449,10 @@ public class EditEvent extends DialogFragment {
         if(eventComments.getText().length() == 0) {
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
         }
-        TextWatcher watcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {
-                //if habit title changed
-                if(editable ==  eventComments.getEditableText()){
-                    //if good length
-                    if(editable.length() >= 1 && editable.length() < 20 && String.valueOf( eventDate.getDate()).length() >= 1 && String.valueOf( eventDate.getDate()).length() < 30){
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                    }
-                    else{
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                        checkInput();
-                    }
-                }
-                /*
-                if(editable == String.valueOf( eventDate.getDate()).getEditableText()){
-                    if(editable.length() >= 1 && editable.length() < 30 &&  eventComments.getText().length() >=1 &&  eventComments.getText().length() < 20){
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                    }
-                    else {
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                        checkInput();
-                    }
-                }
 
-                 */
-            }
-        };
-         eventComments.addTextChangedListener(watcher);
-        // eventDate.addTextChangedListener(watcher);
+        CustomTextWatcher textWatcher = new CustomTextWatcher(eventComments, alertDialog.getButton(AlertDialog.BUTTON_POSITIVE), 0, 20);
+        eventComments.addTextChangedListener(textWatcher);
+        
 
         return alertDialog;
 
@@ -487,14 +460,7 @@ public class EditEvent extends DialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == 1 && data != null){
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imgButton.setImageBitmap(imageBitmap);
-            event.setImg(imageBitmap);
 
-
-        }
 
         //if returning from map activity
         if(requestCode == LAUNCH_MAP_ACTIVITY){
@@ -510,6 +476,13 @@ public class EditEvent extends DialogFragment {
                 latTextView.setText("Latitude: " + (int) latitude + "\u00B0");
                 lonTextView.setText("Longitude: " + (int) longitude + "\u00B0");
             }
+        }
+
+        if(requestCode == 1 && data != null){
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imgButton.setImageBitmap(imageBitmap);
+            event.setImg(imageBitmap);
         }
     }
 }

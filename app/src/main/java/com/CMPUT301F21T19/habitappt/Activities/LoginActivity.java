@@ -6,13 +6,14 @@
  *
  * Class: LoginActivity
  *
- * Description:
- * Main login screen for user: User must enter correct username and password in order to
- * login and have access to all their data
+ * Description: Empty class for login screen
  *
  */
 
 package com.CMPUT301F21T19.habitappt.Activities;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,36 +22,33 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Utils.CustomTextWatcher;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * Activity for logging in to habitappt
+ */
 public class LoginActivity extends AppCompatActivity {
 
-    /**
-     * xml attribute ref
-     */
     private Button login_button;
     private Button signup_button;
     private EditText usernameField;
     private EditText passwordField;
+    private FirebaseAuth auth;
 
     /**
-     * firebase auth instance
+     * Create activity view
+     * @param savedInstanceState
      */
-    FirebaseAuth auth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //initialize firebase auth
         auth = FirebaseAuth.getInstance();
 
         login_button = findViewById(R.id.login_button);
@@ -58,7 +56,11 @@ public class LoginActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.password);
         signup_button = findViewById(R.id.signup);
 
-        //when login selected, check that user exists and has valid credentials
+        CustomTextWatcher textWatcher = new CustomTextWatcher(passwordField, login_button, 6, 50);
+        passwordField.addTextChangedListener(textWatcher);
+
+
+        //login button logic. login if creds are valid, otherwise send an error toast.
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,18 +68,15 @@ public class LoginActivity extends AppCompatActivity {
                 String username = usernameField.getText().toString();
                 String password = passwordField.getText().toString();
 
-                //if no username/password entered, then do not sign in
                 if(username.isEmpty() || password.isEmpty()){
                     Toast toast = Toast.makeText( getApplicationContext(),"Please enter a username and password.",Toast.LENGTH_SHORT);
                     toast.show();
                     return;
                 }
 
-                //valid data entered, check if they exists in firebase
                 auth.signInWithEmailAndPassword(username,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        //valid user, move on to following profile fragment
                         Intent in = new Intent(getApplicationContext(),MainActivity.class);
                         startActivity(in);
                         finish();
@@ -94,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        //if signup is selected, user can create an account
+        //logic for switching to signup activity
         signup_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
