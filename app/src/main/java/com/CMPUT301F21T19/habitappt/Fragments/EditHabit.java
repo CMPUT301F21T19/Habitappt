@@ -251,6 +251,7 @@ public class EditHabit extends DialogFragment {
                         data.put("reason",habitReason.getText().toString());
                         data.put("dateToStart",date_selected);
                         data.put("daysToDo",habit.getWeekly());
+                        data.put("index",habit.getIndex());
 
                         doc.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -278,6 +279,7 @@ public class EditHabit extends DialogFragment {
                         data.put("reason",habitReason.getText().toString());
                         data.put("dateToStart",date_selected);
                         data.put("daysToDo",habit.getWeekly());
+                        data.put("index", 9999999);
 
                         habit.setDateToStart(date_selected);
                         habit.setTitle(habitTitle.getText().toString());

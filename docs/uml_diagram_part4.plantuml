@@ -4,6 +4,8 @@ skinparam linetype ortho
 
 class GoogleMap {}
 class GoogleMap.OnMapClickListener {}
+class RecyclerView {}
+class RecyclerView.ViewHolder {}
 class Activity {}
 class FirebaseAuth {}
 class FirebaseFirestore {}
@@ -25,8 +27,9 @@ package Entities #DDDDFF{
         -ArrayList<Boolean> datesToDo
         -ArrayList<HabitEvent> habitEvents
         -String id
+        -long index
 
-        +Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate)
+        +Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate,long index)
         +Habit()
         +String getId()
         +void setId(String id)
@@ -42,6 +45,8 @@ package Entities #DDDDFF{
         +ArrayList<HabitEvent> getHabitEvents()
         +boolean getIsPrivate()
         +void setIsPrivate(boolean isPrivate)
+        +long getIndex()
+        +void setIndex(long index)
     }
 
     class HabitEvent {
@@ -216,20 +221,7 @@ package Fragments #FFDDDD {
         +void checkInput()
     }
 
-    abstract class HabitListFragment {
-        -SwipeMenuListView habitListView
-        #ArrayAdapter<Habit> habitAdapter
-        #ArrayList<Habit> habitDataList
-        -View addHabitButton
-        -View view
-        -SwipeMenuItem deleteItem
-        -SwipeMenuItem editItem
-        -User currentUser
 
-        +void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error)
-        +void onCreate(Bundle savedInstanceState)
-        +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    }
 
     class NavBar {
         -View profile_button
@@ -263,6 +255,21 @@ package Fragments #FFDDDD {
         +void onCreate(Bundle savedInstanceState)
         +void onAttach(@NonNull Context context)
         +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    }
+
+    class RecyclerViewFragment {
+        #DragMoveAdapter habitAdapter
+        #ArrayList<Habit> habitDataList
+        -RecyclerView habitView
+        -View addHabitButton
+        -User currentUser
+        -View view
+
+        +abstract void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error)
+        +void onCreate(Bundle savedInstanceState)
+        +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        +void onHabitClick(int position)
+        +void initHabitOrder()
     }
 
     class RequestMake {
@@ -344,6 +351,36 @@ package Fragments #FFDDDD {
 }
 
 package Lists #DDFFFF {
+    class DragMoveAdapter {
+        -ArrayList<Habit> habitList
+        -DragListener dragListener
+
+        +DragMoveAdapter(ArrayList<Habit> habitList, DragListener dragListener)
+        +DragViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+        +void onBindViewHolder(@NonNull DragViewHolder holder, int position)
+        +int getItemCount()
+        +void OnItemMoved(int fromPosition, int toPosition)
+        +void onItemSelected(DragViewHolder myViewHolder)
+        +void onItemCLear(DragViewHolder myViewHolder)
+        +void onDoneDragging()
+        +void updateDocIndex()
+    }
+
+    interface DragMoveAdapter.DragListener {
+        +void onHabitClick(int position)
+    }
+
+    class DragMoveAdapter.DragViewHolder {
+        -TextView habitTitle
+        -TextView habitReason
+        -ImageView scoreImg
+        -ImageView checkMark
+        #DragListener dragListener
+
+        +DragViewHolder(View view, DragListener dragListener)
+        +void onClick(View view)
+    }
+
     class EventList {
         -ArrayList<HabitEvent> events
         -Context context
@@ -388,6 +425,26 @@ package Lists #DDFFFF {
 }
 
 package Utils #FFDDFF {
+    class DragHabits {
+        -ItemTouchHelperAdapter touchHelper
+
+        +DragHabits(ItemTouchHelperAdapter touchHelper)
+        +boolean isLongPressDragEnabled()
+        +boolean isItemViewSwipeEnabled()
+        +int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder)
+        +boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target)
+        +void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState)
+        +void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder)
+        +void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
+    }
+
+    interface ItemTouchHelperAdapter {
+        +void OnItemMoved(int fromPosition, int toPosition)
+        +void onItemSelected(DragMoveAdapter.DragViewHolder myViewHolder)
+        +void onItemCLear(DragMoveAdapter.DragViewHolder myViewHolder)
+        +void onDoneDragging()
+    }
+
     class SharedHelper {
         +<u>void deleteImage(String id, FirebaseStorage storage)</u>
         +<u>void removeEvent(HabitEvent event, Habit habit, User user)</u>
@@ -417,7 +474,8 @@ package Utils #FFDDFF {
 
 
 ViewFollowing "1" *-- "0..*" Habit
-HabitListFragment "1" *-- "1" User
+
+RecyclerViewFragment "1" *-- "1" User
 EditEvent "1" *-- "1" User
 EditHabit "1" *-- "1" User
 Profile "1" *-- "1" User
@@ -427,7 +485,8 @@ ViewEvent "1" *-- "1" User
 ViewFollowing "1" *-- "2" User
 ViewHabit "1" *-- "1" User
 VisualIndicator "1" *-- "1" User
-HabitListFragment "1" *-- "0..*" Habit
+
+RecyclerViewFragment "1" *-- "0..*" Habit
 
 ViewHabit "0..*" o-- "1" Activity
 ViewFollowing "0..*" o-- "1" Activity
@@ -458,6 +517,7 @@ FollowingList "0..*" o-- "0..*" Following
 FollowerList "0..*" o-- "0..*" Follower
 HabitList "0..*" o-- "0..*" Habit
 RequestList "0..*" o-- "0..*" Request
+DragMoveAdapter "0..*" o-- "0..*" Habit
 
 HabitEvent <-- Habit
 MainActivity <-- Fragment
@@ -468,6 +528,9 @@ SharedHelper <-- Habit
 User <-- User
 User <-- Habit
 User <-- Activity
+DragHabits.ItemTouchHelperAdapter <-- DragMoveAdapter.DragViewHolder
+DragHabits.ItemTouchHelperAdapter <-- RecyclerView.ViewHolder
+DragHabits.ItemTouchHelperAdapter <-- RecyclerView
 
 SignUpActivity "0..*" <-- "1" FirebaseAuth
 LoginActivity "0..*" <-- "1" FirebaseAuth
@@ -477,23 +540,28 @@ ViewEvent "0..*" <-- "1" FirebaseFirestore
 
 
 
+DragHabits +-- DragHabits.ItemTouchHelperAdapter
 NavBar +-- NavBar.NavBarSwitch
 GoogleMap +-- GoogleMap.OnMapClickListener
+GoogleMap +-- GoogleMap.OnMapClickListener
+RecyclerView +-- RecyclerView.ViewHolder
+DragMoveAdapter +-- DragMoveAdapter.DragViewHolder
 
 Fragment <|-- ViewHabit
 Fragment <|-- ViewFollowing
 Fragment <|-- NavBar
 Fragment <|-- ViewEvent
 Fragment <|-- Profile
-Fragment <|-- HabitListFragment
-HabitListFragment <|-- AllHabits
-HabitListFragment <|-- DailyHabits
+Fragment <|-- RecyclerViewFragment
+RecyclerViewFragment <|-- AllHabits
+RecyclerViewFragment <|-- DailyHabits
 
 "ArrayAdapter<>" <|-- RequestList
 "ArrayAdapter<>" <|-- EventList
 "ArrayAdapter<>" <|-- FollowingList
 "ArrayAdapter<>" <|-- FollowerList
 "ArrayAdapter<>" <|-- HabitList
+"RecyclerView.Adapter<>" <|-- DragMoveAdapter
 
 Activity <|-- AppCompatActivity
 AppCompatActivity <|-- SignUpActivity
@@ -504,6 +572,11 @@ AppCompatActivity <|-- LocationActivity
 NavBar.NavBarSwitch <|.. MainActivity
 OnMapReadyCallback <|.. LocationActivity
 GoogleMap.OnMapClickListener <|.. LocationActivity
+DragMoveAdapter.DragListener <|.. RecyclerViewFragment
+DragHabits.ItemTouchHelperAdapter <|.. DragMoveAdapter
+View.OnClickListener <|.. DragViewHolder
+RecyclerView.ViewHolder <|-- DragViewHolder
+ItemTouchHelper.Callback <|-- DragHabits
 
 DialogFragment <|-- RequestRespond
 DialogFragment <|-- RequestMake
