@@ -6,14 +6,13 @@
  *
  * Class: LoginActivity
  *
- * Description: Empty class for login screen
+ * Description:
+ * Main login screen for user: User must enter correct username and password in order to
+ * login and have access to all their data
  *
  */
 
 package com.CMPUT301F21T19.habitappt.Activities;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +20,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.CMPUT301F21T19.habitappt.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,10 +32,17 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
+    /**
+     * xml attribute ref
+     */
     Button login_button;
     Button signup_button;
     EditText usernameField;
     EditText passwordField;
+
+    /**
+     * firebase auth instance
+     */
     FirebaseAuth auth;
 
     @Override
@@ -41,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //initialize firebase auth
         auth = FirebaseAuth.getInstance();
 
         login_button = findViewById(R.id.login_button);
@@ -48,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.password);
         signup_button = findViewById(R.id.signup);
 
+        //when login selected, check that user exists and has valid credentials
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,15 +66,18 @@ public class LoginActivity extends AppCompatActivity {
                 String username = usernameField.getText().toString();
                 String password = passwordField.getText().toString();
 
+                //if no username/password entered, then do not sign in
                 if(username.isEmpty() || password.isEmpty()){
                     Toast toast = Toast.makeText( getApplicationContext(),"Please enter a username and password.",Toast.LENGTH_SHORT);
                     toast.show();
                     return;
                 }
 
+                //valid data entered, check if they exists in firebase
                 auth.signInWithEmailAndPassword(username,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
+                        //valid user, move on to following profile fragment
                         Intent in = new Intent(getApplicationContext(),MainActivity.class);
                         startActivity(in);
                         finish();
@@ -80,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //if signup is selected, user can create an account
         signup_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
