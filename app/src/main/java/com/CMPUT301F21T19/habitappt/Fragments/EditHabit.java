@@ -271,11 +271,11 @@ public class EditHabit extends DialogFragment {
 
                         HashMap<String,Object> data = new HashMap<>();
 
-                        data.put("isPrivate", THIS.habit.getIsPrivate());
-                        data.put("title",THIS.habitTitle.getText().toString());
-                        data.put("reason",THIS.habitReason.getText().toString());
-                        data.put("dateToStart",THIS.date_selected);
-                        data.put("daysToDo",THIS.habit.getWeekly());
+                        data.put("isPrivate", habit.getIsPrivate());
+                        data.put("title",habitTitle.getText().toString());
+                        data.put("reason",habitReason.getText().toString());
+                        data.put("dateToStart",date_selected);
+                        data.put("daysToDo",habit.getWeekly());
                         data.put("index", 9999999);
 
                         habit.setDateToStart(date_selected);
