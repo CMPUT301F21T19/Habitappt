@@ -35,6 +35,8 @@ public class Habit {
     private ArrayList<Boolean> datesToDo;
     private ArrayList<HabitEvent> habitEvents;
     private String id;
+    private long index;
+
 
     /**
      * Create a habit object and assign parameters
@@ -46,13 +48,14 @@ public class Habit {
      * @param id          A unique identifier for the habit object
      * @param isPrivate   Denotes whether this habit is private or not
      */
-    public Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate) {
+    public Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate,long index) {
         this.isPrivate = isPrivate;
         this.title = title;
         this.reason = reason;
         this.dateToStart = dateToStart;
         this.datesToDo = datesToDo;
         this.id = id;
+        this.index = index;
     }
 
     /**
@@ -185,6 +188,22 @@ public class Habit {
      */
     public void setIsPrivate(boolean isPrivate) {
         this.isPrivate = isPrivate;
+    }
+
+    /**
+     * Gets the index of the habit in the users list
+     * @return
+     */
+    public long getIndex() {
+        return index;
+    }
+
+    /**
+     * Sets the index of the habit in the users list
+     * @param index
+     */
+    public void setIndex(long index) {
+        this.index = index;
     }
 }
 

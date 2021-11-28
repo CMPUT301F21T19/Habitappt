@@ -20,11 +20,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-/**
- * This class defines a fragment that shows all of a users habits.
- */
-public class AllHabits extends HabitListFragment {
 
+public class AllHabits extends RecyclerViewFragment {
+    /**
+     * This class defines a fragment that shows all of a users habits.
+     */
 
     /**
      * This method returns all of the habits in the users collection
@@ -42,8 +42,9 @@ public class AllHabits extends HabitListFragment {
             String reason = (String) doc.getData().get("reason");
             long dateToStart = (long) doc.getData().get("dateToStart");
             ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
+            long index = (long) doc.getData().get("index");
 
-            habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate));
+            habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate,index));
         }
 
         habitAdapter.notifyDataSetChanged();
