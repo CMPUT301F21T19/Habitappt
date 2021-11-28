@@ -54,10 +54,11 @@
 
                 ></Button>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
+                android:gravity="center"
                 >
 
                 <TextView
@@ -65,19 +66,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
-                    android:textSize="18dp"
-
-                    android:hint="Latitude: "></TextView>
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginBottom="0dp"
+                    android:hint="Latitude: "
+                    android:textSize="18dp"></TextView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textSize="18dp"
                     android:layout_alignParentRight="true"
+                    android:layout_marginRight="25dp"
                     android:id="@+id/current_lon_disp"
                     android:gravity="right"
                     android:hint="Longitude: "></TextView>
-            </RelativeLayout>
+            </LinearLayout>
             <TextView
                 android:id="@+id/event_date_label"
                 android:layout_width="match_parent"

@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="email"
+                android:hint="Email"
                 android:inputType="textPersonName"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite" />
@@ -79,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="center"
+                android:hint="Password"
                 android:inputType="textPersonName"
                 android:textColor="@color/colorWhite"/>
 
