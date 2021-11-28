@@ -7,17 +7,20 @@
  * Class: MainActivity
  *
  * Description:
+ * the Main activity creates context to the db instance for the application,
+ * then moves to the profile screen for the user
+ *
  */
 
 package com.CMPUT301F21T19.habitappt.Activities;
+
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.os.Bundle;
 
 import com.CMPUT301F21T19.habitappt.Fragments.NavBar;
 import com.CMPUT301F21T19.habitappt.Fragments.Profile;
@@ -26,6 +29,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity implements NavBar.nav_bar_switch {
 
+    /**
+     * continuously used db instance
+     */
     public FirebaseFirestore db;
 
     @NonNull
@@ -42,8 +48,6 @@ public class MainActivity extends AppCompatActivity implements NavBar.nav_bar_sw
         //get base firestore instance
         db = FirebaseFirestore.getInstance();
 
-
-
         //start bottom navigation bar!
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavBar.nav_bar_sw
         transaction.replace(R.id.bottom_nav_bar,new NavBar());
         transaction.commit();
 
+        //switch to profile fragment
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_container,new Profile());
         transaction.addToBackStack(null);
@@ -69,11 +74,15 @@ public class MainActivity extends AppCompatActivity implements NavBar.nav_bar_sw
             getSupportFragmentManager().popBackStackImmediate();
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        //replace current activity with fragment
         transaction.replace(R.id.main_container,frag);
         transaction.addToBackStack("base");
         transaction.commit();
     }
 
+    /**
+     * Manages application when back is selected
+     */
     @Override
     public void onBackPressed() {
         if(getSupportFragmentManager().getBackStackEntryCount() > 1){
