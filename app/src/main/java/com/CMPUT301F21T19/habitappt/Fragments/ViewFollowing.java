@@ -230,7 +230,7 @@ public class ViewFollowing extends Fragment {
                                 String reason = (String) doc.getData().get("reason");
                                 long dateToStart = (long) doc.getData().get("dateToStart");
                                 ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
-                                int index = (int) doc.getData().get("index");
+                                long index = (long) doc.getData().get("index");
 
                                 habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate,index));
                                 habitAdapter.notifyDataSetChanged();
