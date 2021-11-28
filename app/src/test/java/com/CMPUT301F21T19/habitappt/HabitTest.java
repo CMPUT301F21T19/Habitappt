@@ -12,7 +12,7 @@ import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
 
 import java.util.ArrayList;
 
-public class Habit_test {
+public class HabitTest {
 
     Habit mockHabit;
 

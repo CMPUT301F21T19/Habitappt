@@ -12,7 +12,7 @@ import com.CMPUT301F21T19.habitappt.Entities.Habit;
 import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
 
 
-public class HabitEvent_test {
+public class HabitEventTest {
 
     HabitEvent mockHabitEvent;
 
