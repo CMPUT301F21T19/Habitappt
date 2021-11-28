@@ -21,6 +21,7 @@ public class Habit_test {
     long dateToStart = 0;
     String test_id = "-1";
     Boolean privacy = true;
+    int index = 0;
 
     ArrayList<Boolean> datesToDo;
 
@@ -38,7 +39,7 @@ public class Habit_test {
             habitEvents.add(new HabitEvent("comment",0,new Habit(),"-1"));
         }
 
-        mockHabit = new Habit(title,reason,dateToStart,datesToDo,test_id,privacy);
+        mockHabit = new Habit(title,reason,dateToStart,datesToDo,test_id,privacy,index);
 
 
     }
