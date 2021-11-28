@@ -1,3 +1,18 @@
+/**
+ * Copyright 2021 - 2021 CMPUT301F21T19 (Habitappt). All rights reserved. This document nor any
+ * part of it may be reproduced, stored in a retrieval system or transmitted in any for or by any
+ * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
+ * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
+ *
+ * Class: User
+ *
+ * Description:
+ * Encapsulates information regarding a user
+ *
+ * @version "%1%,%5%"
+ *
+ *
+ */
 package com.CMPUT301F21T19.habitappt.Entities;
 
 import android.app.Activity;
@@ -6,7 +21,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.CMPUT301F21T19.habitappt.Activities.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,14 +32,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Document;
-
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
-/**
- * Contains information about a user
- */
+
 public class User {
     /**
      * The email of the user
@@ -106,6 +116,7 @@ public class User {
                 .collection("Followings")
                 .document(userToUnfollow.getUserEmail())
                 .delete()
+                //following user document found, deletes from list of who user follows
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -124,6 +135,7 @@ public class User {
                 .collection("Followers")
                 .document(userEmail)
                 .delete()
+                //follower user document found, deletes from list of users followers
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
