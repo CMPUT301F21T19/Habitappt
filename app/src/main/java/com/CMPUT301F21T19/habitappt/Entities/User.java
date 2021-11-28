@@ -90,9 +90,7 @@ public class User {
      * @return
      */
     public Task<DocumentSnapshot> queryFollowing(User userToQuery) {
-        return FirebaseFirestore.getInstance()
-                .collection("Users")
-                .document(userEmail)
+        return userReference
                 .collection("Followings")
                 .document(userToQuery.getUserEmail())
                 .get();
@@ -122,7 +120,7 @@ public class User {
                         Log.d("remove follower",e.toString());
                     }
                 });
-        userReference
+        userToUnfollow.userReference
                 .collection("Followers")
                 .document(userEmail)
                 .delete()
