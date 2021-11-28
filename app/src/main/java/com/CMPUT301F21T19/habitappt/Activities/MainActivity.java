@@ -40,8 +40,6 @@ public class MainActivity extends AppCompatActivity implements NavBar.nav_bar_sw
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         //start bottom navigation bar!
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 

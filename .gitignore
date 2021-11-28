@@ -16,3 +16,4 @@ build.gradle
 *.gradle
 .idea/deploymentTargetDropDown.xml
 app/.project
+.settings/org.eclipse.buildship.core.prefs

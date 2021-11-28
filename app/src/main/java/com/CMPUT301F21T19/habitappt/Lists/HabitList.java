@@ -114,9 +114,6 @@ public class HabitList extends ArrayAdapter<Habit> {
             }
         }, 200);
 
-
-
-
         return view;
     }
 }
