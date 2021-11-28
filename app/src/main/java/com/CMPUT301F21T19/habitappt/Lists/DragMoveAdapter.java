@@ -162,8 +162,6 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
         notifyItemMoved(fromPosition, toPosition);
     }
 
-
-
     @Override
     public void onItemSelected(DragViewHolder myViewHolder) {
     }
@@ -194,7 +192,7 @@ public class DragMoveAdapter extends RecyclerView.Adapter<DragMoveAdapter.DragVi
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            collectionReference.document(id).update("index", finalIndex); }
+                            collectionReference.document(id).update("index", finalIndex);}
                     });
         }
     }
