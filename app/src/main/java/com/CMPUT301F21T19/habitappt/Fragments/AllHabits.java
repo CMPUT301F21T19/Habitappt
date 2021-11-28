@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+
 public class AllHabits extends recycler_view_fragment {
     /**
      * This class defines a fragment that shows all of a users habits.

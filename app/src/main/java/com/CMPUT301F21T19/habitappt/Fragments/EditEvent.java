@@ -63,13 +63,12 @@ import androidx.fragment.app.FragmentManager;
 import com.CMPUT301F21T19.habitappt.Activities.LocationActivity;
 import com.CMPUT301F21T19.habitappt.Entities.Habit;
 import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
+import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.CMPUT301F21T19.habitappt.R;
 import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -79,6 +78,9 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.TimeZone;
 
+/**
+ * This fragment is used to edit an event and its associated details.
+ */
 public class EditEvent extends DialogFragment {
 
     private EditText eventComments;
@@ -95,23 +97,20 @@ public class EditEvent extends DialogFragment {
     private String dialogTitle;
 
     private String removeTextTitle;
-    private String tag;
 
-    long date_selected;
+    private long dateSelected;
 
-    private FirebaseFirestore db;
-    private FirebaseAuth auth;
+    private User currentUser;
 
     private FirebaseStorage storage;
     private Habit habit;
 
-    protected EditEvent THIS;
-
-    final int LAUNCH_MAP_ACTIVITY = 1;
+    private final int LAUNCH_MAP_ACTIVITY = 1;
 
 
     private double oldLat, oldLon;
-    TextView latTextView, lonTextView;
+    private TextView latTextView, lonTextView;
+
     /**
      * create a EditEvent object with the specified values
      * @param event habit event object
@@ -127,40 +126,38 @@ public class EditEvent extends DialogFragment {
         else if (tag == "REMOVE"){
             this.removeTextTitle = "Remove Event";
         }
-        this.date_selected = event.getEventDate();
+        this.dateSelected = event.getEventDate();
         this.habit = habit;
 
     }
 
-//    public EditEvent(){
-//        this.event = new HabitEvent();
-//        this.dialogTitle = "Add Habit";
-//        this.removeTextTitle = "Cancel";
-//        this.date_selected = GregorianCalendar.getInstance().getTimeInMillis();
-//    }
+
     /**
-     * Checks to see if event comment input length is less than twenty
+     * Checks to see if event comment input length is valid
      */
     public void checkInput(){
-        if(THIS.eventComments.getText().length() == 0){
-            THIS.eventComments.setError("Comments cannot be empty");
+        if(eventComments.getText().length() == 0){
+            eventComments.setError("Comments cannot be empty");
         }
         //too long
-        if(THIS.eventComments.getText().length() > 20){
-            THIS.eventComments.setError("Maximum Length 0f 20: Please reduce");
+        if(eventComments.getText().length() > 20){
+            eventComments.setError("Maximum Length 0f 20: Please reduce");
         }
     }
 
+    /**
+     * Gets the view for the fragment
+     * @param savedInstanceState
+     * @return
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
-        THIS = this;
+        currentUser = new User();
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.edit_event,null);
 
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
 
         storage = FirebaseStorage.getInstance();
 
@@ -193,6 +190,7 @@ public class EditEvent extends DialogFragment {
         eventComments.setText(event.getComment());
         eventDate.setDate(event.getEventDate());
 
+        //logic for setting a new image for the habit event
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -201,6 +199,7 @@ public class EditEvent extends DialogFragment {
             }
         });
 
+        //button for setting the location for an event
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -211,7 +210,7 @@ public class EditEvent extends DialogFragment {
         });
 
 
-
+        //button logic for setting event date
         eventDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
@@ -221,9 +220,11 @@ public class EditEvent extends DialogFragment {
                 GregorianCalendar cal = new GregorianCalendar(TimeZone.getDefault());
                 cal.set(year,month,day);
 
-                date_selected = cal.getTimeInMillis();
+                dateSelected = cal.getTimeInMillis();
             }
         });
+
+        //below is the logic for updating the db with the new habit event details
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
@@ -249,7 +250,7 @@ public class EditEvent extends DialogFragment {
                         if(removeTextTitle.equals("Remove Event")) {
                             //remove image from firestore storage after deleting event
                             SharedHelper.deleteImage(event.getId(), storage);
-                            SharedHelper.removeEvent(event, habit, db);
+                            SharedHelper.removeEvent(event, habit, currentUser);
                         }
                         //cancel selected
                         else{
@@ -265,18 +266,13 @@ public class EditEvent extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         if(getTag() == "EDIT"){
-                            DocumentReference doc = db
-                                    .collection("Users")
-                                    .document(auth.getCurrentUser().getEmail())
-                                    .collection("Habits")
-                                    .document(String.valueOf(THIS.event.getParentHabit().getId()))
-                                    .collection("Event Collection")
-                                    .document(String.valueOf(THIS.event.getId()));
+                            DocumentReference doc = currentUser.getHabitEventReference(event.getParentHabit())
+                                    .document(String.valueOf(event.getId()));
 
                             HashMap<String,Object> data = new HashMap<>();
 
-                            data.put("comments",THIS.eventComments.getText().toString());
-                            data.put("eventDate",THIS.date_selected);
+                            data.put("comments",eventComments.getText().toString());
+                            data.put("eventDate", dateSelected);
                             //if real lat and lon, SAVE
                             if(event.getLocationLon() != -1 && event.getLocationLat() != -1) {
                                 data.put("latitude", event.getLocationLat());
@@ -284,10 +280,10 @@ public class EditEvent extends DialogFragment {
                             }
 
                             //get image and upload to firestorage!
-                            if(THIS.event.getImg() != null){
+                            if( event.getImg() != null){
 
-                                Bitmap imageBitmap = THIS.event.getImg();
-                                StorageReference ref = THIS.storage.getReferenceFromUrl("gs://habitappt.appspot.com/default_user");
+                                Bitmap imageBitmap =  event.getImg();
+                                StorageReference ref =  storage.getReferenceFromUrl("gs://habitappt.appspot.com/default_user");
 
                                 StorageReference imgRef = ref.child(event.getId() + ".jpg");
 
@@ -354,19 +350,14 @@ public class EditEvent extends DialogFragment {
                         else if(getTag() == "ADD"){
 
                             event.setId(String.valueOf(GregorianCalendar.getInstance().getTimeInMillis()));
-                            habit.getHabitEvents().add(THIS.event); //////////////////////////////////////////////////////////////////////
-                            DocumentReference doc = db
-                                    .collection("Users")
-                                    .document(auth.getCurrentUser().getEmail())
-                                    .collection("Habits")
-                                    .document(String.valueOf(THIS.event.getParentHabit().getId()))
-                                    .collection("Event Collection")
+                            habit.getHabitEvents().add( event); //////////////////////////////////////////////////////////////////////
+                            DocumentReference doc = currentUser.getHabitEventReference(event.getParentHabit())
                                     .document(event.getId());
 
                             HashMap<String,Object> data = new HashMap<>();
 
-                            data.put("comments",THIS.eventComments.getText().toString());
-                            data.put("eventDate",THIS.date_selected);
+                            data.put("comments", eventComments.getText().toString());
+                            data.put("eventDate", dateSelected);
 
                             //if real lat and lon, SAVE
                             if(event.getLocationLon() != -1 && event.getLocationLat() != -1) {
@@ -374,10 +365,10 @@ public class EditEvent extends DialogFragment {
                                 data.put("longitude", event.getLocationLon());
                             }
 
-                            if(THIS.event.getImg() != null){
+                            if( event.getImg() != null){
 
-                                Bitmap imageBitmap = THIS.event.getImg();
-                                StorageReference ref = THIS.storage.getReferenceFromUrl("gs://habitappt.appspot.com/default_user");
+                                Bitmap imageBitmap =  event.getImg();
+                                StorageReference ref =  storage.getReferenceFromUrl("gs://habitappt.appspot.com/default_user");
 
                                 StorageReference imgRef = ref.child(event.getId() + ".jpg");
 
@@ -463,9 +454,9 @@ public class EditEvent extends DialogFragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 //if habit title changed
-                if(editable == THIS.eventComments.getEditableText()){
+                if(editable ==  eventComments.getEditableText()){
                     //if good length
-                    if(editable.length() >= 1 && editable.length() < 20 && String.valueOf(THIS.eventDate.getDate()).length() >= 1 && String.valueOf(THIS.eventDate.getDate()).length() < 30){
+                    if(editable.length() >= 1 && editable.length() < 20 && String.valueOf( eventDate.getDate()).length() >= 1 && String.valueOf( eventDate.getDate()).length() < 30){
                         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
                     }
                     else{
@@ -474,8 +465,8 @@ public class EditEvent extends DialogFragment {
                     }
                 }
                 /*
-                if(editable == String.valueOf(THIS.eventDate.getDate()).getEditableText()){
-                    if(editable.length() >= 1 && editable.length() < 30 && THIS.eventComments.getText().length() >=1 && THIS.eventComments.getText().length() < 20){
+                if(editable == String.valueOf( eventDate.getDate()).getEditableText()){
+                    if(editable.length() >= 1 && editable.length() < 30 &&  eventComments.getText().length() >=1 &&  eventComments.getText().length() < 20){
                         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
                     }
                     else {
@@ -487,8 +478,8 @@ public class EditEvent extends DialogFragment {
                  */
             }
         };
-        THIS.eventComments.addTextChangedListener(watcher);
-        //THIS.eventDate.addTextChangedListener(watcher);
+         eventComments.addTextChangedListener(watcher);
+        // eventDate.addTextChangedListener(watcher);
 
         return alertDialog;
 

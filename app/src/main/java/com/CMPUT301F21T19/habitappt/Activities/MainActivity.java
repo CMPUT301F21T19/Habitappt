@@ -24,9 +24,10 @@ import com.CMPUT301F21T19.habitappt.Fragments.Profile;
 import com.CMPUT301F21T19.habitappt.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+ * MainActivity for habitappt. contains logic for switching the main fragments (Profile, All Habits, Daily Habits)
+ */
 public class MainActivity extends AppCompatActivity implements NavBar.nav_bar_switch {
-
-    public FirebaseFirestore db;
 
     @NonNull
     @Override
@@ -38,9 +39,6 @@ public class MainActivity extends AppCompatActivity implements NavBar.nav_bar_sw
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //get base firestore instance
-        db = FirebaseFirestore.getInstance();
 
         //start bottom navigation bar!
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -82,4 +80,6 @@ public class MainActivity extends AppCompatActivity implements NavBar.nav_bar_sw
         }
 
     }
+
+
 }
