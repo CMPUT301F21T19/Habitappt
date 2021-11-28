@@ -51,11 +51,11 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 
-public abstract class recycler_view_fragment extends Fragment implements DragMoveAdapter.DragListener {
+/**
+ * Abstract class for whenever we want to display a list of habits from the database.
+ */
 
-    /**
-     * Abstract class for whenever we want to display a list of habits from the database.
-     */
+public abstract class recycler_view_fragment extends Fragment implements DragMoveAdapter.DragListener {
 
     protected DragMoveAdapter habitAdapter;
     protected ArrayList<Habit> habitDataList;
@@ -72,8 +72,11 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
 
     private View view;
 
+    /**
+     * This method must be implemented by any classes that extend this class.
+     * It tells the class how to process the habits in the users collection and order them by their index.
+     */
     public abstract void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error);
-
 
     /**
      * Called on creation of the fragment.
@@ -129,6 +132,7 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
         habitView.setLayoutManager(layoutManager);
         initHabitOrder();
 
+        // orders the habitList by it's index position
         Query currentUser = currentUserHabits.orderBy("index", Query.Direction.ASCENDING);
         currentUser.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -136,8 +140,8 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
                 parseDataBaseUpdate(queryDocumentSnapshots,error);
             }
         });
+
         habitView.setAdapter(habitAdapter);
-        
         return view;
     }
 
@@ -162,32 +166,5 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(habitView);
     }
-
-
-    /**
-     * This method must be implemented by any classes that extend this class.
-     * It tells the class how to process the habits in the users collection and order them by their index.
-     */
-//    public void parseDataBaseUpdate(){
-//        System.out.println("RECYCLER VIEW   !!!!");
-//        Query currentUser = currentUserHabits.orderBy("index", Query.Direction.ASCENDING);
-//        currentUser.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-//                habitDataList.clear();
-//                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
-//                    String id = doc.getId();
-//                    boolean isPrivate = (boolean) doc.getData().get("isPrivate");
-//                    String title = (String) doc.getData().get("title");
-//                    String reason = (String) doc.getData().get("reason");
-//                    long dateToStart = (long) doc.getData().get("dateToStart");
-//                    ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
-//                    habitDataList.add(new Habit(title, reason, dateToStart, datesToDo,id, isPrivate));
-//                }
-//                habitAdapter.notifyDataSetChanged();
-//            }
-//        });
-//
-//        }
 
 }
