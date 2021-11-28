@@ -3,6 +3,7 @@ skinparam classAttributeIconSize 0
 skinparam linetype ortho
 
 class GoogleMap {}
+class GoogleMap.OnMapClickListener {}
 class Activity {}
 class FirebaseAuth {}
 class FirebaseFirestore {}
@@ -477,6 +478,8 @@ ViewEvent "0..*" <-- "1" FirebaseFirestore
 
 
 NavBar +-- NavBar.NavBarSwitch
+GoogleMap +-- GoogleMap.OnMapClickListener
+
 Fragment <|-- ViewHabit
 Fragment <|-- ViewFollowing
 Fragment <|-- NavBar
