@@ -33,6 +33,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.CMPUT301F21T19.habitappt.Entities.Habit;
+import com.CMPUT301F21T19.habitappt.Fragments.EditHabit;
+import com.CMPUT301F21T19.habitappt.Fragments.ViewHabit;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -111,7 +114,7 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
         addHabitButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new edit_habit().show(getActivity().getSupportFragmentManager(), "ADD"); }
+                new EditHabit().show(getActivity().getSupportFragmentManager(), "ADD"); }
         });
 
 
@@ -134,7 +137,7 @@ public abstract class recycler_view_fragment extends Fragment implements DragMov
     @Override
     public void onHabitClick(int position) {
         FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
-        trans.replace(R.id.main_container,new view_habit(habitDataList.get(position)));
+        trans.replace(R.id.main_container,new ViewHabit(habitDataList.get(position)));
         trans.addToBackStack("view_habit");
         trans.commit();
     };
