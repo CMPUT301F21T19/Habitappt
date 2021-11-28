@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="center"
-                android:inputType="textPersonName"
+                android:inputType="textPassword"
                 android:textColor="@color/colorWhite"/>
 
             <Button

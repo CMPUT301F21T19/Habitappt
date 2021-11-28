@@ -222,7 +222,7 @@ public class ViewHabit extends Fragment {
                 editItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
                         0xCE)));
                 // set item width
-                editItem.setWidth(170);
+                editItem.setWidth(200);
                 // set item title
                 editItem.setTitle("Edit");
                 // set item title fontsize
@@ -239,7 +239,7 @@ public class ViewHabit extends Fragment {
                 deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
                         0x3F, 0x25)));
                 // set item width
-                deleteItem.setWidth(170);
+                deleteItem.setWidth(200);
                 // set a icon
                 deleteItem.setTitle("Delete");
                 // set item title fontsize
