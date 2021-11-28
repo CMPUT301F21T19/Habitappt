@@ -1,69 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="@drawable/main_background"
     tools:context=".Fragments.ViewEvent">
 
+
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="570dp"
-        android:background="@color/colorWhite"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/edit_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:orientation="vertical">
+            app:srcCompat="@drawable/edit_icon" />
+    </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/edit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/edit_icon" />
+    <ImageView
+        android:id="@+id/event_img"
+        android:layout_width="match_parent"
+        android:layout_height="377dp"
+        android:src="@drawable/no_image_provided_event"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/event_img"
-            android:layout_width="match_parent"
-            android:layout_height="377dp"
-            android:src="@drawable/no_image_provided_event" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:background="@color/colorPrimaryDark"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/event_date"
-                android:layout_width="206dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="00/00/00"
-                android:textColor="@color/colorWhite" />
-
-            <TextView
-                android:id="@+id/event_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="No Location Given"
-                android:textColor="@color/colorWhite" />
-        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_img">
 
         <TextView
-            android:id="@+id/event_comment"
-            android:layout_width="match_parent"
-            android:layout_height="123dp"
-            android:background="@color/colorPrimary"
+            android:id="@+id/event_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
-            android:text="Event Comment"
-            android:textColor="@color/colorWhite"
-            android:textSize="20sp" />
+            android:paddingLeft="30px"
+            android:text="00/00/00"
+            android:textColor="@color/colorWhite" />
+
+        <TextView
+            android:id="@+id/event_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingRight="30px"
+            android:text="No Location Given"
+            android:textColor="@color/colorWhite" />
     </LinearLayout>
-</FrameLayout>
+
+    <TextView
+        android:id="@+id/event_comment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="Event Comment"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+</androidx.constraintlayout.widget.ConstraintLayout>

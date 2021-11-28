@@ -23,7 +23,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.75"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:text="Habit Title"
                 android:textSize="25dp" />
 
@@ -47,6 +47,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.85"
+                android:gravity="center"
                 android:text="Reason"
                 android:textSize="18dp" />
         </LinearLayout>

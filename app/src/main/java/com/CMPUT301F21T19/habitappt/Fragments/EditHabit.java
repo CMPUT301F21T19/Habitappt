@@ -56,6 +56,8 @@ import com.CMPUT301F21T19.habitappt.Entities.Habit;
 import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
 import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Utils.CustomTextWatcher;
+import com.CMPUT301F21T19.habitappt.Utils.DualCustomTextWatcher;
 import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -128,8 +130,6 @@ public class EditHabit extends DialogFragment {
 
 
         storage = FirebaseStorage.getInstance();
-
-
 
         //get current user
         currentUser = new User();
@@ -213,7 +213,13 @@ public class EditHabit extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(view)
             .setTitle(dialogTitle)
-            .setNegativeButton(removeTextTitle, new DialogInterface.OnClickListener() {
+            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            })
+            .setNeutralButton(removeTextTitle, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     getChildFragmentManager().popBackStack("viewhabit", FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -310,6 +316,7 @@ public class EditHabit extends DialogFragment {
         //create the alertdialog object
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
+        alertDialog.getButton(alertDialog.BUTTON_NEUTRAL).setTextColor(Color.RED);
 
         //disable confirm button until fields are correctly filled (if empty)
         if(habitTitle.length() == 0 && habitReason.length() == 0) {
@@ -317,63 +324,13 @@ public class EditHabit extends DialogFragment {
         }
 
         //custom text watcher that will check the given inputs before enabling
-        TextWatcher watcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {
-                //if habit title changed
-                if(editable == habitTitle.getEditableText()){
-                    //if good length
-                    if(editable.length() >= 1 && editable.length() < 20 && habitReason.getText().length() >= 1 && habitReason.getText().length() < 30){
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                    }
-                    else{
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                        //if false, update error reason
-                        checkInput();
-                    }
-                }
-                if(editable == habitReason.getEditableText()){
-                    if(editable.length() >= 1 && editable.length() < 30 && habitTitle.getText().length() >=1 && habitTitle.getText().length() < 20){
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                    }
-                    else {
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                        //if false, update error reason
-                        checkInput();
-                    }
-                }
-            }
-        };
+        DualCustomTextWatcher dualTextWatcher = new DualCustomTextWatcher(habitTitle, habitReason, alertDialog.getButton(AlertDialog.BUTTON_POSITIVE), 0, 20, 0, 30);
+
         //set both edit text watchers
-        habitTitle.addTextChangedListener(watcher);
-        habitReason.addTextChangedListener(watcher);
+        habitTitle.addTextChangedListener(dualTextWatcher);
+        habitReason.addTextChangedListener(dualTextWatcher);
 
         return alertDialog;
     }
 
-    /**
-     * Displays error when habit title and reason text input is empty or greater than 20 characters
-     */
-    public void checkInput(){
-        if(habitTitle.getText().length() == 0){
-            habitTitle.setError("Title cannot be empty");
-        }
-        //too long
-        if(habitTitle.getText().length() > 19){
-            habitTitle.setError("Maximum Length 0f 20: Please reduce");
-        }
-        //empty reason
-        if(habitReason.getText().length() == 0){
-            habitReason.setError("Reason cannot be empty");
-        }
-        if(habitReason.getText().length() > 29){
-            habitReason.setError("Maximum Length 0f 30: Please reduce");
-        }
-    }
 }

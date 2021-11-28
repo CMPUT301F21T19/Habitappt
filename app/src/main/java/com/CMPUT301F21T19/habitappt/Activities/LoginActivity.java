@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.CMPUT301F21T19.habitappt.R;
+import com.CMPUT301F21T19.habitappt.Utils.CustomTextWatcher;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -54,6 +55,10 @@ public class LoginActivity extends AppCompatActivity {
         usernameField = findViewById(R.id.username);
         passwordField = findViewById(R.id.password);
         signup_button = findViewById(R.id.signup);
+
+        CustomTextWatcher textWatcher = new CustomTextWatcher(passwordField, login_button, 6, 50);
+        passwordField.addTextChangedListener(textWatcher);
+
 
         //login button logic. login if creds are valid, otherwise send an error toast.
         login_button.setOnClickListener(new View.OnClickListener() {

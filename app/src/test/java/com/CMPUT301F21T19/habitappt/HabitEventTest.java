@@ -12,7 +12,7 @@ import com.CMPUT301F21T19.habitappt.Entities.Habit;
 import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
 
 
-public class HabitEvent_test {
+public class HabitEventTest {
 
     HabitEvent mockHabitEvent;
 
@@ -58,5 +58,11 @@ public class HabitEvent_test {
         mockHabitEvent.setId("12019");
         assertTrue(mockHabitEvent.getId().equals("12019"));
 
+    }
+
+    //test exception for when comments are too long
+    @Test(expected = IllegalArgumentException.class)
+    public void testCommentIllegalArgumentException() {
+        mockHabitEvent.setComment("12345678901234567890123456789012345");
     }
 }

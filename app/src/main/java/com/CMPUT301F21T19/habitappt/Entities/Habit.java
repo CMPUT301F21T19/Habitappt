@@ -48,8 +48,15 @@ public class Habit {
      * @param id          A unique identifier for the habit object
      * @param isPrivate   Denotes whether this habit is private or not
      */
-    public Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate,long index) {
+    public Habit(String title, String reason, long dateToStart, ArrayList<Boolean> datesToDo, String id, boolean isPrivate, long index) throws IllegalArgumentException{
         this.isPrivate = isPrivate;
+        if(title.length() > 20) {
+            throw new IllegalArgumentException("Invalid Title");
+        }
+        if(reason.length() > 30) {
+            throw new IllegalArgumentException("Invalid Reason");
+        }
+        this.reason = reason;
         this.title = title;
         this.reason = reason;
         this.dateToStart = dateToStart;
@@ -123,6 +130,9 @@ public class Habit {
      * @param title
      */
     public void setTitle(String title) {
+        if(title.length() > 20) {
+            throw new IllegalArgumentException("Invalid Title");
+        }
         this.title = title;
     }
 
@@ -139,6 +149,9 @@ public class Habit {
      * @param reason
      */
     public void setReason(String reason) {
+        if(reason.length() > 30) {
+            throw new IllegalArgumentException("Invalid Reason");
+        }
         this.reason = reason;
     }
 

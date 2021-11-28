@@ -12,7 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class SharedHelper_test {
+public class SharedHelperTest {
 
     @Before
     public void setup(){
