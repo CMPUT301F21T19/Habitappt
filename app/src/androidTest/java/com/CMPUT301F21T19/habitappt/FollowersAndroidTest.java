@@ -16,6 +16,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+/**
+ * Tests followers requests/acceptance/etc and also view followers
+ *
+ * Make sure to run requestToFollow, acceptFollowRequests, denyFollowRequests, viewFollowing respectively
+ */
 public class FollowersAndroidTest {
     private Solo solo;
 
@@ -38,22 +43,7 @@ public class FollowersAndroidTest {
     }
 
     @Test
-    public void ViewFollowing() {
-
-        solo.enterText((EditText) solo.getView(R.id.username),"asdf@gmail.com");
-        solo.enterText((EditText) solo.getView(R.id.password),"Happy123!");
-        solo.clickOnView(solo.getView(R.id.login_button));
-
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.following_button));
-
-        solo.clickOnView(solo.getView(R.id.profile_list));
-        solo.sleep(5000);
-
-    }
-
-    @Test
-    public void RequestToFollow(){
+    public void requestToFollow(){
 
         solo.enterText((EditText) solo.getView(R.id.username),"asdf@gmail.com");
         solo.enterText((EditText) solo.getView(R.id.password),"Happy123!");
@@ -64,22 +54,6 @@ public class FollowersAndroidTest {
 
         solo.enterText((EditText) solo.getView(R.id.requested_user),"tester@test.com");
         solo.clickOnButton("Send");
-
-    }
-
-    @Test
-    public void denyFollowRequests()  {
-
-        solo.enterText((EditText) solo.getView(R.id.username),"tester@test.com");
-        solo.enterText((EditText) solo.getView(R.id.password),"tester");
-        solo.clickOnView(solo.getView(R.id.login_button));
-
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.requests_button));
-        solo.clickOnView(solo.getView(R.id.requester_email_text_view));
-        solo.clickOnButton("Deny");
-        solo.clickOnView(solo.getView(R.id.followers_button));
-        solo.sleep(3000);
 
     }
 
@@ -100,6 +74,44 @@ public class FollowersAndroidTest {
         solo.sleep(3000);
 
     }
+
+
+    @Test
+    public void denyFollowRequests()  {
+
+        solo.enterText((EditText) solo.getView(R.id.username),"tester@test.com");
+        solo.enterText((EditText) solo.getView(R.id.password),"tester");
+        solo.clickOnView(solo.getView(R.id.login_button));
+
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.requests_button));
+        solo.clickOnView(solo.getView(R.id.requester_email_text_view));
+        solo.clickOnButton("Deny");
+        solo.clickOnView(solo.getView(R.id.followers_button));
+        solo.sleep(3000);
+
+    }
+
+    @Test
+    public void viewFollowing() {
+
+        solo.enterText((EditText) solo.getView(R.id.username),"asdf@gmail.com");
+        solo.enterText((EditText) solo.getView(R.id.password),"Happy123!");
+        solo.clickOnView(solo.getView(R.id.login_button));
+
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.following_button));
+
+        solo.clickOnView(solo.getView(R.id.profile_list));
+        solo.sleep(5000);
+
+    }
+
+
+
+
+
+
 
     @After
     public void tearDown(){ solo.finishOpenedActivities(); }

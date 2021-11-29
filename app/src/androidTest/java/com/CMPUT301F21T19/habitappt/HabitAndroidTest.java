@@ -43,7 +43,10 @@ public class HabitAndroidTest {
             Activity activity = rule.getActivity();
        }
 
-        @Test
+    /**
+     * Implements user story US.01.01.01, US.01.02.01
+     */
+    @Test
         public void addHabit() {
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
@@ -157,8 +160,25 @@ public class HabitAndroidTest {
 
         @Test
         public void dailyHabits(){
+            solo.clickOnView(solo.getView(R.id.all_habit_button));
+            solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+
+            solo.clickOnView(solo.getView(R.id.add_habit_button));
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"Daily Habit");
+            solo.clearEditText((EditText) solo.getView(R.id.habit_reason));
+            solo.enterText((EditText) solo.getView(R.id.habit_reason),"None");
+            solo.clickOnView(solo.getView(R.id.monday_button));
+            solo.clickOnView(solo.getView(R.id.tuesday_button));
+            solo.clickOnView(solo.getView(R.id.wednesday_button));
+            solo.clickOnView(solo.getView(R.id.thursday_button));
+            solo.clickOnView(solo.getView(R.id.friday_button));
+            solo.clickOnView(solo.getView(R.id.saturday_button));
+            solo.clickOnView(solo.getView(R.id.sunday_button));
+            solo.clickOnView(solo.getView(R.id.public_private_button));
+            solo.clickOnView(solo.getView(R.id.date_to_start));
+            solo.clickOnButton("Confirm");
+
             solo.clickOnView(solo.getView(R.id.daily_habit_button));
-            solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
             solo.sleep(5000);
         }

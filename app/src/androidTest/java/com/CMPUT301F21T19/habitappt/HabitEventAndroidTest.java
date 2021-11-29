@@ -147,6 +147,23 @@ public class HabitEventAndroidTest {
             solo.clickOnButton("Confirm");
 
         }
+
+    @Test
+    public void addHabitEventWithpicture() {
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.all_habit_button));
+
+        solo.clickOnText("Mock Habit 1");
+        solo.clickOnView(solo.getView(R.id.add_event_button));
+        solo.enterText((EditText) solo.getView(R.id.event_comments),"comment");
+        solo.clickOnView(solo.getView(R.id.event_img));
+        //solo.clickOnButton(R.id.event_img);
+        solo.clickLongOnScreen(300,700);
+        solo.clickOnView(solo.getView(R.id.event_date_calendar));
+        solo.clickOnView(solo.getView(R.id.location_button));
+        solo.clickOnButton("Confirm");
+    }
+
         @After
         public void tearDown() { solo.finishOpenedActivities(); }
 
