@@ -67,8 +67,10 @@ public class HabitAndroidTest {
 
         }
 
-
-        @Test
+    /**
+     * Implements user story US.01.04.01
+     */
+    @Test
         public void editHabit() {
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
@@ -101,8 +103,11 @@ public class HabitAndroidTest {
             assertTrue(solo.waitForText("Mock Habit 1",1,5000));
         }
 
-        @Test
-        public void deleteHabit() {
+    /**
+     * Implements user story US.01.05.01
+     */
+    @Test
+    public void deleteHabit() {
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
@@ -124,8 +129,12 @@ public class HabitAndroidTest {
 
             assertFalse(solo.searchText("Habit to delete"));
         }
-        @Test
-        public void viewHabit(){
+
+    /**
+     * Implements user story US.01.08.01
+     */
+    @Test
+    public void viewHabit(){
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
@@ -134,8 +143,11 @@ public class HabitAndroidTest {
             solo.sleep(3000);
         }
 
-        @Test
-        public void title_characterlimit(){
+    /**
+     * Implements user story US.01.06.01
+     */
+    @Test
+    public void title_characterlimit(){
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
@@ -146,7 +158,10 @@ public class HabitAndroidTest {
 
         }
 
-      @Test
+    /**
+     * Implements user story US.01.06.01
+      */
+    @Test
       public  void reason_characterlimit() {
 
           solo.clickOnView(solo.getView(R.id.all_habit_button));
@@ -158,8 +173,11 @@ public class HabitAndroidTest {
           solo.sleep(5000);
       }
 
-        @Test
-        public void dailyHabits(){
+    /**
+     * Implements user story US.01.07.01
+     */
+    @Test
+    public void dailyHabits(){
             solo.clickOnView(solo.getView(R.id.all_habit_button));
             solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
@@ -183,7 +201,10 @@ public class HabitAndroidTest {
             solo.sleep(5000);
         }
 
-        @Test
+    /**
+     * Implements user story US.01.09.01
+     */
+    @Test
         public void visualIndicator(){
             solo.clickOnView(solo.getView(R.id.all_habit_button));
             solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
