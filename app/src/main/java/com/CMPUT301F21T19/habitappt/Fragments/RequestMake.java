@@ -11,37 +11,20 @@
 
 package com.CMPUT301F21T19.habitappt.Fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import android.util.Log;
-import android.util.Patterns;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-
 import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.CMPUT301F21T19.habitappt.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.SignInMethodQueryResult;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 
 /**
  * This fragment is used to make follow requests.
@@ -66,6 +49,7 @@ public class RequestMake extends DialogFragment {
         EditText requestedUserEditText = view.findViewById(R.id.requested_user);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
+        //create alertdialog allowing user to make a follow request
         builder.setView(view)
                 .setTitle("Make Follow Request")
                 .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
@@ -77,11 +61,12 @@ public class RequestMake extends DialogFragment {
                 .setPositiveButton("Send", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        //send a request to user with current users email
                         String requestedEmail = requestedUserEditText.getText().toString();
                         currentUser.request(new User(requestedEmail),getActivity());
                     }
                 });
-
+        //create dialog
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
         return alertDialog;

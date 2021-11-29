@@ -13,14 +13,7 @@
  * **/
 package com.CMPUT301F21T19.habitappt.Fragments;
 
-import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,19 +24,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.CMPUT301F21T19.habitappt.Entities.Follower;
+import com.CMPUT301F21T19.habitappt.Entities.Following;
+import com.CMPUT301F21T19.habitappt.Entities.Request;
 import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.CMPUT301F21T19.habitappt.Lists.FollowerList;
-import com.CMPUT301F21T19.habitappt.Entities.Following;
 import com.CMPUT301F21T19.habitappt.Lists.FollowingList;
-import com.CMPUT301F21T19.habitappt.R;
-import com.CMPUT301F21T19.habitappt.Entities.Request;
 import com.CMPUT301F21T19.habitappt.Lists.RequestList;
+import com.CMPUT301F21T19.habitappt.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -97,6 +92,7 @@ public class Profile extends Fragment {
         //get current user object
         currentUser = new User();
 
+        //initialize xml attributes
         profileListView = view.findViewById(R.id.profile_list);
         followingButton = view.findViewById(R.id.following_button);
         followerButton = view.findViewById(R.id.followers_button);
@@ -111,6 +107,7 @@ public class Profile extends Fragment {
 
         usernameLabel.setText(currentUser.getUserEmail());
 
+        //get all collections associated to requests, followers, following from firestore
         final CollectionReference requestReference = currentUser.getUserReference()
                 .collection("Requests");
         final CollectionReference followerReference = currentUser.getUserReference()
@@ -118,6 +115,7 @@ public class Profile extends Fragment {
         final CollectionReference followingReference = currentUser.getUserReference()
                 .collection("Followings");
 
+        //initialize data structures
         requestDataList = new ArrayList<>();
         requestAdapter = new RequestList(getContext(), requestDataList);
         followerDataList = new ArrayList<>();
@@ -126,6 +124,7 @@ public class Profile extends Fragment {
         followingAdapter = new FollowingList(getContext(), followingDataList);
         profileListView.setAdapter(followingAdapter);
 
+        //if following selected, display following list
         followingButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -138,6 +137,7 @@ public class Profile extends Fragment {
                 profileListView.setAdapter(followingAdapter);
             }
         });
+        //if follower selected, display followers
         followerButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -150,6 +150,7 @@ public class Profile extends Fragment {
                 profileListView.setAdapter(followerAdapter);
             }
         });
+        //if requests selected, display all follower requests
         requestButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -163,6 +164,7 @@ public class Profile extends Fragment {
             }
         });
 
+        //choose to send a follower request
         makeRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -209,7 +211,6 @@ public class Profile extends Fragment {
                 followingAdapter.notifyDataSetChanged();
             }
         });
-
         profileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

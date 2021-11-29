@@ -13,12 +13,12 @@ package com.CMPUT301F21T19.habitappt.Fragments;
 
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
-
 import com.CMPUT301F21T19.habitappt.Entities.Habit;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 
 public class AllHabits extends RecyclerViewFragment {
@@ -33,9 +33,11 @@ public class AllHabits extends RecyclerViewFragment {
      */
     @Override
     public void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+        //clear habit list as we'll update from firestore
         habitDataList.clear();
-
+        //for every habit in firestore
         for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+            //get attributes
             String id = doc.getId();
             boolean isPrivate = (boolean) doc.getData().get("isPrivate");
             String title = (String) doc.getData().get("title");
@@ -44,9 +46,10 @@ public class AllHabits extends RecyclerViewFragment {
             ArrayList<Boolean> datesToDo = (ArrayList<Boolean>) doc.getData().get("daysToDo");
             long index = (long) doc.getData().get("index");
 
+            //add to habit datalist
             habitDataList.add(new Habit(title, reason, dateToStart, datesToDo, id, isPrivate,index));
         }
-
+        //update adapter
         habitAdapter.notifyDataSetChanged();
     }
 

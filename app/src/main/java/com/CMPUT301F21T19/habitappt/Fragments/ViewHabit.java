@@ -9,25 +9,6 @@
  * Description: Displays habit info as well as event associated with the habit. Handles user
  *              interaction to edit habit and add habit events
  *
- * Changelog:
- * =|Version|=|User(s)|==|Date|========|Description|================================================
- *   1.0       Andrew    Oct-23-2021   View and edit habits done
- *   1.1       Sohaib    Oct-24-2021   Added habit events
- *   1.2       Andrew    Oct-25-2021   Habit events editing and list
- *   1.3       Hamzah    Oct-27-2021   Added event swipe to edit/delete functionality
- *   1.4       Andrew    Oct-27-2021   Images for events
- *   1.5       Andrew    Oct-27-2021   Fixed bug with deleting a habit crashing the app
- *   1.6       Hamzah    Oct-28-2021   Added event deletion functionality
- *   1.7       Andrew    Oct-28-2021   fixed images not updating after editing habit event
- *   1.8       Hamzah    Oct-31-2021   Added getters and setters in habit class for habiteventslist,
- *                                     also modified view habit to use habiteventslist list instead
- *                                     of list created locally, refactored delete image in EditEvent
- *
- *   1.9       Logan     Nov-01-2021   Added isPrivate indicator in ViewHabit
- *   1.10      Logan     Nov-01-2021   Reorganized the view habit fragment
- *   1.11      Andrew    Oct-03-2021   Added shared method to sharedHelper class
- *   1.12      Logan     Nov-04-2021   Fixed catastrophic fragment blunder
- * =|=======|=|======|===|====|========|===========|================================================
  */
 
 package com.CMPUT301F21T19.habitappt.Fragments;
@@ -54,10 +35,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.CMPUT301F21T19.habitappt.Activities.MainActivity;
-import com.CMPUT301F21T19.habitappt.Entities.User;
-import com.CMPUT301F21T19.habitappt.Lists.EventList;
 import com.CMPUT301F21T19.habitappt.Entities.Habit;
 import com.CMPUT301F21T19.habitappt.Entities.HabitEvent;
+import com.CMPUT301F21T19.habitappt.Entities.User;
+import com.CMPUT301F21T19.habitappt.Lists.EventList;
 import com.CMPUT301F21T19.habitappt.R;
 import com.CMPUT301F21T19.habitappt.Utils.SharedHelper;
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -66,12 +47,10 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
