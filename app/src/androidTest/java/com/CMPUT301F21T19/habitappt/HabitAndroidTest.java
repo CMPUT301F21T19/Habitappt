@@ -32,6 +32,9 @@ public class HabitAndroidTest {
             }
 
             solo = new Solo(InstrumentationRegistry.getInstrumentation(),rule.getActivity());
+            solo.enterText((EditText) solo.getView(R.id.username),"asdf@gmail.com");
+            solo.enterText((EditText) solo.getView(R.id.password),"Happy123!");
+
             solo.clickOnView(solo.getView(R.id.login_button));
         }
 
@@ -70,7 +73,7 @@ public class HabitAndroidTest {
 
 
             // edit a habit
-            solo.clickInList(0);
+            solo.clickOnView(solo.getView(R.id.recycler_habitList));
             solo.clickOnView(solo.getView(R.id.edit_button));
             solo.clearEditText((EditText) solo.getView(R.id.habit_title));
             solo.enterText((EditText) solo.getView(R.id.habit_title),"Mock Habit 1");
@@ -115,9 +118,8 @@ public class HabitAndroidTest {
             solo.clickOnView(solo.getView(R.id.all_habit_button));
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
-            solo.clickOnView(solo.getView(R.id.habit_list));
-            solo.clickInList(0);
-            solo.waitForText("Habit",1,5000);
+            solo.clickOnView(solo.getView(R.id.recycler_habitList));
+            solo.sleep(3000);
         }
 
         @Test

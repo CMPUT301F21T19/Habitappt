@@ -77,6 +77,7 @@
         <entry key="app/src/main/res/layout/event_list_item.xml" value="0.2210144927536232" />
         <entry key="app/src/main/res/layout/fragment_events_list.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/fragment_habits_list.xml" value="0.21979166666666666" />
+        <entry key="app/src/main/res/layout/fragment_view_event.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_view_habit.xml" value="0.21979166666666666" />
         <entry key="app/src/main/res/layout/habit_list_item.xml" value="0.39344262295081966" />
         <entry key="app/src/main/res/layout/loaction_view.xml" value="0.375" />
