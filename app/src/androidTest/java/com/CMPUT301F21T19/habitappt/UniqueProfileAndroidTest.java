@@ -37,6 +37,9 @@ public class UniqueProfileAndroidTest {
         Activity activity = rule.getActivity();
     }
 
+    /**
+     * Implements user story US.03.01.01 (Signup with new account)
+     */
     @Test
     public void createUniqueAccount(){
         solo.clickOnView(solo.getView(R.id.signup));
@@ -54,6 +57,9 @@ public class UniqueProfileAndroidTest {
 
     }
 
+    /**
+     * Implements user story US.03.01.01 (Signup with already existing account)
+     */
     @Test
     public void createUsedAccount(){
         solo.clickOnView(solo.getView(R.id.signup));
