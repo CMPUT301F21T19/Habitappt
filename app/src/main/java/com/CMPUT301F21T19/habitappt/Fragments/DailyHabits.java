@@ -13,15 +13,15 @@ package com.CMPUT301F21T19.habitappt.Fragments;
 
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 import com.CMPUT301F21T19.habitappt.Entities.Habit;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class DailyHabits extends RecyclerViewFragment {
     /**
@@ -37,7 +37,9 @@ public class DailyHabits extends RecyclerViewFragment {
     public void parseDataBaseUpdate(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
         habitDataList.clear();
 
+        //for every habit
         for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+            //retrieve attributes
             String id = doc.getId();
             boolean isPrivate = (boolean) doc.getData().get("isPrivate");
             String title = (String) doc.getData().get("title");
@@ -52,8 +54,10 @@ public class DailyHabits extends RecyclerViewFragment {
             Calendar startCal = Calendar.getInstance();
             startCal.setTime(startDate);
 
+            //retrieve index for positioning on recycler view
             long index = (long) doc.getData().get("index");
 
+            //adds habits that must be completed today based on start date
             if (todayDate.getTime() > startDate.getTime()) {
                 for (int i=0; i<datesToDo.size(); i++) {
                     if (datesToDo.get(i) && todayCal.get(Calendar.DAY_OF_WEEK) == ((i+1)%7)+1) {
@@ -62,7 +66,7 @@ public class DailyHabits extends RecyclerViewFragment {
                 }
             }
         }
-
+        //update adapter to reflect data list
         habitAdapter.notifyDataSetChanged();
     }
 

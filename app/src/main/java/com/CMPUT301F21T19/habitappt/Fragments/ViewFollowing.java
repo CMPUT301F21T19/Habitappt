@@ -1,3 +1,14 @@
+/**
+ * Copyright 2021 - 2021 CMPUT301F21T19 (Habitappt). All rights reserved. This document nor any
+ * part of it may be reproduced, stored in a retrieval system or transmitted in any for or by any
+ * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
+ * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
+ *
+ * Class: ViewFollowing
+ *
+ * Description: used for viewing followed users profiles. Shows their public habits and visual indicators,
+ * aswell as the habits they have to complete today.
+ */
 package com.CMPUT301F21T19.habitappt.Fragments;
 
 import android.app.Activity;
@@ -6,7 +17,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -17,15 +27,13 @@ import androidx.fragment.app.Fragment;
 
 import com.CMPUT301F21T19.habitappt.Activities.MainActivity;
 import com.CMPUT301F21T19.habitappt.Entities.Habit;
+import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.CMPUT301F21T19.habitappt.Lists.HabitList;
 import com.CMPUT301F21T19.habitappt.R;
-import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -35,10 +43,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-/**
- * This class is the fragment used for viewing followed users profiles. Shows their public habits and visual indicators,
- * aswell as the habits they have to complete today.
- */
 public class ViewFollowing extends Fragment {
     private MainActivity main;
 
