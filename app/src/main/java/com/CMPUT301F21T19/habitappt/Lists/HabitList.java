@@ -16,6 +16,7 @@
 package com.CMPUT301F21T19.habitappt.Lists;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,6 @@ import com.CMPUT301F21T19.habitappt.R;
 import com.CMPUT301F21T19.habitappt.Utils.VisualIndicator;
 
 import java.util.ArrayList;
-import android.os.Handler;
 
 
 public class HabitList extends ArrayAdapter<Habit> {
@@ -83,13 +83,22 @@ public class HabitList extends ArrayAdapter<Habit> {
         ImageView scoreImg = view.findViewById(R.id.score_image);
         ImageView checkmarkImg = view.findViewById(R.id.check_mark);
 
+        //set a given habits title and reason
         habitName.setText(habit.getTitle());
         habitReason.setText(habit.getReason());
 
+        //initialize visual indicator
         VisualIndicator visualIndicator = new VisualIndicator(habit, this.isFollowing, this.user);
+
+        //add all events associated to habit to its event list
         visualIndicator.populateEventList();
+
+        //create handle to deal with displaying visual indicator
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
+            /**
+             * depending on score, display associated visual indicator
+             */
             @Override
             public void run() {
                 double score = visualIndicator.getScore();
