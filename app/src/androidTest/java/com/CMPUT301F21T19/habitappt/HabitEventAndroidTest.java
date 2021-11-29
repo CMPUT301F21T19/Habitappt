@@ -48,7 +48,7 @@ public class HabitEventAndroidTest {
     /**
      * Implements user story US.02.01.01
      */
-    @Test
+        @Test
         public void addHabitEvent() {
             solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
             solo.clickOnView(solo.getView(R.id.all_habit_button));
@@ -59,13 +59,12 @@ public class HabitEventAndroidTest {
             solo.clickOnView(solo.getView(R.id.event_date_calendar));
             solo.clickOnButton("Confirm");
             assertTrue(solo.waitForText("Event Comment 1", 1,2000 ));
-
-        }
+    }
 
     /**
      * Implements user story US.02.02.01
      */
-    @Test
+        @Test
         public void eventcharacterlimit(){
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
@@ -76,12 +75,12 @@ public class HabitEventAndroidTest {
             solo.clearEditText((EditText) solo.getView(R.id.event_comments));
             solo.enterText((EditText) solo.getView(R.id.event_comments),"20characterlimitttttttt");
             solo.sleep(3000);
-        }
+    }
 
     /**
      * Implements user story US.02.04.01
      */
-    @Test
+        @Test
         public void viewHabitEvent(){
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
@@ -89,13 +88,14 @@ public class HabitEventAndroidTest {
             solo.clickOnText("Test Habit Event");
             solo.clickOnText("Event Comment 1");
             solo.sleep(5000);
-        }
+
+    }
 
     /**
      * Implements user story US.02.05.01
      */
-    @Test
-    public void editHabitEvent(){
+        @Test
+        public void editHabitEvent(){
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
@@ -121,13 +121,13 @@ public class HabitEventAndroidTest {
             solo.clickOnButton("Confirm");
             assertTrue(solo.waitForText("New Event 1"));
 
-        }
+    }
 
     /**
      * Implements user story US.02.06.01
      */
-    @Test
-    public void deleteHabitEvent(){
+        @Test
+        public void deleteHabitEvent(){
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
@@ -147,13 +147,13 @@ public class HabitEventAndroidTest {
             solo.sleep(1000);
             solo.clickOnText("Delete");
             solo.sleep(3000);
-        }
+    }
 
     /**
      * Implements user story US.06.01.01, US.06.01.02
      */
-    @Test
-    public void addHabitEventWithLocation() {
+        @Test
+        public void addHabitEventWithLocation() {
             solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
             solo.clickOnView(solo.getView(R.id.all_habit_button));
 
@@ -165,30 +165,10 @@ public class HabitEventAndroidTest {
             solo.clickLongOnScreen(250,400);
             solo.clickOnText("Save Location");
             solo.clickOnButton("Confirm");
-
-        }
-
-    /**
-     * Implements user story US.02.03.01, US.02.03.02
-     */
-    @Test
-    public void addHabitEventWithpicture() {
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.all_habit_button));
-
-        solo.clickOnText("Mock Habit 1");
-        solo.clickOnView(solo.getView(R.id.add_event_button));
-        solo.enterText((EditText) solo.getView(R.id.event_comments),"comment");
-        solo.clickOnView(solo.getView(R.id.event_img));
-        //solo.clickOnButton(R.id.event_img);
-        solo.clickLongOnScreen(300,700);
-        solo.clickOnView(solo.getView(R.id.event_date_calendar));
-        solo.clickOnView(solo.getView(R.id.location_button));
-        solo.clickOnButton("Confirm");
     }
 
-        @After
-        public void tearDown() { solo.finishOpenedActivities(); }
+    @After
+    public void tearDown() { solo.finishOpenedActivities(); }
 
 }
 

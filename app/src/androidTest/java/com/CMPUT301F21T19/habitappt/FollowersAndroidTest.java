@@ -42,6 +42,9 @@ public class FollowersAndroidTest {
         Activity activity = rule.getActivity();
     }
 
+    /**
+     *  Implements user story US 05.01.01
+     */
     @Test
     public void requestToFollow(){
 
@@ -57,6 +60,9 @@ public class FollowersAndroidTest {
 
     }
 
+    /**
+     *  Implements user story US 05.02.01
+     */
     @Test
     public void acceptFollowRequests()  {
 
@@ -75,7 +81,9 @@ public class FollowersAndroidTest {
 
     }
 
-
+    /**
+     *  Implements user story US 05.02.01
+     */
     @Test
     public void denyFollowRequests()  {
 
@@ -92,6 +100,9 @@ public class FollowersAndroidTest {
 
     }
 
+    /**
+     *  Implements user story US 05.03.01
+     */
     @Test
     public void viewFollowing() {
 
@@ -106,12 +117,6 @@ public class FollowersAndroidTest {
         solo.sleep(5000);
 
     }
-
-
-
-
-
-
 
     @After
     public void tearDown(){ solo.finishOpenedActivities(); }
