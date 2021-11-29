@@ -77,9 +77,8 @@ public class HabitEventAndroidTest {
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
-            solo.clickOnView(solo.getView(R.id.recycler_habitList));
-            solo.clickOnView(solo.getView(R.id.event_name));
-
+            solo.clickOnText("Test Habit Event");
+            solo.clickOnText("Event Comment 1");
             solo.sleep(5000);
         }
         @Test
