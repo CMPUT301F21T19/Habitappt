@@ -11,18 +11,17 @@
 
 package com.CMPUT301F21T19.habitappt.Activities;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
-
 import com.CMPUT301F21T19.habitappt.Fragments.NavBar;
 import com.CMPUT301F21T19.habitappt.Fragments.Profile;
 import com.CMPUT301F21T19.habitappt.R;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * MainActivity for habitappt. contains logic for switching the main fragments (Profile, All Habits, Daily Habits)
