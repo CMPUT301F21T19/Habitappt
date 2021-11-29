@@ -145,12 +145,79 @@ public class HabitAndroidTest {
           solo.enterText((EditText) solo.getView(R.id.habit_reason), "thisisover30characterlimittttttt");
           solo.sleep(5000);
       }
+
         @Test
         public void dailyHabits(){
             solo.clickOnView(solo.getView(R.id.daily_habit_button));
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
             solo.sleep(5000);
+        }
+
+        @Test
+        public void visualIndicator(){
+            solo.clickOnView(solo.getView(R.id.all_habit_button));
+            solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+
+            solo.clickOnView(solo.getView(R.id.add_habit_button));
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"VI Habit");
+            solo.clearEditText((EditText) solo.getView(R.id.habit_reason));
+            solo.enterText((EditText) solo.getView(R.id.habit_reason),"visual indicator");
+            solo.clickOnButton("W");
+            solo.clickOnButton("F");
+            solo.clickOnView(solo.getView(R.id.date_to_start));
+            solo.clickOnButton("Confirm");
+
+            assertTrue(solo.waitForText("VI Habit",1,2000));
+
+            solo.clickOnView(solo.getView(R.id.all_habit_button));
+            solo.sleep(4000);
+            solo.clickOnText("VI Habit");
+            solo.clickOnView(solo.getView(R.id.add_event_button));
+            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
+            solo.clickOnView(solo.getView(R.id.event_date_calendar));
+            solo.clickOnButton("Confirm");
+
+            solo.clickOnView(solo.getView(R.id.all_habit_button));
+            solo.sleep(4000);
+            solo.clickOnText("VI Habit");
+            solo.clickOnView(solo.getView(R.id.add_event_button));
+            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
+            solo.clickOnView(solo.getView(R.id.event_date_calendar));
+            solo.clickOnButton("Confirm");
+
+            solo.clickOnView(solo.getView(R.id.all_habit_button));
+            solo.sleep(4000);
+            solo.clickOnText("VI Habit");
+            solo.clickOnView(solo.getView(R.id.add_event_button));
+            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
+            solo.clickOnView(solo.getView(R.id.event_date_calendar));
+            solo.clickOnButton("Confirm");
+
+            solo.clickOnView(solo.getView(R.id.all_habit_button));
+            solo.sleep(4000);
+            solo.clickOnText("VI Habit");
+            solo.clickOnView(solo.getView(R.id.add_event_button));
+            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
+            solo.clickOnView(solo.getView(R.id.event_date_calendar));
+            solo.clickOnButton("Confirm");
+
+            solo.clickOnView(solo.getView(R.id.all_habit_button));
+            solo.sleep(4000);
+            solo.clickOnText("VI Habit");
+            solo.clickOnView(solo.getView(R.id.add_event_button));
+            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
+            solo.clickOnView(solo.getView(R.id.event_date_calendar));
+            solo.clickOnButton("Confirm");
+
+            solo.clickOnView(solo.getView(R.id.all_habit_button));
+            solo.sleep(4000);
+            solo.clickOnText("VI Habit");
+            solo.clickOnView(solo.getView(R.id.add_event_button));
+            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
+            solo.clickOnView(solo.getView(R.id.event_date_calendar));
+            solo.clickOnButton("Confirm");
+
         }
 
         @After
