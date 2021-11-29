@@ -32,6 +32,9 @@ public class HabitAndroidTest {
             }
 
             solo = new Solo(InstrumentationRegistry.getInstrumentation(),rule.getActivity());
+            solo.enterText((EditText) solo.getView(R.id.username),"asdf@gmail.com");
+            solo.enterText((EditText) solo.getView(R.id.password),"Happy123!");
+
             solo.clickOnView(solo.getView(R.id.login_button));
         }
 
@@ -40,7 +43,10 @@ public class HabitAndroidTest {
             Activity activity = rule.getActivity();
        }
 
-        @Test
+    /**
+     * Implements user story US.01.01.01, US.01.02.01
+     */
+    @Test
         public void addHabit() {
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
@@ -61,19 +67,30 @@ public class HabitAndroidTest {
 
         }
 
-
-        @Test
+    /**
+     * Implements user story US.01.04.01
+     */
+    @Test
         public void editHabit() {
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
 
+            solo.clickOnView(solo.getView(R.id.add_habit_button));
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"Habit to edit");
+            solo.enterText((EditText) solo.getView(R.id.habit_reason),"edit after");
+            solo.clickOnButton("M");
+            solo.clickOnButton("W");
+            solo.clickOnButton("F");
+            solo.clickOnView(solo.getView(R.id.date_to_start));
+            solo.clickOnButton("Confirm");
+
             // edit a habit
-            solo.clickInList(0);
+            solo.clickOnText("Habit to edit");
             solo.clickOnView(solo.getView(R.id.edit_button));
             solo.clearEditText((EditText) solo.getView(R.id.habit_title));
-            solo.enterText((EditText) solo.getView(R.id.habit_title),"Mock Habit 1");
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"Edited Habit");
             solo.clearEditText((EditText) solo.getView(R.id.habit_reason));
             solo.enterText((EditText) solo.getView(R.id.habit_reason),"New Reason_1");
             solo.clickOnView(solo.getView(R.id.public_private_button));
@@ -86,8 +103,11 @@ public class HabitAndroidTest {
             assertTrue(solo.waitForText("Mock Habit 1",1,5000));
         }
 
-        @Test
-        public void deleteHabit() {
+    /**
+     * Implements user story US.01.05.01
+     */
+    @Test
+    public void deleteHabit() {
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
@@ -109,19 +129,25 @@ public class HabitAndroidTest {
 
             assertFalse(solo.searchText("Habit to delete"));
         }
-        @Test
-        public void viewHabit(){
+
+    /**
+     * Implements user story US.01.08.01
+     */
+    @Test
+    public void viewHabit(){
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
-            solo.clickOnView(solo.getView(R.id.habit_list));
-            solo.clickInList(0);
-            solo.waitForText("Habit",1,5000);
+            solo.clickOnView(solo.getView(R.id.recycler_habitList));
+            solo.sleep(3000);
         }
 
-        @Test
-        public void title_characterlimit(){
+    /**
+     * Implements user story US.01.06.01
+     */
+    @Test
+    public void title_characterlimit(){
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
@@ -132,7 +158,10 @@ public class HabitAndroidTest {
 
         }
 
-      @Test
+    /**
+     * Implements user story US.01.06.01
+      */
+    @Test
       public  void reason_characterlimit() {
 
           solo.clickOnView(solo.getView(R.id.all_habit_button));
@@ -143,12 +172,64 @@ public class HabitAndroidTest {
           solo.enterText((EditText) solo.getView(R.id.habit_reason), "thisisover30characterlimittttttt");
           solo.sleep(5000);
       }
-        @Test
-        public void dailyHabits(){
+
+    /**
+     * Implements user story US.01.07.01
+     */
+    @Test
+    public void dailyHabits(){
+            solo.clickOnView(solo.getView(R.id.all_habit_button));
+            solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+
+            solo.clickOnView(solo.getView(R.id.add_habit_button));
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"Daily Habit");
+            solo.clearEditText((EditText) solo.getView(R.id.habit_reason));
+            solo.enterText((EditText) solo.getView(R.id.habit_reason),"None");
+            solo.clickOnView(solo.getView(R.id.monday_button));
+            solo.clickOnView(solo.getView(R.id.tuesday_button));
+            solo.clickOnView(solo.getView(R.id.wednesday_button));
+            solo.clickOnView(solo.getView(R.id.thursday_button));
+            solo.clickOnView(solo.getView(R.id.friday_button));
+            solo.clickOnView(solo.getView(R.id.saturday_button));
+            solo.clickOnView(solo.getView(R.id.sunday_button));
+            solo.clickOnView(solo.getView(R.id.public_private_button));
+            solo.clickOnView(solo.getView(R.id.date_to_start));
+            solo.clickOnButton("Confirm");
+
             solo.clickOnView(solo.getView(R.id.daily_habit_button));
-            solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
             solo.sleep(5000);
+        }
+
+    /**
+     * Implements user story US.01.09.01
+     */
+    @Test
+        public void visualIndicator(){
+            solo.clickOnView(solo.getView(R.id.all_habit_button));
+            solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+
+            solo.clickOnView(solo.getView(R.id.add_habit_button));
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"VI Habit");
+            solo.clearEditText((EditText) solo.getView(R.id.habit_reason));
+            solo.enterText((EditText) solo.getView(R.id.habit_reason),"visual indicator");
+            solo.clickOnButton("W");
+            solo.clickOnButton("F");
+            solo.clickOnView(solo.getView(R.id.date_to_start));
+            solo.clickOnButton("Confirm");
+
+            assertTrue(solo.waitForText("VI Habit",1,2000));
+            
+            for(int i=0;i<6;++i){
+                solo.clickOnView(solo.getView(R.id.all_habit_button));
+                solo.sleep(4000);
+                solo.clickOnText("VI Habit");
+                solo.clickOnView(solo.getView(R.id.add_event_button));
+                solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
+                solo.clickOnView(solo.getView(R.id.event_date_calendar));
+                solo.clickOnButton("Confirm");
+            }
+
         }
 
         @After
