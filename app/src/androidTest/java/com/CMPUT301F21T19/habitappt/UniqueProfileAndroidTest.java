@@ -44,8 +44,8 @@ public class UniqueProfileAndroidTest {
         final Random random=new Random();
         final StringBuilder sb=new StringBuilder(10);
         final String alphabet = "abcdefghijklmnopqrstuvwxyz";
-        for(int i=0;i<10;++i)
-            sb.append(alphabet.charAt(random.nextInt(alphabet.length())));
+        for(int i=0;i<10;++i){
+            sb.append(alphabet.charAt(random.nextInt(alphabet.length())));}
 
         solo.enterText((EditText) solo.getView(R.id.email),sb.toString() + "@test.com");
         solo.enterText((EditText) solo.getView(R.id.password),"tester");

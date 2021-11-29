@@ -72,11 +72,20 @@ public class HabitAndroidTest {
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
 
+            solo.clickOnView(solo.getView(R.id.add_habit_button));
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"Habit to edit");
+            solo.enterText((EditText) solo.getView(R.id.habit_reason),"edit after");
+            solo.clickOnButton("M");
+            solo.clickOnButton("W");
+            solo.clickOnButton("F");
+            solo.clickOnView(solo.getView(R.id.date_to_start));
+            solo.clickOnButton("Confirm");
+
             // edit a habit
-            solo.clickOnView(solo.getView(R.id.recycler_habitList));
+            solo.clickOnText("Habit to edit");
             solo.clickOnView(solo.getView(R.id.edit_button));
             solo.clearEditText((EditText) solo.getView(R.id.habit_title));
-            solo.enterText((EditText) solo.getView(R.id.habit_title),"Mock Habit 1");
+            solo.enterText((EditText) solo.getView(R.id.habit_title),"Edited Habit");
             solo.clearEditText((EditText) solo.getView(R.id.habit_reason));
             solo.enterText((EditText) solo.getView(R.id.habit_reason),"New Reason_1");
             solo.clickOnView(solo.getView(R.id.public_private_button));
@@ -169,54 +178,16 @@ public class HabitAndroidTest {
             solo.clickOnButton("Confirm");
 
             assertTrue(solo.waitForText("VI Habit",1,2000));
-
-            solo.clickOnView(solo.getView(R.id.all_habit_button));
-            solo.sleep(4000);
-            solo.clickOnText("VI Habit");
-            solo.clickOnView(solo.getView(R.id.add_event_button));
-            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
-            solo.clickOnView(solo.getView(R.id.event_date_calendar));
-            solo.clickOnButton("Confirm");
-
-            solo.clickOnView(solo.getView(R.id.all_habit_button));
-            solo.sleep(4000);
-            solo.clickOnText("VI Habit");
-            solo.clickOnView(solo.getView(R.id.add_event_button));
-            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
-            solo.clickOnView(solo.getView(R.id.event_date_calendar));
-            solo.clickOnButton("Confirm");
-
-            solo.clickOnView(solo.getView(R.id.all_habit_button));
-            solo.sleep(4000);
-            solo.clickOnText("VI Habit");
-            solo.clickOnView(solo.getView(R.id.add_event_button));
-            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
-            solo.clickOnView(solo.getView(R.id.event_date_calendar));
-            solo.clickOnButton("Confirm");
-
-            solo.clickOnView(solo.getView(R.id.all_habit_button));
-            solo.sleep(4000);
-            solo.clickOnText("VI Habit");
-            solo.clickOnView(solo.getView(R.id.add_event_button));
-            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
-            solo.clickOnView(solo.getView(R.id.event_date_calendar));
-            solo.clickOnButton("Confirm");
-
-            solo.clickOnView(solo.getView(R.id.all_habit_button));
-            solo.sleep(4000);
-            solo.clickOnText("VI Habit");
-            solo.clickOnView(solo.getView(R.id.add_event_button));
-            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
-            solo.clickOnView(solo.getView(R.id.event_date_calendar));
-            solo.clickOnButton("Confirm");
-
-            solo.clickOnView(solo.getView(R.id.all_habit_button));
-            solo.sleep(4000);
-            solo.clickOnText("VI Habit");
-            solo.clickOnView(solo.getView(R.id.add_event_button));
-            solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
-            solo.clickOnView(solo.getView(R.id.event_date_calendar));
-            solo.clickOnButton("Confirm");
+            
+            for(int i=0;i<6;++i){
+                solo.clickOnView(solo.getView(R.id.all_habit_button));
+                solo.sleep(4000);
+                solo.clickOnText("VI Habit");
+                solo.clickOnView(solo.getView(R.id.add_event_button));
+                solo.enterText((EditText) solo.getView(R.id.event_comments),"Event Comment 1");
+                solo.clickOnView(solo.getView(R.id.event_date_calendar));
+                solo.clickOnButton("Confirm");
+            }
 
         }
 
