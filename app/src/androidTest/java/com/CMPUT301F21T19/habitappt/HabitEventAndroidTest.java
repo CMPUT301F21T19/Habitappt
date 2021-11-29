@@ -45,7 +45,10 @@ public class HabitEventAndroidTest {
         Activity activity = rule.getActivity();
         }
 
-        @Test
+    /**
+     * Implements user story US.02.01.01
+     */
+    @Test
         public void addHabitEvent() {
             solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
             solo.clickOnView(solo.getView(R.id.all_habit_button));
@@ -59,7 +62,10 @@ public class HabitEventAndroidTest {
 
         }
 
-        @Test
+    /**
+     * Implements user story US.02.02.01
+     */
+    @Test
         public void eventcharacterlimit(){
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
@@ -72,7 +78,10 @@ public class HabitEventAndroidTest {
             solo.sleep(3000);
         }
 
-        @Test
+    /**
+     * Implements user story US.02.04.01
+     */
+    @Test
         public void viewHabitEvent(){
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
@@ -81,8 +90,12 @@ public class HabitEventAndroidTest {
             solo.clickOnText("Event Comment 1");
             solo.sleep(5000);
         }
-        @Test
-        public void editHabitEvent(){
+
+    /**
+     * Implements user story US.02.05.01
+     */
+    @Test
+    public void editHabitEvent(){
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
@@ -109,8 +122,12 @@ public class HabitEventAndroidTest {
             assertTrue(solo.waitForText("New Event 1"));
 
         }
-        @Test
-        public void deleteHabitEvent(){
+
+    /**
+     * Implements user story US.02.06.01
+     */
+    @Test
+    public void deleteHabitEvent(){
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
@@ -132,8 +149,11 @@ public class HabitEventAndroidTest {
             solo.sleep(3000);
         }
 
-        @Test
-        public void addHabitEventWithLocation() {
+    /**
+     * Implements user story US.06.01.01, US.06.01.02
+     */
+    @Test
+    public void addHabitEventWithLocation() {
             solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
             solo.clickOnView(solo.getView(R.id.all_habit_button));
 
@@ -148,6 +168,9 @@ public class HabitEventAndroidTest {
 
         }
 
+    /**
+     * Implements user story US.02.03.01, US.02.03.02
+     */
     @Test
     public void addHabitEventWithpicture() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
