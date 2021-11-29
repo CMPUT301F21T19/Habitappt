@@ -1,22 +1,3 @@
-/**
- * Copyright 2021 - 2021 CMPUT301F21T19 (Habitappt). All rights reserved. This document nor any
- * part of it may be reproduced, stored in a retrieval system or transmitted in any for or by any
- * means without prior permission of the members of CMPUT301F21T19 or by the professor and any
- * authorized TAs of the CMPUT301 class at the University of Alberta, fall term 2021.
- *
- * Class: LocationActivity
- *
- * Description:
- * creates google map view for habit event, allowing user to select
- * given location to associate event to. Passes location data back to fragment to save to event
- *
- *
- * Note: referenced current place tutorial designed by google developers for google maps API info
- * Link: https://developers.google.com/maps/documentation/android-sdk/current-place-tutorial
- * @version "%1%,%5%"
- *
- *
- */
 package com.CMPUT301F21T19.habitappt.Activities;
 
 import android.app.Activity;
@@ -49,53 +30,45 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+/**
+ * Activity for getting the location of a habit event.
+ */
 public class LocationActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
-    /**
-     * marker to place on map for user
-     */
     private Marker marker;
     private GoogleMap map;
 
-    /**
-     * used to get latitude and longitude coordinates
-     */
+    //location ref
     private FusedLocationProviderClient fusedLocationClient;
 
-    /**
-     * various attributes associated to tracking using location/map settings
-     */
+    // A default location and default zoom to use when location permission is
+    // not granted.
     private final LatLng defaultLocation = new LatLng(0, 0);
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean locationPermissionGranted;
-    private static final String KEY_CAMERA_POSITION = "base_position";
-
-    private static final String KEY_LOCATION = "base_location";
-    private static final String TAG = LocationActivity.class.getSimpleName();
-    public static  final String MAPS_API_KEY="AIzaSyBsJjMX7Al622N4TNpGIqO_uCew_yTZz9s";
 
 
-    /**
-     * The geographical location where the device is currently located
-     */
+    // The geographical location where the device is currently located
     private Location lastKnownLocation;
 
-    /**
-     * current camera position
-     */
     private CameraPosition cameraPosition;
 
-    String latitude, longitude;
-    TextView latTextView, lonTextView;
+    private static final String KEY_CAMERA_POSITION = "base_position";
+    private static final String KEY_LOCATION = "base_location";
 
-    Button saveButton;
+    private static final String TAG = LocationActivity.class.getSimpleName();
+
+    public static  final String MAPS_API_KEY="AIzaSyBsJjMX7Al622N4TNpGIqO_uCew_yTZz9s";
+    private String latitude, longitude;
+    private TextView latTextView, lonTextView;
+
+    private Button saveButton;
     double currLat, currLong;
 
-
     /**
-     * initializes map view with marker centerd on users current location
-     * @param savedInstanceState passsed instance state
+     * Get activity view
+     * @param savedInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +86,10 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         //setup text views
         latTextView = findViewById(R.id.current_lat);
         lonTextView = findViewById(R.id.current_lon);
-        latTextView.setText("Current Latitude: Select location to calibrate") ;
-        lonTextView.setText("Current Longitude: Select location to calibrate");
+
+
+
+
 
         //setup button
         saveButton = findViewById(R.id.save_button);
@@ -123,7 +98,11 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 
-        // Build the map
+
+        latTextView.setText("Current Latitude: Select location to calibrate") ;
+        lonTextView.setText("Current Longitude: Select location to calibrate");
+
+        // Build the map.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -137,7 +116,6 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                 Intent returnToEditEvent = new Intent(getApplicationContext(), EditEvent.class);
                 returnToEditEvent.putExtra("latitude", currLat);
                 returnToEditEvent.putExtra("longitude", currLong);
-                //send result back
                 setResult(Activity.RESULT_OK, returnToEditEvent);
                 finish();
 
@@ -147,7 +125,8 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     /**
-     * Saves the state of the map when the activity is paused.
+     * If the instance is saved, update the camera position and selected location in the map.
+     * @param outState
      */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -165,24 +144,30 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        //initialize as false unless permissions granted
-        locationPermissionGranted = false;
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    locationPermissionGranted = true;
-                }
-            }
+//        locationPermissionGranted = false;
+//        switch (requestCode) {
+//            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+//                // If request is cancelled, the result arrays are empty.
+//                if (grantResults.length > 0
+//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    locationPermissionGranted = true;
+//                }
+//            }
+//        }
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            locationPermissionGranted = true;
+        }
+        else{
+            locationPermissionGranted = false;
         }
         updateLocationUI();
     }
 
     /**
-     * when map is ready, save context to the map, and mark current location once user
-     * permissions are set
-     * @param googleMap current map instance
+     * Called when map fragment is ready.
+     * @param googleMap
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -207,7 +192,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
      * Prompts the user for permission to use the device location.
      */
     private void getLocationPermission() {
-        //check to see if we have permission to access location, if not, ask user for permission
+        //check to see if we have permission to access location, if not, ask
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -216,32 +201,29 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                locationPermissionGranted = true;
+            }
         }
+
     }
 
     /**
      * Updates the map's UI settings based on whether the user has granted location permission.
      */
     private void updateLocationUI() {
-        //if no map exists, don update
         if (map == null) {
             return;
         }
         try {
-            //if location permission granted, setup map settings. Dont otherwise
             if (locationPermissionGranted) {
                 map.setMyLocationEnabled(true);
                 map.getUiSettings().setMyLocationButtonEnabled(true);
                 map.getUiSettings().setZoomControlsEnabled(true);
-
-
-            } else {
-                map.setMyLocationEnabled(false);
-                map.getUiSettings().setMyLocationButtonEnabled(false);
-                map.getUiSettings().setZoomControlsEnabled(false);
-                lastKnownLocation = null;
-                getLocationPermission();
             }
+
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
@@ -263,25 +245,19 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful()) {
                             // Set the map's camera position to the current location of the device.
-
                             lastKnownLocation = task.getResult();
                             if (lastKnownLocation != null) {
-                                //save context to lattitude and longitude
                                 double lat = currLat = lastKnownLocation.getLatitude();
                                 double lon = currLong = lastKnownLocation.getLongitude();
 
-                                //move camera to location as found
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(lat,
                                                 lon), DEFAULT_ZOOM));
-                                //add marker to exact point
                                 marker = map.addMarker(new MarkerOptions().
                                         position(new LatLng(lat, lon)).title("Lat: " + lat + ", Lon: " + lon).draggable(true));
 
                             }
-                        }
-                        // if cannot get location, set map to base location
-                        else {
+                        } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
                             map.moveCamera(CameraUpdateFactory
@@ -298,9 +274,12 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
 
     /**
      * When map is clicked, move marker/save context, also update textview
+     * @param latLng
      */
     @Override
     public void onMapClick(LatLng latLng) {
+
+
         if(marker != null){
             marker.remove();
         }
@@ -312,15 +291,19 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         marker = map.addMarker(new MarkerOptions().position(latLng)
                 .title("Lat: " + latLng.latitude + ", Lon: " + latLng.longitude).draggable(true));
 
-        //update last known location
-        lastKnownLocation.setLatitude(latLng.latitude);
-        lastKnownLocation.setLatitude(latLng.longitude);
+        if(lastKnownLocation != null){
+            //update last known location
+            lastKnownLocation.setLatitude(latLng.latitude);
+            lastKnownLocation.setLatitude(latLng.longitude);
+        }
+
         currLat = latLng.latitude;
         currLong = latLng.longitude;
 
         //update text view
         latTextView.setText("Current Latitude: " + (int)currLat + "\u00B0");
         lonTextView.setText("Current Longitude: " + (int)currLong + "\u00B0");
+
 
     }
 }

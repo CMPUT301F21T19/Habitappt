@@ -464,17 +464,21 @@ public class EditEvent extends DialogFragment {
 
         //if returning from map activity
         if(requestCode == LAUNCH_MAP_ACTIVITY){
-            if(resultCode == Activity.RESULT_OK){
-                double latitude = data.getDoubleExtra("latitude", Activity.RESULT_CANCELED);
-                double longitude = data.getDoubleExtra("longitude", Activity.RESULT_CANCELED);
+            if(resultCode == Activity.RESULT_OK && data != null){
 
-                //update current coordinates
-                event.setLocationLat(latitude);
-                event.setLocationLon(longitude);
+                if(data.hasExtra("latitude") && data.hasExtra("longitude")){
+                    double latitude = data.getDoubleExtra("latitude", Activity.RESULT_CANCELED);
+                    double longitude = data.getDoubleExtra("longitude", Activity.RESULT_CANCELED);
 
-                //set textview
-                latTextView.setText("Latitude: " + (int) latitude + "\u00B0");
-                lonTextView.setText("Longitude: " + (int) longitude + "\u00B0");
+                    //update current coordinates
+                    event.setLocationLat(latitude);
+                    event.setLocationLon(longitude);
+
+                    //set textview
+                    latTextView.setText("Latitude: " + (int) latitude + "\u00B0");
+                    lonTextView.setText("Longitude: " + (int) longitude + "\u00B0");
+                }
+
             }
         }
 
