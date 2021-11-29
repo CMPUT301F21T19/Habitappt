@@ -113,7 +113,7 @@ public class FollowersAndroidTest {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.following_button));
 
-        solo.clickOnView(solo.getView(R.id.profile_list));
+        solo.clickOnView(solo.getView(R.id.following_email_text_view));
         solo.sleep(5000);
 
     }
