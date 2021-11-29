@@ -77,9 +77,8 @@ public class HabitEventAndroidTest {
             solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
-            solo.clickOnView(solo.getView(R.id.recycler_habitList));
-            solo.clickOnView(solo.getView(R.id.event_name));
-
+            solo.clickOnText("Test Habit Event");
+            solo.clickOnText("Event Comment 1");
             solo.sleep(5000);
         }
         @Test
@@ -88,12 +87,6 @@ public class HabitEventAndroidTest {
 
             solo.clickOnView(solo.getView(R.id.all_habit_button));
             solo.clickOnText("Test Habit Event");
-            //add mock habit event to edit.
-//            solo.clickOnView(solo.getView(R.id.recycler_habitList));
-//            solo.clickOnView(solo.getView(R.id.add_event_button));
-//            solo.enterText((EditText) solo.getView(R.id.event_comments),"New Event 1");
-//            solo.clickOnView(solo.getView(R.id.event_date_calendar));
-//            solo.clickOnButton("Confirm");
 
             int fromX, toX, fromY, toY;
             int[] location = new int[2];
