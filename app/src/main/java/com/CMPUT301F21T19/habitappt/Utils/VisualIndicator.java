@@ -42,7 +42,10 @@ public class VisualIndicator {
 
     /**
      * Instantiates a new visual Indicator object
-     * @param habit
+     * @param habit         Used to retrieve dateToStart & datesToDo in order to calculate the score
+     * @param isFollowing   A bool which return determine we are trying to view a followers habits
+     * @param user          Retrieve username in order to access the habit info (used to calculate
+     *                      score for user that you are following)
      */
     public VisualIndicator(Habit habit, Boolean isFollowing, String user) {
         this.habit = habit;
@@ -51,13 +54,13 @@ public class VisualIndicator {
     }
 
     /**
-     * Calculates the the number of events associated with the habit per total number of habits
-     * that were supposed to be done
+     * Calculates the number of events the user has done (according to datesToDo) per total number
+     * of habits that were supposed to be done
      * @return score
      */
     public double getScore() {
 
-        // Create a start date and use it to instantiate calender object (which we will be using more)
+        // Create a start date and use it to instantiate a calender object (which we will be using more)
         Date start_date = new Date(this.habit.getDateToStart());
         Calendar c = Calendar.getInstance();
         c.setTime(start_date);
@@ -66,19 +69,26 @@ public class VisualIndicator {
 
         long totalNumHabits = 0; // Tracks total days habit is to be performed
 
-        // iterates through all the dates from start to current
-        // Checks to see if habit needs to be performed at each date
-        // When loop if done, counter should have the total number of habit that should have been completed
+        // Iterates through all the dates from start to current
+        // Checks to see if habit needs to be performed at each date and if event has been completed
+        //      at a specified date according to datesToDo
+        // When loop is done, counter should have the total number of habit that should have been
+        //      completed as well as the total events the user has recorded
         while (start_date.before(current_date)) {
-            // Checks if the habit falls on a Sunday
+            // Checks if the habit should be done on a Sunday
             if (c.get(Calendar.DAY_OF_WEEK) == 1) {
                 if (this.habit.getDateSelected(6)) {
                     totalNumHabits += 1;
+                    // Loops through all habit events for a given habit
                     for (int i = 0; i < recordedEventDates.size(); i++) {
                         Date eventDate = new Date(recordedEventDates.get(i));
+                        // Checks if the habit event that was supposed to be done for sunday
+                        //      (according to datesToDo) has been done
                         if (start_date.getDate() == eventDate.getDate()) {
                             eventListSize += 1;
                         }
+                        // Checks if the habit event that was supposed to be done today has been
+                        //      done today
                         if (current_date.getDate() == start_date.getDate() && eventDate.getDate() == current_date.getDate()) {
                             this.getIsTodayEventDone = true;
                         }
@@ -89,9 +99,13 @@ public class VisualIndicator {
                 totalNumHabits += 1;
                 for (int i = 0; i < recordedEventDates.size(); i++) {
                     Date eventDate = new Date(recordedEventDates.get(i));
+                    // Checks if the habit event that was supposed to be done for every other day
+                    //      (according to datesToDo) has been done
                     if (start_date.getDate() == eventDate.getDate()) {
                         eventListSize += 1;
                     }
+                    // Checks if the habit event that was supposed to be done today has been
+                    //      done today
                     if (current_date.getDate() == start_date.getDate() && eventDate.getDate() == current_date.getDate()) {
                         this.getIsTodayEventDone = true;
                     }
@@ -121,10 +135,12 @@ public class VisualIndicator {
     }
 
     /**
-     * Retrieves the number of habit events of a given habit and stores that value into eventListSize
+     * Retrieves an array of dates of habit events of a given habit and stores it into eventListSize
      */
     public void populateEventList() {
         auth = FirebaseAuth.getInstance();
+        // Accesses and stores the event dates of a follower from the database in order to calculate
+        //      the score for the followers habit progress
         if (isFollowing) {
             CollectionReference eventCollectionReference = FirebaseFirestore.getInstance()
                     .collection("Users")
@@ -148,6 +164,8 @@ public class VisualIndicator {
                     }
                 }
             });
+            // Accessing the event dates of the user themselves from the database in order to
+            //      calculate the score of the the users habit progress
         } else {
             CollectionReference eventCollectionReference = FirebaseFirestore.getInstance()
                     .collection("Users")
@@ -176,6 +194,11 @@ public class VisualIndicator {
 
     }
 
+    /**
+     * return
+     * @return      A boolean to denote whether the user has completed a habit event for a habit
+     *              that was supposed to be done today
+     */
     public boolean GetIsTodayEventDone() {
         return getIsTodayEventDone;
     }
