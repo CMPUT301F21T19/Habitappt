@@ -16,32 +16,17 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-
+import com.CMPUT301F21T19.habitappt.Entities.Request;
 import com.CMPUT301F21T19.habitappt.Entities.User;
 import com.CMPUT301F21T19.habitappt.R;
-import com.CMPUT301F21T19.habitappt.Entities.Request;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.SignInMethodQueryResult;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 
 /**
  * This fragment is used to respond to a follow request.
@@ -77,6 +62,7 @@ public class RequestRespond extends DialogFragment {
         requestTextView.setText(request.getRequesterEmail() + " is requesting to follow you.");
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
+        //build follow request alertdialog
         builder.setView(view)
                 .setTitle("Follow Request")
                 .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
@@ -88,12 +74,14 @@ public class RequestRespond extends DialogFragment {
                 .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        //doesnt allow user to be added to current users followers list
                         currentUser.denyRequest(request,THIS);
                     }
                 })
                 .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        //accepts user into current users following list
                         currentUser.acceptRequest(request,THIS);
                     }
                 });
