@@ -219,27 +219,6 @@ public class EditHabit extends DialogFragment {
 
                 }
             })
-            .setNeutralButton(removeTextTitle, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    getChildFragmentManager().popBackStack("viewhabit", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-                    //if remove and not cancel
-                    if(removeTextTitle.equals("Remove Habit")) {
-
-                        //remove all images associated to each habit event and events first
-                        for (HabitEvent eachEvent : habit.getHabitEvents()) {
-                            //remove image from firestore storage after deleting event
-                            SharedHelper.deleteImage(eachEvent.getId(), storage);
-                            //remove event
-                            SharedHelper.removeEvent(eachEvent, habit, currentUser);
-                        }
-                        //remove habit
-                        SharedHelper.removeHabit(habit, currentUser);
-
-                    }
-                }
-            })
             .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -313,6 +292,29 @@ public class EditHabit extends DialogFragment {
             });
 
 
+        //add remove habit button if editing a habit
+        if(removeTextTitle.equals("Remove Habit")) {
+            builder.setNeutralButton(removeTextTitle, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    getChildFragmentManager().popBackStack("viewhabit", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+
+
+                        //remove all images associated to each habit event and events first
+                        for (HabitEvent eachEvent : habit.getHabitEvents()) {
+                            //remove image from firestore storage after deleting event
+                            SharedHelper.deleteImage(eachEvent.getId(), storage);
+                            //remove event
+                            SharedHelper.removeEvent(eachEvent, habit, currentUser);
+                        }
+                        //remove habit
+                        SharedHelper.removeHabit(habit, currentUser);
+
+
+                }
+            });
+        }
         //create the alertdialog object
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
